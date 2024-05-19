@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "322794932377",
+    "project_id": "csefooddelivery",
+    "storage_bucket": "csefooddelivery.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:322794932377:android:c934786afd0fbd1c915008",
+        "android_client_info": {
+          "package_name": "com.example.fooddeliveryproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUCKoQ1xB7a9AdPQT77s5BKIUIiEcKpco"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

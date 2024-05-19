@@ -4,6 +4,10 @@ import androidx.lifecycle.ViewModel
 
 class AuthenticatorViewModel:ViewModel() {
 
+    fun asdas(){
+
+    }
+
 
 
 }
