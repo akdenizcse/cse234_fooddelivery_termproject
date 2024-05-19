@@ -74,12 +74,14 @@ fun BoxWithResource(
     )
     {
         Icon(
+
             painter = painterResource(id = resId),
             contentDescription = description,
             modifier = Modifier.size(iconSize!!.dp),
             tint = iconColor!!,
 
             )
+
     }
 
 }

@@ -2,8 +2,11 @@ package com.example.fooddeliveryproject
 
 import android.graphics.drawable.Icon
 import android.os.Bundle
+import android.os.PersistableBundle
+import android.widget.SearchView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,24 +33,35 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.fooddeliveryproject.ViewModel.AuthenticatorViewModel
 import com.example.fooddeliveryproject.ui.theme.CardItemBg
 import com.example.fooddeliveryproject.ui.theme.FoodDeliveryProjectTheme
 import com.example.fooddeliveryproject.ui.theme.IconColor
 import com.example.fooddeliveryproject.ui.theme.Orange500
 
-class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity() ,SearchView.OnQueryTextListener{
+    lateinit var authVM:AuthenticatorViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             FoodDeliveryProjectTheme {
-
+                // A surface container using the 'background' color from the theme}
+                HomeScreen()
+                val temp : AuthenticatorViewModel by viewModels()
+                authVM = temp
             }
         }
     }
-}
+
+
+
+
+
 
 @Composable
 fun HomeScreen() {
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -55,14 +69,25 @@ fun HomeScreen() {
     )
     {
         Header()
+
         Spacer(modifier = Modifier.size(30.dp))
         Text(text = "Kategoriler")
     }
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
+    @Preview(showBackground = true)
+    @Composable
+    fun GreetingPreview() {
     HomeScreen()
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        TODO("Not yet implemented")
+    }
+
 }
