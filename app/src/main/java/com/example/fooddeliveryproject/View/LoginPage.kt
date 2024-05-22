@@ -14,6 +14,14 @@ class LoginPage : ComponentActivity()  {
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
 
+
+
+        authVM.signInWithEmail("email","pass"){result->
+            if (result){
+
+            }
+        }
+
     }
 
 

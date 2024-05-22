@@ -38,6 +38,7 @@ import com.example.fooddeliveryproject.ui.theme.CardItemBg
 import com.example.fooddeliveryproject.ui.theme.FoodDeliveryProjectTheme
 import com.example.fooddeliveryproject.ui.theme.IconColor
 import com.example.fooddeliveryproject.ui.theme.Orange500
+import com.google.firebase.FirebaseApp
 
 class MainActivity : ComponentActivity() ,SearchView.OnQueryTextListener{
     lateinit var authVM:AuthenticatorViewModel
@@ -52,7 +53,15 @@ class MainActivity : ComponentActivity() ,SearchView.OnQueryTextListener{
                 authVM = temp
             }
         }
+
+        FirebaseApp.initializeApp(this)
+        setContent {
+             //??
+        }
     }
+
+
+
 
 
 
