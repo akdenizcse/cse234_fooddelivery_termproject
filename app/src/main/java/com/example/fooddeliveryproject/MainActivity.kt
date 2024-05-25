@@ -53,11 +53,6 @@ class MainActivity : ComponentActivity() ,SearchView.OnQueryTextListener{
                 authVM = temp
             }
         }
-
-        FirebaseApp.initializeApp(this)
-        setContent {
-             //??
-        }
     }
 
 
