@@ -63,7 +63,9 @@ class MainActivity : ComponentActivity() ,SearchView.OnQueryTextListener{
 
 
 
-@Composable
+
+
+    @Composable
 fun HomeScreen() {
 
     Box(
