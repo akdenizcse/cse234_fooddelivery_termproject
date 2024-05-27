@@ -1,4 +1,4 @@
-package com.example.fooddeliveryproject.ui.theme
+package com.example.fooddeliveryproject.Utils
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -17,14 +17,14 @@ import androidx.compose.ui.unit.sp
 import com.example.fooddeliveryproject.R
 
 @Composable
-fun AppBar(imageId: Int) {
+fun AppBar(imageId: Int,title:String) {
     TopAppBar(backgroundColor = Color.White , contentColor = Color.Black , elevation = 5.dp){
         Row(horizontalArrangement = Arrangement.Start) {
             Spacer(modifier = Modifier.width(15.dp))
             Icon(painter = painterResource(id = imageId) , contentDescription ="",
                 modifier = Modifier.size(25.dp))
             Spacer(modifier = Modifier.width(25.dp))
-            Text(text = "Food Delivery", fontSize = 20.sp)
+            Text(text = title, fontSize = 20.sp)
         }
     }
 }
