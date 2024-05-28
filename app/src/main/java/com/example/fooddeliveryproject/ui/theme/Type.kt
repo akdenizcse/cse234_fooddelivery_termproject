@@ -15,6 +15,7 @@ val fonts by lazy {
             Font(R.font.popins_regular, style = FontStyle.Normal, weight = FontWeight.Normal),
             Font(R.font.poppins_medium, style = FontStyle.Normal, weight = FontWeight.Medium),
             Font(R.font.poppins_semibold, style = FontStyle.Normal, weight = FontWeight.SemiBold)
+
         )
     )
 }
