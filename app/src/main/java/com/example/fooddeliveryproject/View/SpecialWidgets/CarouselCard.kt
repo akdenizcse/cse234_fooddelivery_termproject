@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -39,12 +40,12 @@ fun CarouselCard(items: List<CarouselItem>) {
     HorizontalPager(
         count = items.size,
         state = pagerState,
-        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 10.dp)
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 16.dp)
     ) { page ->
         val item = items[page]
         Box(
             modifier = Modifier
-                .padding(8.dp)
+                .padding(2.dp)
                 .clip(RoundedCornerShape(16.dp))
                 .fillMaxWidth()
                 .size(200.dp)

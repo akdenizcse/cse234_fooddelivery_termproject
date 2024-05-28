@@ -1,7 +1,11 @@
 package com.example.fooddeliveryproject.View.MainPage
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -13,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.fooddeliveryproject.R
 import com.example.fooddeliveryproject.View.SpecialWidgets.CarouselCard
+import com.example.fooddeliveryproject.View.SpecialWidgets.CarouselCardOrigin
 import com.example.fooddeliveryproject.View.SpecialWidgets.CarouselItem
 import com.example.fooddeliveryproject.View.SpecialWidgets.Header
 import com.example.fooddeliveryproject.View.SpecialWidgets.SearchBar
@@ -21,7 +26,13 @@ import com.example.fooddeliveryproject.View.SpecialWidgets.SearchBar
 
 @Composable
 fun MainPage() {
-    SearchBar()
+    Column (Modifier.fillMaxSize()){
+            Header()
+            SearchBar()
+            CarouselCardOrigin()
+
+
+    }
 
 }
 
