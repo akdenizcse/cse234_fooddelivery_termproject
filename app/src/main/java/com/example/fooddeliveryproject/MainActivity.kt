@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.fooddeliveryproject.View.MainPage.MainPage
 import com.example.fooddeliveryproject.ViewModel.AuthenticatorViewModel
 import com.example.fooddeliveryproject.ui.theme.CardItemBg
 import com.example.fooddeliveryproject.ui.theme.FoodDeliveryProjectTheme
@@ -48,7 +49,7 @@ class MainActivity : ComponentActivity() ,SearchView.OnQueryTextListener{
         setContent {
             FoodDeliveryProjectTheme {
                 // A surface container using the 'background' color from the theme}
-                HomeScreen()
+                ActivityWe()
                 val temp : AuthenticatorViewModel by viewModels()
                 authVM = temp
             }
@@ -66,26 +67,26 @@ class MainActivity : ComponentActivity() ,SearchView.OnQueryTextListener{
 
 
     @Composable
-fun HomeScreen() {
+fun ActivityWe() {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(start = 10.dp, top = 20.dp, end = 17.dp)
+        )
+        {
+            MainPage()
+        }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 30.dp, top = 40.dp, end = 17.dp)
-    )
-    {
-        Header()
 
-        Spacer(modifier = Modifier.size(30.dp))
-        Text(text = "Kategoriler")
-    }
+
+
 }
 
 
     @Preview(showBackground = true)
     @Composable
     fun GreetingPreview() {
-    HomeScreen()
+    ActivityWe()
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
