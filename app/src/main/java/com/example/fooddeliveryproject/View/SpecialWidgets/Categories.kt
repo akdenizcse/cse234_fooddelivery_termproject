@@ -70,7 +70,6 @@ fun CategoriesSection(categories: List<Category>) {
             )
         }
         LazyRow(
-            modifier = Modifier.padding(top = 8.dp)
         ) {
             items(categories) { category ->
                 CategoryCard(category = category)
