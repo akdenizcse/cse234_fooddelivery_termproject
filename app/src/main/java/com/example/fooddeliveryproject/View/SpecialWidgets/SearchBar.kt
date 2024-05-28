@@ -32,7 +32,7 @@ fun SearchBarStyle(
 ) {
     Row (
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceEvenly,
+        //horizontalArrangement = Arrangement.SpaceEvenly,
         //modifier = Modifier.fillMaxWidth()
     ){
         BoxWithResource(resId = R.drawable.search , description ="search")
@@ -42,8 +42,7 @@ fun SearchBarStyle(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            placeholder = { Text("Search...")
-            }
+            placeholder = { Text("Search..") }
         )
     }
 

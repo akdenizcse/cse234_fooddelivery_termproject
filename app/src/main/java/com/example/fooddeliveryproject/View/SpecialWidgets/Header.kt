@@ -76,7 +76,7 @@ fun BoxWithResource(
             contentDescription = description,
             modifier = Modifier.size(iconSize!!.dp),
             tint = Orange500,
-            
+
 
 
             )
@@ -86,6 +86,6 @@ fun BoxWithResource(
 }
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview2() {
+fun GreetingPreview45() {
     Header()
 }
