@@ -141,7 +141,7 @@ fun OrderFoodListDesig(list: ArrayList<Food>){
                                 contentAlignment = Alignment.CenterEnd
                             ) {
 
-                                Text(text = "${count} x ${price} = ${total} TL",fontSize = 15.sp )
+                                Text(text = "${count} x ${price} = ${total} TL",fontSize = 15.sp, color = orange )
                             }
                         }
 

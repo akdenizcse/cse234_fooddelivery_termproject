@@ -34,6 +34,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.fooddeliveryproject.View.MainPage.MainPage
+import com.example.fooddeliveryproject.View.Restaurant.RestaurantAddProductPage
 import com.example.fooddeliveryproject.ViewModel.AuthenticatorViewModel
 import com.example.fooddeliveryproject.ui.theme.CardItemBg
 import com.example.fooddeliveryproject.ui.theme.FoodDeliveryProjectTheme
@@ -49,7 +50,8 @@ class MainActivity : ComponentActivity() ,SearchView.OnQueryTextListener{
         setContent {
             FoodDeliveryProjectTheme {
                 // A surface container using the 'background' color from the theme}
-                ActivityWe()
+//                ActivityWe()
+                RestaurantAddProductPage()
                 val temp : AuthenticatorViewModel by viewModels()
                 authVM = temp
             }
