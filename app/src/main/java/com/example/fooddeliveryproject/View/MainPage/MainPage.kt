@@ -21,6 +21,7 @@ import com.example.fooddeliveryproject.View.SpecialWidgets.CarouselCardOrigin
 import com.example.fooddeliveryproject.View.SpecialWidgets.CarouselItem
 import com.example.fooddeliveryproject.View.SpecialWidgets.CategoryCard
 import com.example.fooddeliveryproject.View.SpecialWidgets.Header
+import com.example.fooddeliveryproject.View.SpecialWidgets.Restorants
 import com.example.fooddeliveryproject.View.SpecialWidgets.SearchBar
 
 
@@ -32,6 +33,7 @@ fun MainPage() {
             SearchBar()
             CarouselCardOrigin()
             CategoryCard()
+            Restorants()
     }
 
 }

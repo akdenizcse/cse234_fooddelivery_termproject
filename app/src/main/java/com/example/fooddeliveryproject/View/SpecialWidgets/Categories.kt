@@ -52,10 +52,12 @@ fun CategoryCard(category: Category) {
 @Composable
 fun CategoriesSection(categories: List<Category>) {
     Column(
-        modifier = Modifier.padding(16.dp)
+
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -66,7 +68,8 @@ fun CategoriesSection(categories: List<Category>) {
             )
             Text(
                 text = "Tümünü Gör",
-                color = orange
+                color = orange ,
+                fontSize = 16.sp
             )
         }
         LazyRow(
