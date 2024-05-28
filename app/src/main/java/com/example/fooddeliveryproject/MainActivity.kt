@@ -25,6 +25,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import com.example.fooddeliveryproject.View.MainPage.MainPage
 import com.example.fooddeliveryproject.View.Restaurant.RestaurantAddProductPage
 import com.example.fooddeliveryproject.ViewModel.AuthenticatorViewModel
+import com.example.fooddeliveryproject.navigation.RestaurantAppNavigation
 import com.example.fooddeliveryproject.ui.theme.CardItemBg
 import com.example.fooddeliveryproject.ui.theme.FoodDeliveryProjectTheme
 import com.example.fooddeliveryproject.ui.theme.IconColor
@@ -44,13 +49,18 @@ import com.google.firebase.FirebaseApp
 
 class MainActivity : ComponentActivity() ,SearchView.OnQueryTextListener{
     lateinit var authVM:AuthenticatorViewModel
-
+    var isRestourantApp:Boolean=false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             FoodDeliveryProjectTheme {
-               ActivityWe()
-                //RestaurantAddProductPage()
+
+                if(isRestourantApp){
+                    RestaurantAppNavigation()
+                }else{
+                    ActivityWe()
+                }
+
                 val temp : AuthenticatorViewModel by viewModels()
                 authVM = temp
             }
