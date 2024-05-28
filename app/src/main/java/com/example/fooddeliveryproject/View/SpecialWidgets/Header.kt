@@ -67,7 +67,7 @@ fun BoxWithResource(
             .size(boxSize!!.dp)
             .clip(RoundedCornerShape(10.dp))
             .background(bgColor!!)
-        ,contentAlignment = Alignment.CenterEnd
+        ,contentAlignment = Alignment.Center
     )
     {
         Icon(
@@ -75,10 +75,7 @@ fun BoxWithResource(
             painter = painterResource(id = resId),
             contentDescription = description,
             modifier = Modifier.size(iconSize!!.dp),
-            tint = Orange500,
-
-
-
+            tint = Orange500
             )
 
     }
