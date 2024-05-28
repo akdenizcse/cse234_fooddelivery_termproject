@@ -49,9 +49,8 @@ class MainActivity : ComponentActivity() ,SearchView.OnQueryTextListener{
         super.onCreate(savedInstanceState)
         setContent {
             FoodDeliveryProjectTheme {
-                // A surface container using the 'background' color from the theme}
-//                ActivityWe()
-                RestaurantAddProductPage()
+               ActivityWe()
+                //RestaurantAddProductPage()
                 val temp : AuthenticatorViewModel by viewModels()
                 authVM = temp
             }

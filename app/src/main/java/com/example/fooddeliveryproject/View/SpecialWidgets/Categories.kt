@@ -84,7 +84,16 @@ fun CategoryCard() {
     val categories = listOf(
         Category(R.drawable.doner, "Döner"),
         Category(R.drawable.hamburgerr, "Hamburger"),
-        Category(R.drawable.pitza, "Pizza")
+        Category(R.drawable.pitza, "Pizza"),
+        Category(R.drawable.iceceksoguk,"İçeçek"),
+        Category(R.drawable.balik, "Balık"),
+        Category(R.drawable.fastfood, "Fast Food"),
+        Category(R.drawable.kahvaltilik, "Kahvaltılık"),
+        Category(R.drawable.tatli, "Tatlı"),
+        Category(R.drawable.yemekk, "Çorba"),
+        Category(R.drawable.noodle, "Makarna"),
+        Category(R.drawable.kahve, "Kahve"),
+
     )
             Column(
                 modifier = Modifier
