@@ -17,8 +17,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.fooddeliveryproject.View.Restaurant.RestaurantAccountPage
+import com.example.fooddeliveryproject.View.Restaurant.RestaurantAddProductPage
+import com.example.fooddeliveryproject.View.Restaurant.RestaurantChangeRestaurantNamePage
 import com.example.fooddeliveryproject.View.Restaurant.RestaurantHomePage
 import com.example.fooddeliveryproject.View.Restaurant.RestaurantOrderPage
+import com.example.fooddeliveryproject.View.Restaurant.RestaurantPasswordChangePage
 
 @Composable
 fun RestaurantAppNavigation() {
@@ -57,15 +60,29 @@ fun RestaurantAppNavigation() {
             startDestination =RestaurantScreen.HomeScreen.name,
             modifier =Modifier.padding(paddingValues) ){
             composable(route=RestaurantScreen.HomeScreen.name){
-                RestaurantHomePage()
+                RestaurantHomePage(navController)
             }
             composable(route=RestaurantScreen.OrderedScreen.name){
-                RestaurantOrderPage()
+                RestaurantAddProductPage()
             }
             composable(route=RestaurantScreen.ProfileScreen.name){
                 RestaurantAccountPage()
             }
 
+            composable(route=RestaurantScreen.EditProductScreen.name){
+                RestaurantAddProductPage()
+            }
+
+            composable(route=RestaurantScreen.AddProductScreen.name){
+                RestaurantAddProductPage()
+            }
+
+            composable(route=RestaurantScreen.UpdatePasswordScreen.name){
+                RestaurantPasswordChangePage()
+            }
+            composable(route=RestaurantScreen.ChangeRestaurantNameScreen.name){
+                RestaurantChangeRestaurantNamePage()
+            }
 
 
         }

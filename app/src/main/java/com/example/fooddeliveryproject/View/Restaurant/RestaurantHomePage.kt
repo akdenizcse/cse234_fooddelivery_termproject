@@ -1,7 +1,8 @@
 package com.example.fooddeliveryproject.View.Restaurant
 
 
-
+import android.util.Log
+import com.example.fooddeliveryproject.ui.theme.*
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,6 +24,7 @@ import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -36,10 +38,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.fooddeliveryproject.Models.Food
 import com.example.fooddeliveryproject.R
 import com.example.fooddeliveryproject.Utils.AppBar
+import com.example.fooddeliveryproject.navigation.RestaurantAppNavigation
+import com.example.fooddeliveryproject.navigation.RestaurantScreen
 
 
 @Composable
@@ -64,7 +69,7 @@ fun RestaurantHomePage(navHostController: NavHostController= rememberNavControll
             list.add(Food(1,"100","100","100",1000,"100"))
             list.add(Food(1,"100","100","100",1000,"100"))
             list.add(Food(1,"100","100","100",1000,"100"))
-            RestaurantALlProducts(list)
+            RestaurantALlProducts(list,navHostController)
 
         }
 
@@ -72,7 +77,8 @@ fun RestaurantHomePage(navHostController: NavHostController= rememberNavControll
 }
 
 @Composable
-fun RestaurantALlProducts(list: ArrayList<Food>) {
+fun RestaurantALlProducts(list: ArrayList<Food>,navHostController: NavHostController) {
+    val navController= rememberNavController()
     LazyColumn(Modifier.background(Color.White)) {
         items(list) { food ->
             Card(
@@ -105,12 +111,19 @@ fun RestaurantALlProducts(list: ArrayList<Food>) {
                                 contentAlignment = Alignment.CenterEnd
                             ) {
                                 Button(
-                                    onClick = { /* TODO: Implement add to cart logic */ },
+                                    onClick = {
+                                        try {
+                                            navController.navigate(RestaurantScreen.AddProductScreen.name)
+
+                                        }catch (e:Exception){
+                                            Log.e("hatam",e.toString())
+                                        }
+                                    },
                                     modifier = Modifier
                                         .width(100.dp)
-                                        .height(30.dp)
+                                        .height(30.dp), colors = ButtonDefaults.buttonColors(orange)
                                 ) {
-                                    Text(text = "Sepete Ekle", fontSize = 12.sp, textAlign = TextAlign.Center)
+                                    Text(text = "Düzenle", fontSize = 12.sp, textAlign = TextAlign.Center)
                                 }
                             }
                         }
