@@ -27,8 +27,8 @@ fun CategoryCard(category: Category) {
         shape = RoundedCornerShape(16.dp),
         backgroundColor = Color(0xFFF1F1F1),
         modifier = Modifier
-            .padding(8.dp)
-            .size(120.dp)
+            .padding(vertical = 8.dp, horizontal = 8.dp)
+            .size(96.dp)
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -38,8 +38,7 @@ fun CategoryCard(category: Category) {
                 painter = painterResource(id = category.imageRes),
                 contentDescription = category.title,
                 modifier = Modifier
-                    .size(100.dp)
-                    .padding(bottom = 1.dp)
+                    .size(64.dp)
             )
             Text(
                 text = category.title,
@@ -63,7 +62,7 @@ fun CategoriesSection(categories: List<Category>) {
         ) {
             Text(
                 text = "Aklında Ne Var?",
-                color = Color.DarkGray,
+                color = Color.Black,
                 fontSize = 18.sp
             )
             Text(

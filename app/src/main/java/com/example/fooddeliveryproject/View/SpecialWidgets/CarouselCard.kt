@@ -40,12 +40,12 @@ fun CarouselCard(items: List<CarouselItem>) {
     HorizontalPager(
         count = items.size,
         state = pagerState,
-        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 16.dp)
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 8.dp)
     ) { page ->
         val item = items[page]
         Box(
             modifier = Modifier
-                .padding(2.dp)
+                .padding(4.dp)
                 .clip(RoundedCornerShape(16.dp))
                 .fillMaxWidth()
                 .size(200.dp)
@@ -56,15 +56,6 @@ fun CarouselCard(items: List<CarouselItem>) {
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier.fillMaxWidth()
             )
-            /*
-            Text(
-                text = item.title,
-                style = MaterialTheme.typography.bodyLarge.copy(color = Color.White),
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(8.dp)
-            )
-            */
         }
     }
 }
