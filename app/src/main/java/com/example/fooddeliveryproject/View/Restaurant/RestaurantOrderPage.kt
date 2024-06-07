@@ -59,13 +59,13 @@ fun RestaurantOrderPage(){
 
 
             val list= ArrayList<Food>()
-            list.add(Food(1,"Kebap","100 gr etli kebap","100",1000,"Et",3))
-            list.add(Food(1,"100","100","100",1000,"100",2))
-            list.add(Food(1,"100","100","100",1000,"100"))
-            list.add(Food(1,"100","100","100",1000,"100"))
-            list.add(Food(1,"Kebap","100 gr etli kebap","100",1000,"Et",3))
-            list.add(Food(1,"100","100","100",1000,"100",2))
-            list.add(Food(1,"100","100","100",1000,"100"))
+            list.add(Food("1","Kebap","100 gr etli kebap","100",1000,"Et",3))
+            list.add(Food("2","100","100","100",1000,"100",2))
+            list.add(Food("3","100","100","100",1000,"100"))
+            list.add(Food("4","100","100","100",1000,"100"))
+            list.add(Food("5","Kebap","100 gr etli kebap","100",1000,"Et",3))
+            list.add(Food("6","100","100","100",1000,"100",2))
+            list.add(Food("7","100","100","100",1000,"100"))
             val totalPrice = calculate(list)
             Box(modifier = Modifier.fillMaxHeight(.9f)){
 

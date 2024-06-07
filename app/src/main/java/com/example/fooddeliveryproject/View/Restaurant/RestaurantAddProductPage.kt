@@ -5,7 +5,9 @@ import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -50,17 +52,36 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.fooddeliveryproject.Models.Food
 import com.example.fooddeliveryproject.R
 import com.example.fooddeliveryproject.Utils.AppBar
+import com.example.fooddeliveryproject.ViewModel.RestaurantViewModel
+
 @Preview
 @Composable
-fun RestaurantAddProductPage() {
+fun RestaurantAddProductPage(viewModel: RestaurantViewModel= viewModel()) {
     var imageUri by remember { mutableStateOf<Uri?>(null) }
     val context = LocalContext.current
     val bitmap = remember { mutableStateOf<Bitmap?>(null) }
+
+    var foodName by remember {
+        mutableStateOf("")
+    }
+    var foodDescription by remember {
+        mutableStateOf("")
+    }
+    var foodImageUrl by remember {
+        mutableStateOf("")
+    }
+    var foodPrice:Int by remember {
+        mutableStateOf(0)
+    }
+    var foodCategory by remember {
+        mutableStateOf("")
+    }
 
     imageUri?.let {
         if (Build.VERSION.SDK_INT < 28) {
@@ -70,6 +91,9 @@ fun RestaurantAddProductPage() {
             val source = ImageDecoder.createSource(context.contentResolver, it)
             bitmap.value = ImageDecoder.decodeBitmap(source)
         }
+
+
+
 
         bitmap.value?.let { btm ->
             Image(
@@ -87,9 +111,7 @@ fun RestaurantAddProductPage() {
             imageUri = uri
         }
 
-    var productInfo:Food by remember {
-        mutableStateOf(Food(-1,"","","",0,"",-1))
-    }
+
     Scaffold(
         topBar = {
             AppBar(imageId = R.drawable.fork_and_spoon,"Restoran Hesabım")
@@ -100,7 +122,8 @@ fun RestaurantAddProductPage() {
             .fillMaxWidth()
             .fillMaxHeight()
             ) {
-            Column(modifier = Modifier.background(Color.White  )
+            Column(modifier = Modifier
+                .background(Color.White)
                 .padding(top = 50.dp, start = 20.dp, end = 20.dp)
                 , horizontalAlignment = Alignment.CenterHorizontally) {
                 if(bitmap.value!=null) {
@@ -117,31 +140,33 @@ fun RestaurantAddProductPage() {
                         )
                     }
                 }else{
-                    Image(painter = painterResource(id = R.drawable.upload_image2), contentDescription ="Upload Image", alignment = Alignment.TopCenter , modifier = Modifier.size(150.dp).clickable {
-                        launcher.launch("image/*")
-                    })
+                    Image(painter = painterResource(id = R.drawable.upload_image2), contentDescription ="Upload Image", alignment = Alignment.TopCenter , modifier = Modifier
+                        .size(150.dp)
+                        .clickable {
+                            launcher.launch("image/*")
+                        })
                 }
 
 
                 Spacer(modifier = Modifier.padding(20.dp))
-                OutlinedTextField(value =productInfo.name , onValueChange ={
-                    productInfo.name=it
+                OutlinedTextField(value =foodName , onValueChange ={
+                    foodName=it
                 } , label = {
-                    Text(text = "Ürün Adı", fontSize = 15.sp, fontFamily = FontFamily(Font(R.font.popins_regular, style = FontStyle.Normal, weight = FontWeight.Normal)))
+                    Text(text = "Ürün ", fontSize = 15.sp, fontFamily = FontFamily(Font(R.font.popins_regular, style = FontStyle.Normal, weight = FontWeight.Normal)))
                 },)
 
                 Spacer(modifier = Modifier.padding(5.dp))
-                OutlinedTextField(value =productInfo.description , onValueChange ={
-                    productInfo.description=it
+                OutlinedTextField(value =foodDescription , onValueChange ={
+                    foodDescription=it
                 } , label = {
                     Text(text = "Ürün Detayı", fontSize = 15.sp,         fontFamily = FontFamily(Font(R.font.popins_regular, style = FontStyle.Normal, weight = FontWeight.Normal)))
                 },)
 
 
                 Spacer(modifier = Modifier.padding(5.dp))
-                OutlinedTextField(value =if (productInfo.price == 0) "" else productInfo.price.toString() ,
+                OutlinedTextField(value =if (foodPrice == 0) "" else foodPrice.toString() ,
                     onValueChange ={
-                    productInfo.price=it.toInt()
+                    foodPrice=it.trim().toInt()
                 } , label = {
 
                     Text(text = "Ürün Fiyatı", fontSize = 15.sp,
@@ -150,15 +175,33 @@ fun RestaurantAddProductPage() {
 
 
                 Spacer(modifier = Modifier.padding(5.dp))
-                OutlinedTextField(value =productInfo.category , onValueChange ={
-                    productInfo.category=it
+                OutlinedTextField(value =foodCategory , onValueChange ={
+                    foodCategory=it
                 } , label = {
                     Text(text = "Ürün Kategorisi", fontSize = 15.sp,
                         fontFamily = FontFamily(Font(R.font.popins_regular, style = FontStyle.Normal, weight = FontWeight.Normal)))
                 },)
 
                 Spacer(modifier = Modifier.padding(15.dp))
-                Button(onClick = { /*TODO*/ }, modifier = Modifier.fillMaxWidth(.7f), colors = ButtonDefaults.buttonColors(
+                Button(onClick = {
+
+                    if (foodName == "" || foodDescription == "" || foodPrice == 0 || foodCategory == "" || imageUri == null) {
+                        Toast.makeText(context, "Lutfen tum bilgileri giriniz", Toast.LENGTH_SHORT).show()
+                        return@Button
+                    }else{
+                        addProductToDatabase(foodName,foodDescription,foodImageUrl,foodPrice,foodCategory,imageUri,viewModel) { isSuccess ->
+                            if (isSuccess) {
+                                Log.d("hatamRestaurantAddProductPage", "Urun Eklendi")
+                                Toast.makeText(context, "Urun Eklendi", Toast.LENGTH_SHORT).show()
+                            } else {
+                                Log.d("hatamRestaurantAddProductPage", "Urun Eklenmedi")
+                                Toast.makeText(context, "Urun Eklenemedi", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+
+
+                }, modifier = Modifier.fillMaxWidth(.7f), colors = ButtonDefaults.buttonColors(
                     orange)) {
                     Text(text = "Kaydet", fontSize = 15.sp,         fontFamily = FontFamily(Font(R.font.popins_regular, style = FontStyle.Normal, weight = FontWeight.Normal)))
                     
@@ -171,22 +214,14 @@ fun RestaurantAddProductPage() {
     }
 }
 
-//@Composable
-//fun PickImageFromGallery() {
-//
-//
-//    Column(
-//        modifier = Modifier.fillMaxSize(),
-//        verticalArrangement = Arrangement.Center,
-//        horizontalAlignment = Alignment.CenterHorizontally
-//    ) {
-//
-//
-//
-//        Spacer(modifier = Modifier.height(12.dp))
-//
-//        Button(onClick = { launcher.launch("image/*") }) {
-//            Text(text = "Pick Image")
-//        }
-//    }
-//}
+private fun addProductToDatabase(name: String, description: String, image: String, price: Int, category: String,imageUri: Uri?,viewModel: RestaurantViewModel,callback:(Boolean)->Unit) {
+    viewModel.addProduct(Food(id=System.currentTimeMillis().toString(),name=name,description=description,price=price,category=category,imageUrl=image),imageUri!!){
+        callback(it)
+    }
+
+
+}
+
+
+
+
