@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fooddeliveryproject.Models.Food
 import com.example.fooddeliveryproject.Models.Restaurant
+import com.example.fooddeliveryproject.Utils.uploadImage
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -18,20 +19,25 @@ class RestaurantViewModel ():ViewModel() {
     private val db=Firebase.firestore
     private val storage=FirebaseStorage.getInstance()
     private val storageReference=storage.reference
-    private var urlQueue :String= ""
+    private var uuid :String= ""
 
 
     val _restaurant=MutableLiveData<Restaurant>()
     val restaurant :LiveData<Restaurant> get() = _restaurant
+
+
+
     fun getRestaurantInfo(){
         viewModelScope.launch {
-
+            db.collection("Restaurant").document(uuid).get().addOnSuccessListener {
+                _restaurant.value=it.toObject(Restaurant::class.java)
+            }
         }
     }
 
     fun addProduct(food: Food,imageUri: Uri,calllback: (Boolean) -> Unit){
      viewModelScope.launch {
-        uploadImage(imageUri,"food"){
+        uploadImage(imageUri,"food",storageReference){
             if (it=="error"){
                 Log.d("hatamVM","image not upload error")
                 calllback(false)
@@ -40,9 +46,16 @@ class RestaurantViewModel ():ViewModel() {
                 db.collection("Food").document(food.id).set(food)
                     .addOnSuccessListener {
                         Log.d("hatamVM","success")
-                        calllback(true)
+                        addFoodToRestaurant(food){
+                            if (it){
+                                calllback(true)
+                            }else{
+                                calllback(false)
+                            }
+                        }
+
                     }.addOnFailureListener(){error->
-                        Log.d("hatamVM","falseerror= "+error.toString())
+                        Log.d("hatamVM","false error= "+error.toString())
                         calllback(false)
                     }
             }
@@ -50,25 +63,16 @@ class RestaurantViewModel ():ViewModel() {
      }
     }
 
-    private fun uploadImage(imageUri:Uri,folderName: String,calllback: (String) -> Unit) {
-        val imageNamePrefix = "image_${System.currentTimeMillis()}"
-        var uploadedCount = 0
-        val imageName = "$imageNamePrefix${uploadedCount++}"
-        val imageRef: StorageReference = storageReference.child("$folderName/$imageName")
-
-        if (imageUri != null) {
-            imageRef.putFile(imageUri)
-                .addOnSuccessListener { taskSnapshot ->
-                    taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener { uri->
-                        urlQueue=(uri.toString())
-                        calllback(uri.toString())
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    calllback("error")
-                    Log.e("hatamVM", "error= "+exception.toString())
-                    exception.printStackTrace()
-                }
+    private fun addFoodToRestaurant(food: Food,calllback: (Boolean) -> Unit){
+        viewModelScope.launch {
+            db.collection("Restaurant").document(uuid).collection("Food").document(food.id).set(food).addOnSuccessListener {
+                calllback(true)
+            }.addOnFailureListener(){
+                calllback(false)
+            }
         }
     }
+
+
+
 }
