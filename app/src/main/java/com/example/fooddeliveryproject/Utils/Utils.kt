@@ -24,3 +24,4 @@ fun uploadImage(imageUri: Uri, folderName: String,storageReference: StorageRefer
             }
     }
 }
+

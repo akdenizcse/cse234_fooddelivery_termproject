@@ -14,6 +14,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import com.example.fooddeliveryproject.ui.theme.*
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -58,6 +59,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.fooddeliveryproject.Models.Food
 import com.example.fooddeliveryproject.R
 import com.example.fooddeliveryproject.Utils.AppBar
+import com.example.fooddeliveryproject.Utils.CircularIndeterminateProgressBar
 import com.example.fooddeliveryproject.ViewModel.RestaurantViewModel
 
 @Preview
@@ -66,7 +68,7 @@ fun RestaurantAddProductPage(viewModel: RestaurantViewModel= viewModel()) {
     var imageUri by remember { mutableStateOf<Uri?>(null) }
     val context = LocalContext.current
     val bitmap = remember { mutableStateOf<Bitmap?>(null) }
-
+    val isLoading = remember { mutableStateOf(false) }
     var foodName by remember {
         mutableStateOf("")
     }
@@ -122,99 +124,104 @@ fun RestaurantAddProductPage(viewModel: RestaurantViewModel= viewModel()) {
             .fillMaxWidth()
             .fillMaxHeight()
             ) {
-            Column(modifier = Modifier
-                .background(Color.White)
-                .padding(top = 50.dp, start = 20.dp, end = 20.dp)
-                , horizontalAlignment = Alignment.CenterHorizontally) {
-                if(bitmap.value!=null) {
-                    bitmap.value?.let { btm ->
-                        Image(
-                            bitmap = btm.asImageBitmap(),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(150.dp)
-                                .clickable {
-                                    launcher.launch("image/*")
+
+            Box {
+                Column(modifier = Modifier
+                    .background(Color.White)
+                    .fillMaxSize()
+                    .padding(top = 50.dp, start = 20.dp, end = 20.dp)
+                    , horizontalAlignment = Alignment.CenterHorizontally) {
+                    if(bitmap.value!=null) {
+                        bitmap.value?.let { btm ->
+                            Image(
+                                bitmap = btm.asImageBitmap(),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(150.dp)
+                                    .clickable {
+                                        launcher.launch("image/*")
+
+                                    }
+                            )
+                        }
+                    }else{
+                        Image(painter = painterResource(id = R.drawable.upload_image2), contentDescription ="Upload Image", alignment = Alignment.TopCenter , modifier = Modifier
+                            .size(150.dp)
+                            .clickable {
+                                launcher.launch("image/*")
+                            })
+                    }
+
+
+                    Spacer(modifier = Modifier.padding(20.dp))
+                    OutlinedTextField(value =foodName , onValueChange ={
+                        foodName=it
+                    } , label = {
+                        Text(text = "Ürün ", fontSize = 15.sp, fontFamily = FontFamily(Font(R.font.popins_regular, style = FontStyle.Normal, weight = FontWeight.Normal)))
+                    },)
+
+                    Spacer(modifier = Modifier.padding(5.dp))
+                    OutlinedTextField(value =foodDescription , onValueChange ={
+                        foodDescription=it
+                    } , label = {
+                        Text(text = "Ürün Detayı", fontSize = 15.sp,         fontFamily = FontFamily(Font(R.font.popins_regular, style = FontStyle.Normal, weight = FontWeight.Normal)))
+                    },)
+
+
+                    Spacer(modifier = Modifier.padding(5.dp))
+                    OutlinedTextField(value =if (foodPrice == 0) "" else foodPrice.toString() ,
+                        onValueChange ={
+                            foodPrice=it.trim().toInt()
+                        } , label = {
+
+                            Text(text = "Ürün Fiyatı", fontSize = 15.sp,
+                                fontFamily = FontFamily(Font(R.font.popins_regular, style = FontStyle.Normal, weight = FontWeight.Normal)))
+                        }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+
+
+                    Spacer(modifier = Modifier.padding(5.dp))
+                    OutlinedTextField(value =foodCategory , onValueChange ={
+                        foodCategory=it
+                    } , label = {
+                        Text(text = "Ürün Kategorisi", fontSize = 15.sp,
+                            fontFamily = FontFamily(Font(R.font.popins_regular, style = FontStyle.Normal, weight = FontWeight.Normal)))
+                    },)
+
+                    Spacer(modifier = Modifier.padding(15.dp))
+                    Button(onClick = {
+                        if (foodName == "" || foodDescription == "" || foodPrice == 0 || foodCategory == "" || imageUri == null) {
+                            Toast.makeText(context, "Lutfen tum bilgileri giriniz", Toast.LENGTH_SHORT).show()
+                            return@Button
+                        }else{
+                            isLoading.value=true
+                            addProductToDatabase(foodName,foodDescription,foodImageUrl,foodPrice,foodCategory,imageUri,viewModel) { isSuccess ->
+                                if (isSuccess) {
+                                    Log.d("hatamRestaurantAddProductPage", "Urun Eklendi")
+                                    Toast.makeText(context, "Urun Eklendi", Toast.LENGTH_SHORT).show()
+
+                                } else {
+                                    Log.d("hatamRestaurantAddProductPage", "Urun Eklenmedi")
+                                    Toast.makeText(context, "Urun Eklenemedi", Toast.LENGTH_SHORT).show()
+                                    isLoading.value=false
 
                                 }
-                        )
-                    }
-                }else{
-                    Image(painter = painterResource(id = R.drawable.upload_image2), contentDescription ="Upload Image", alignment = Alignment.TopCenter , modifier = Modifier
-                        .size(150.dp)
-                        .clickable {
-                            launcher.launch("image/*")
-                        })
-                }
-
-
-                Spacer(modifier = Modifier.padding(20.dp))
-                OutlinedTextField(value =foodName , onValueChange ={
-                    foodName=it
-                } , label = {
-                    Text(text = "Ürün ", fontSize = 15.sp, fontFamily = FontFamily(Font(R.font.popins_regular, style = FontStyle.Normal, weight = FontWeight.Normal)))
-                },)
-
-                Spacer(modifier = Modifier.padding(5.dp))
-                OutlinedTextField(value =foodDescription , onValueChange ={
-                    foodDescription=it
-                } , label = {
-                    Text(text = "Ürün Detayı", fontSize = 15.sp,         fontFamily = FontFamily(Font(R.font.popins_regular, style = FontStyle.Normal, weight = FontWeight.Normal)))
-                },)
-
-
-                Spacer(modifier = Modifier.padding(5.dp))
-                OutlinedTextField(value =if (foodPrice == 0) "" else foodPrice.toString() ,
-                    onValueChange ={
-                    foodPrice=it.trim().toInt()
-                } , label = {
-
-                    Text(text = "Ürün Fiyatı", fontSize = 15.sp,
-                        fontFamily = FontFamily(Font(R.font.popins_regular, style = FontStyle.Normal, weight = FontWeight.Normal)))
-                }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
-
-
-                Spacer(modifier = Modifier.padding(5.dp))
-                OutlinedTextField(value =foodCategory , onValueChange ={
-                    foodCategory=it
-                } , label = {
-                    Text(text = "Ürün Kategorisi", fontSize = 15.sp,
-                        fontFamily = FontFamily(Font(R.font.popins_regular, style = FontStyle.Normal, weight = FontWeight.Normal)))
-                },)
-
-                Spacer(modifier = Modifier.padding(15.dp))
-                Button(onClick = {
-
-                    if (foodName == "" || foodDescription == "" || foodPrice == 0 || foodCategory == "" || imageUri == null) {
-                        Toast.makeText(context, "Lutfen tum bilgileri giriniz", Toast.LENGTH_SHORT).show()
-                        return@Button
-                    }else{
-                        addProductToDatabase(foodName,foodDescription,foodImageUrl,foodPrice,foodCategory,imageUri,viewModel) { isSuccess ->
-                            if (isSuccess) {
-                                Log.d("hatamRestaurantAddProductPage", "Urun Eklendi")
-                                Toast.makeText(context, "Urun Eklendi", Toast.LENGTH_SHORT).show()
-                            } else {
-                                Log.d("hatamRestaurantAddProductPage", "Urun Eklenmedi")
-                                Toast.makeText(context, "Urun Eklenemedi", Toast.LENGTH_SHORT).show()
                             }
+                            isLoading.value=false
                         }
+
+                    }, modifier = Modifier.fillMaxWidth(.7f), colors = ButtonDefaults.buttonColors(
+                        orange)) {
+                        Text(text = "Kaydet", fontSize = 15.sp,         fontFamily = FontFamily(Font(R.font.popins_regular, style = FontStyle.Normal, weight = FontWeight.Normal)))
                     }
-
-
-                }, modifier = Modifier.fillMaxWidth(.7f), colors = ButtonDefaults.buttonColors(
-                    orange)) {
-                    Text(text = "Kaydet", fontSize = 15.sp,         fontFamily = FontFamily(Font(R.font.popins_regular, style = FontStyle.Normal, weight = FontWeight.Normal)))
-                    
                 }
-
-
             }
-
+            CircularIndeterminateProgressBar(isDisplayed = isLoading.value)
         }
     }
 }
 
 private fun addProductToDatabase(name: String, description: String, image: String, price: Int, category: String,imageUri: Uri?,viewModel: RestaurantViewModel,callback:(Boolean)->Unit) {
+
     viewModel.addProduct(Food(id=System.currentTimeMillis().toString(),name=name,description=description,price=price,category=category,imageUrl=image),imageUri!!){
         callback(it)
     }

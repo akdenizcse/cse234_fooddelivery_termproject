@@ -10,4 +10,6 @@
     <color name="orange">#FFED7423</color>
     <color name="signUpBlack">#000000</color>
     <color name="backgroundField">#DEDEDE</color>
+    <color name="backgroundGray">#F0FFFFFF</color>
+
 </resources>
