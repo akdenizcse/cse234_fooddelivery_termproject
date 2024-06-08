@@ -7,6 +7,7 @@ enum class RestaurantScreen {
    RestaurantEditProductScreen,
    RestaurantAddProductScreen,
    RestaurantChangeRestaurantNameScreen,
-   RestaurantUpdatePasswordScreen
+   RestaurantUpdatePasswordScreen,
+   RestaurantLoginScreen
 }
 

@@ -27,12 +27,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.fooddeliveryproject.R
 import com.example.fooddeliveryproject.Utils.AppBar
 
 @Preview
 @Composable
-fun RestaurantPasswordChangePage(){
+fun RestaurantPasswordChangePage(navHostController: NavHostController){
     var oldPassword by remember { mutableStateOf("") }
     var newPassword by remember { mutableStateOf("") }
     var newPasswordAgain by remember { mutableStateOf("") }
@@ -40,7 +41,7 @@ fun RestaurantPasswordChangePage(){
 
     Scaffold(
         topBar = {
-            AppBar(imageId = R.drawable.arrow_left,"")
+            AppBar(imageId = R.drawable.arrow_left,"", isClickable = true, navHostController = navHostController)
         }
     ) {
         Surface(contentColor = Color.Black,modifier = Modifier
