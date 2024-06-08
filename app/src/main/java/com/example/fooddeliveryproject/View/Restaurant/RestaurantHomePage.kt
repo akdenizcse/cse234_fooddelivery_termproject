@@ -43,18 +43,19 @@ import androidx.navigation.compose.rememberNavController
 import com.example.fooddeliveryproject.Models.Food
 import com.example.fooddeliveryproject.R
 import com.example.fooddeliveryproject.Utils.AppBar
-import com.example.fooddeliveryproject.navigation.RestaurantAppNavigation
+import com.example.fooddeliveryproject.ViewModel.RestaurantViewModel
 import com.example.fooddeliveryproject.navigation.RestaurantScreen
 
 
 @Composable
 @Preview
-fun RestaurantHomePage(navHostController: NavHostController= rememberNavController()) {
+fun RestaurantHomePage(navHostController: NavHostController= rememberNavController(),viewModel:RestaurantViewModel) {
     Scaffold(
         topBar = {
             AppBar(imageId = R.drawable.fork_and_spoon,"Food Delivery")
         }
     ){
+        viewModel.editedFood.value=null
         Surface(modifier = Modifier
             .padding(it)
             .background(Color.White), ) {
@@ -69,7 +70,7 @@ fun RestaurantHomePage(navHostController: NavHostController= rememberNavControll
             list.add(Food("8","100","100","100",1000,"100"))
             list.add(Food("9","100","100","100",1000,"100"))
             list.add(Food("10","100","100","100",1000,"100"))
-            RestaurantALlProducts(list,navHostController)
+            RestaurantALlProducts(list,navHostController,viewModel)
 
         }
 
@@ -77,8 +78,8 @@ fun RestaurantHomePage(navHostController: NavHostController= rememberNavControll
 }
 
 @Composable
-fun RestaurantALlProducts(list: ArrayList<Food>,navHostController: NavHostController) {
-    val navController= rememberNavController()
+fun RestaurantALlProducts(list: ArrayList<Food>,navHostController: NavHostController,viewModel:RestaurantViewModel) {
+    val navController= navHostController
     LazyColumn(Modifier.background(Color.White)) {
         items(list) { food ->
             Card(
@@ -113,10 +114,12 @@ fun RestaurantALlProducts(list: ArrayList<Food>,navHostController: NavHostContro
                                 Button(
                                     onClick = {
                                         try {
-                                            navController.navigate(RestaurantScreen.AddProductScreen.name)
-
+                                            viewModel.editedFood.value = food
+                                            Log.d("hatamClick",RestaurantScreen.RestaurantAddProductScreen.name)
+                                            navController.navigate(RestaurantScreen.RestaurantAddProductScreen.name)
+                                            Log.e("hatam","tıklandı"+food.name)
                                         }catch (e:Exception){
-                                            Log.e("hatam",e.toString())
+                                            Log.e("hatamClick",e.toString())
                                         }
                                     },
                                     modifier = Modifier

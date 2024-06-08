@@ -15,11 +15,12 @@ import androidx.compose.ui.unit.dp
 import com.example.fooddeliveryproject.View.Pages.MainPage
 import com.example.fooddeliveryproject.ViewModel.AuthenticatorViewModel
 import com.example.fooddeliveryproject.navigation.RestaurantAppNavigation
+import com.example.fooddeliveryproject.navigation.StoreAppNavigation
 import com.example.fooddeliveryproject.ui.theme.FoodDeliveryProjectTheme
 
 class MainActivity : ComponentActivity() ,SearchView.OnQueryTextListener{
     lateinit var authVM:AuthenticatorViewModel
-    var isRestourantApp:Boolean=false
+    var isRestourantApp:Boolean=true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -28,7 +29,7 @@ class MainActivity : ComponentActivity() ,SearchView.OnQueryTextListener{
                 if(isRestourantApp){
                     RestaurantAppNavigation()
                 }else{
-                    ActivityWe()
+                    StoreAppNavigation()
                 }
 
                 val temp : AuthenticatorViewModel by viewModels()

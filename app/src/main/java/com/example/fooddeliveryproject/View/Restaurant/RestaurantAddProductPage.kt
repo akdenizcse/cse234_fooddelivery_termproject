@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
@@ -64,7 +65,7 @@ import com.example.fooddeliveryproject.ViewModel.RestaurantViewModel
 
 @Preview
 @Composable
-fun RestaurantAddProductPage(viewModel: RestaurantViewModel= viewModel()) {
+fun RestaurantAddProductPage(navHostController: NavHostController,viewModel: RestaurantViewModel= viewModel()) {
     var imageUri by remember { mutableStateOf<Uri?>(null) }
     val context = LocalContext.current
     val bitmap = remember { mutableStateOf<Bitmap?>(null) }
@@ -84,6 +85,14 @@ fun RestaurantAddProductPage(viewModel: RestaurantViewModel= viewModel()) {
     var foodCategory by remember {
         mutableStateOf("")
     }
+    if(viewModel.editedFood.value!=null){
+        foodName=viewModel.editedFood.value!!.name
+        foodDescription=viewModel.editedFood.value!!.description
+        foodImageUrl=viewModel.editedFood.value!!.imageUrl
+        foodPrice=viewModel.editedFood.value!!.price
+        foodCategory=viewModel.editedFood.value!!.category
+    }
+
 
     imageUri?.let {
         if (Build.VERSION.SDK_INT < 28) {
@@ -116,7 +125,13 @@ fun RestaurantAddProductPage(viewModel: RestaurantViewModel= viewModel()) {
 
     Scaffold(
         topBar = {
-            AppBar(imageId = R.drawable.fork_and_spoon,"Restoran Hesabım")
+            if (viewModel.editedFood.value != null) {
+                AppBar(imageId = R.drawable.arrow_left,"Ürün Güncelle",isClickable = true,navHostController=navHostController)
+            }else{
+                AppBar(imageId = R.drawable.arrow_left,"Ürün Ekle",isClickable = true,navHostController=navHostController)
+
+            }
+
         }
     ) {
         Surface(contentColor = Color.Black,modifier = Modifier
@@ -194,7 +209,7 @@ fun RestaurantAddProductPage(viewModel: RestaurantViewModel= viewModel()) {
                             return@Button
                         }else{
                             isLoading.value=true
-                            addProductToDatabase(foodName,foodDescription,foodImageUrl,foodPrice,foodCategory,imageUri,viewModel) { isSuccess ->
+                            addProductToDatabase(viewModel.editedFood.value?.id,foodName,foodDescription,foodImageUrl,foodPrice,foodCategory,imageUri,viewModel) { isSuccess ->
                                 if (isSuccess) {
                                     Log.d("hatamRestaurantAddProductPage", "Urun Eklendi")
                                     Toast.makeText(context, "Urun Eklendi", Toast.LENGTH_SHORT).show()
@@ -220,15 +235,19 @@ fun RestaurantAddProductPage(viewModel: RestaurantViewModel= viewModel()) {
     }
 }
 
-private fun addProductToDatabase(name: String, description: String, image: String, price: Int, category: String,imageUri: Uri?,viewModel: RestaurantViewModel,callback:(Boolean)->Unit) {
+private fun addProductToDatabase(id: String?,name: String, description: String, image: String, price: Int, category: String,imageUri: Uri?,viewModel: RestaurantViewModel,callback:(Boolean)->Unit) {
 
+    if (id != null) {
+        viewModel.updateFood(Food(id = id, name = name, description = description, price = price, category = category, imageUrl = image)){
+            callback(it)
+        }
+    }
     viewModel.addProduct(Food(id=System.currentTimeMillis().toString(),name=name,description=description,price=price,category=category,imageUrl=image),imageUri!!){
         callback(it)
     }
 
 
 }
-
 
 
 

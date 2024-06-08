@@ -2,6 +2,7 @@ package com.example.fooddeliveryproject.ViewModel
 
 import android.net.Uri
 import android.util.Log
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -24,6 +25,7 @@ class RestaurantViewModel ():ViewModel() {
     private var uuid :String= "1231312"
     val isLoading= mutableStateOf(false)
 
+    val editedFood: MutableState<Food?> = mutableStateOf(null)
 
     val _restaurant=MutableLiveData<Restaurant>()
     val restaurant :LiveData<Restaurant> get() = _restaurant
@@ -91,7 +93,22 @@ class RestaurantViewModel ():ViewModel() {
         }
 
     }
+    fun updateFood(food: Food,calllback: (Boolean) -> Unit) {
+        try {
+            viewModelScope.launch {
+                ///TODO LOOK AT
+                db.collection("Food").document(food.id).set(food).addOnSuccessListener {
+                    Log.e("hatamAddProduct", "success Add poroduct")
+                    calllback(true)
+                }.addOnFailureListener() { error ->
+                    Log.e("hatamAddProduct", "error Add poroduct" + error.toString())
+                    calllback(false)
+                }
+            }
+        } catch (e: Exception) {
+            Log.d("hatamAddProduct", "error Add poroduct" + e.toString())
 
-
+        }
+    }
 
 }
