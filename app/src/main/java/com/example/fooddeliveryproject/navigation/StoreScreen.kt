@@ -11,7 +11,7 @@ enum class StoreScreen {
     ChangeRestaurantNameScreen,
     PasswordChangeScreen,
     LoginScreen,
-    RegisterScreen,
+    SignUpPage,
     AccountScreen,
     CategoryScreen,
     RestaurantScreen,

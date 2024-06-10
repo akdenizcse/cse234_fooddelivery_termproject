@@ -11,5 +11,8 @@
     <color name="signUpBlack">#000000</color>
     <color name="backgroundField">#DEDEDE</color>
     <color name="backgroundGray">#F0FFFFFF</color>
+    <color name="silikMetin">#828282</color>
+    <color name="googleColor">#EEEEEE</color>
+
 
 </resources>

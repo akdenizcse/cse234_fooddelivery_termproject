@@ -18,7 +18,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.fooddeliveryproject.View.LoginPage
+import com.example.fooddeliveryproject.View.AuthPages.LoginPage
+import com.example.fooddeliveryproject.View.AuthPages.SignUpPage
 import com.example.fooddeliveryproject.View.Pages.CampaignPage
 import com.example.fooddeliveryproject.View.Pages.CartPage
 import com.example.fooddeliveryproject.View.Pages.MainPage
@@ -109,6 +110,7 @@ fun RestaurantAppNavigation() {
             composable(route = RestaurantScreen.RestaurantLoginScreen.name) {
                 LoginPage()
             }
+
         }
     }
 }
@@ -123,7 +125,8 @@ fun StoreAppNavigation() {
     Scaffold(
         bottomBar = {
             val listOfFullScreen = listOf(
-                StoreScreen.LoginScreen.name
+                StoreScreen.LoginScreen.name,
+                StoreScreen.SignUpPage.name
             )
             if (!listOfFullScreen.contains(currentDestination?.route)) {
                 NavigationBar {
@@ -160,7 +163,7 @@ fun StoreAppNavigation() {
             modifier = Modifier.padding(paddingValues)
         ) {
             composable(route = StoreScreen.LoginScreen.name) {
-                LoginPage()
+                LoginPage(navController)
             }
             composable(route = StoreScreen.HomeScreen.name) {
                 MainPage()
@@ -174,6 +177,11 @@ fun StoreAppNavigation() {
             composable(route = StoreScreen.CampaignScreen.name) {
                 CampaignPage()
             }
+
+            composable(route = StoreScreen.SignUpPage.name) {
+                SignUpPage()
+            }
+
 
 
         }
