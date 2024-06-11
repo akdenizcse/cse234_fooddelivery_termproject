@@ -22,10 +22,13 @@ import com.example.fooddeliveryproject.View.AuthPages.LoginPage
 import com.example.fooddeliveryproject.View.AuthPages.RestaurantLoginPage
 import com.example.fooddeliveryproject.View.AuthPages.RestaurantSignUpPage
 import com.example.fooddeliveryproject.View.AuthPages.SignUpPage
+import com.example.fooddeliveryproject.View.Pages.AccountPage
 import com.example.fooddeliveryproject.View.Pages.CampaignPage
 import com.example.fooddeliveryproject.View.Pages.CartPage
+import com.example.fooddeliveryproject.View.Pages.CategoriesPage
 import com.example.fooddeliveryproject.View.Pages.MainPage
 import com.example.fooddeliveryproject.View.Pages.OrderPage
+import com.example.fooddeliveryproject.View.Pages.RestaurantPage
 import com.example.fooddeliveryproject.View.Restaurant.RestaurantAccountPage
 import com.example.fooddeliveryproject.View.Restaurant.RestaurantAddProductPage
 import com.example.fooddeliveryproject.View.Restaurant.RestaurantChangeRestaurantNamePage
@@ -127,12 +130,13 @@ fun StoreAppNavigation() {
     Scaffold(
         bottomBar = {
             val listOfFullScreen = listOf(
-                StoreScreen.LoginScreen.name,
-                StoreScreen.SignUpPage.name,
-                StoreScreen.RestaurantSignUpPage.name,
-                StoreScreen.RestaurantLoginScreen.name
+                StoreScreen.HomeScreen.name,
+                StoreScreen.CartScreen.name,
+                StoreScreen.OrderedScreen.name,
+                StoreScreen.CampaignScreen.name,
+                StoreScreen.AccountScreen.name
             )
-            if (!listOfFullScreen.contains(currentDestination?.route)) {
+            if (listOfFullScreen.contains(currentDestination?.route)) {
                 NavigationBar {
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
                     val currentDestination = navBackStackEntry?.destination
@@ -170,7 +174,7 @@ fun StoreAppNavigation() {
                 LoginPage(navController,authenticatorViewModel)
             }
             composable(route = StoreScreen.HomeScreen.name) {
-                MainPage()
+                MainPage(navController)
             }
             composable(route = StoreScreen.OrderedScreen.name) {
                 OrderPage()
@@ -181,15 +185,24 @@ fun StoreAppNavigation() {
             composable(route = StoreScreen.CampaignScreen.name) {
                 CampaignPage()
             }
+            composable(route = StoreScreen.ProfileScreen.name) {
+                AccountPage()
+            }
 
             composable(route = StoreScreen.SignUpPage.name) {
                 SignUpPage(navController,authenticatorViewModel)
             }
             composable(route=StoreScreen.RestaurantSignUpPage.name){
-                RestaurantSignUpPage(navController)
+                RestaurantSignUpPage(navController,authenticatorViewModel)
             }
             composable(route=StoreScreen.RestaurantLoginScreen.name){
                 RestaurantLoginPage(navController,authenticatorViewModel)
+            }
+            composable(route=StoreScreen.CategoryScreen.name){
+                CategoriesPage(navController)
+            }
+            composable(route=StoreScreen.RestaurantScreen.name){
+                RestaurantPage()
             }
 
 

@@ -2,6 +2,7 @@ package com.example.fooddeliveryproject.View.SpecialWidgets
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -16,7 +17,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.fooddeliveryproject.R
+import com.example.fooddeliveryproject.navigation.StoreScreen
 import com.example.fooddeliveryproject.ui.theme.orange
 
 data class Category(val imageRes: Int, val title: String)
@@ -49,10 +53,11 @@ fun CategoryCard(category: Category) {
 }
 
 @Composable
-fun CategoriesSection(categories: List<Category>) {
+fun CategoriesSection(categories: List<Category>,navigate:NavHostController = rememberNavController()) {
     Column(
 
     ) {
+
         Row(
             modifier = Modifier
                 .padding(8.dp)
@@ -68,7 +73,10 @@ fun CategoriesSection(categories: List<Category>) {
             Text(
                 text = "Tümünü Gör",
                 color = orange ,
-                fontSize = 16.sp
+                fontSize = 16.sp,
+                modifier = Modifier.clickable {
+                    navigate.navigate(StoreScreen.CategoryScreen.name)
+                }
             )
         }
         LazyRow(
@@ -82,7 +90,7 @@ fun CategoriesSection(categories: List<Category>) {
 
 @SuppressLint("SuspiciousIndentation")
 @Composable
-fun CategoryCard() {
+fun CategoryCard(navigate:NavHostController = rememberNavController()) {
     val categories = listOf(
         Category(R.drawable.doner, "Döner"),
         Category(R.drawable.hamburgerr, "Hamburger"),
@@ -101,7 +109,7 @@ fun CategoryCard() {
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                CategoriesSection(categories = categories)
+                CategoriesSection(categories = categories,navigate = navigate)
             }
         }
 @Preview(showBackground = true)

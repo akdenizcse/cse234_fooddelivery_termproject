@@ -2,6 +2,7 @@ package com.example.fooddeliveryproject.View.Pages
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
@@ -19,6 +20,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fooddeliveryproject.R
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.Scaffold
 
 @Composable
 fun AddressPage() {
@@ -51,7 +60,7 @@ fun AddressPage() {
                     }
                 },
                 backgroundColor = Color.White,
-                elevation = 0.dp
+                elevation = 16.dp
             )
         }
     ) {
@@ -79,7 +88,21 @@ fun AddressForm(paddingValues: PaddingValues) {
             label = { Text("Adres Adı (Ev, iş vb.)") },
             modifier = Modifier.fillMaxWidth()
         )
+        Spacer(modifier = Modifier.size(8.dp))
+        Row( modifier = Modifier.fillMaxWidth()){
+            Text(text = "İL")
+            Spacer(modifier = Modifier.size(8.dp))
+            DropdownMenu()
+        }
+        Spacer(modifier = Modifier.size(8.dp))
 
+        Row( modifier = Modifier.fillMaxWidth()) {
+            Text(text = "İLÇE")
+            Spacer(modifier = Modifier.size(8.dp))
+            DropdownMenu()
+        }
+
+        Spacer(modifier = Modifier.size(8.dp))
         OutlinedTextField(
             value = address,
             onValueChange = { address = it },
@@ -87,22 +110,7 @@ fun AddressForm(paddingValues: PaddingValues) {
             placeholder = { Text("Adresinizi girin") },
             modifier = Modifier.fillMaxWidth()
         )
-
-        OutlinedTextField(
-            value = city,
-            onValueChange = { city = it },
-            label = { Text("İl") },
-            placeholder = { Text("İl Seçin") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        OutlinedTextField(
-            value = country,
-            onValueChange = { country = it },
-            label = { Text("Ülke") },
-            placeholder = { Text("Ülke Seçin") },
-            modifier = Modifier.fillMaxWidth()
-        )
+        Spacer(modifier = Modifier.size(8.dp))
 
         Button(
             onClick = { /* Handle save action */ },
@@ -115,6 +123,56 @@ fun AddressForm(paddingValues: PaddingValues) {
         }
     }
 }
+
+@Composable
+fun DropdownMenu(){
+        val countryList = listOf("Seçim Yapınız", "1", "2", "3", "4")
+        var control by remember { mutableStateOf(value = false) }
+        var countryIndex by remember { mutableStateOf(value = 0) }
+               Row(
+                   modifier = Modifier.clickable{
+                       control=true
+                   }
+               )
+                   {
+                       Image(
+                           painter = painterResource(id = R.drawable.arrow_down),
+                           contentDescription = "Aç/Kapat",
+                           modifier = Modifier.size(24.dp)
+                       )
+                       Text(text = countryList[countryIndex])
+                   }
+
+
+                    if (control) {
+                        DropdownMenu(
+                            expanded = control,
+                            onDismissRequest = { control = false }
+                        ) {
+                            // Ülkeler listesini her bir öğeye dönüştür
+                            countryList.forEachIndexed { index, country ->
+                                DropdownMenuItem(
+                                    onClick = {
+                                        // Seçilen ülkeyi güncelle
+                                        countryIndex = index
+
+                                        // Dropdown menüyü kapat
+                                        control = false
+                                    },
+                                    content = { Text(text = country) }
+                                )
+                            }
+                        }
+                    }
+                }
+
+
+
+
+
+
+
+
 
 @Preview(showBackground = true)
 @Composable

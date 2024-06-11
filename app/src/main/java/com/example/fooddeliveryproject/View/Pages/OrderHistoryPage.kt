@@ -2,7 +2,6 @@ package com.example.fooddeliveryproject.View.Pages
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,27 +17,23 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.fooddeliveryproject.R
 
-data class Category(val imageRes: Int, val name: String)
+data class OrderHistory(
+    val imageRes: Int,
+    val name: String,
+    val tarih: String,
+    val urun: String,
+)
 
 @Composable
-fun CategoriesPage(navHostController: NavHostController= rememberNavController()) {
+fun OrderHistoryPage() {
     val categories = listOf(
-        Category(R.drawable.doner, "Döner"),
-        Category(R.drawable.hamburgerr, "Hamburger"),
-        Category(R.drawable.pitza, "Pizza"),
-        Category(R.drawable.iceceksoguk,"İçeçek"),
-        Category(R.drawable.balik, "Balık"),
-        Category(R.drawable.fastfood, "Fast Food"),
-        Category(R.drawable.kahvaltilik, "Kahvaltılık"),
-        Category(R.drawable.tatli, "Tatlı"),
-        Category(R.drawable.yemekk, "Çorba"),
-        Category(R.drawable.noodle, "Makarna"),
-        Category(R.drawable.kahve, "Kahve"),
-
+        OrderHistory(R.drawable.dukkan1, "Çorbacı Şükrü", "29-01-2024", "Mercimek Çorbası"),
+        OrderHistory(R.drawable.dukkan6, "Hastayım Döner", "22-01-2023", "Tavuk Döner"),
+        OrderHistory(R.drawable.dukkan12, "Burger King", "06-01-2023", "Double King Burger Menu"),
+        OrderHistory(R.drawable.dukkan11, "Makarna Yıldızı", "17-08-2022", "Bol Kremalı Makarna"),
+        OrderHistory(R.drawable.dukkan13, "Gogalo Döner", "14-05-2019", "Et Döner"),
         )
 
     Scaffold(
@@ -46,7 +41,7 @@ fun CategoriesPage(navHostController: NavHostController= rememberNavController()
             TopAppBar(
                 title = {
                     Text(
-                        text = "Kategoriler",
+                        text = "Geçmiş Siparişler",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White
@@ -57,10 +52,7 @@ fun CategoriesPage(navHostController: NavHostController= rememberNavController()
                         Icon(
                             painter = painterResource(id = R.drawable.arrow_left),
                             contentDescription = "Back",
-                            tint = Color.White,
-                            modifier = Modifier.clickable {
-                                navHostController.popBackStack()
-                            }
+                            tint = Color.White
                         )
                     }
                 },
@@ -76,7 +68,7 @@ fun CategoriesPage(navHostController: NavHostController= rememberNavController()
                 verticalArrangement = Arrangement.spacedBy(1.dp)
             ) {
                 items(categories) { category ->
-                    CategoryItem(category)
+                    ListItem(category)
                 }
             }
         }
@@ -84,7 +76,7 @@ fun CategoriesPage(navHostController: NavHostController= rememberNavController()
 }
 
 @Composable
-fun CategoryItem(category: Category) {
+fun ListItem(orderHistory: OrderHistory) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -99,24 +91,42 @@ fun CategoryItem(category: Category) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                painter = painterResource(id = category.imageRes),
-                contentDescription = category.name,
+                painter = painterResource(id = orderHistory.imageRes),
+                contentDescription = orderHistory.name,
                 modifier = Modifier.size(48.dp)
             )
             Spacer(modifier = Modifier.width(16.dp))
-            Text(
-                text = category.name,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Medium,
-                color = Color.Black,
-                textAlign = TextAlign.Start
-            )
+    Column {
+        Text(
+            text = orderHistory.name,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.SemiBold,
+            color = Color.Black,
+            textAlign = TextAlign.Start
+        )
+        Text(
+            text = orderHistory.tarih,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Normal,
+            color = Color.Black,
+            textAlign = TextAlign.Start
+        )
+        Spacer(modifier = Modifier.size(16.dp))
+        Text(
+            text = orderHistory.urun,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Light,
+            color = Color.Black,
+            textAlign = TextAlign.Start
+        )
+    }
+
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun CategoriesPagePreview() {
-    CategoriesPage()
+fun OrderHistoryPagePreview() {
+    OrderHistoryPage()
 }
