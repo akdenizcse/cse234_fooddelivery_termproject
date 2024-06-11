@@ -44,7 +44,7 @@ class RestaurantViewModel ():ViewModel() {
      viewModelScope.launch {
          try {
              isLoading.value=true
-             delay(5000)
+             delay(1000)
              uploadImage(imageUri,"food",storageReference){
                  if (it=="error"){
                      Log.d("hatamVM","image not upload error")

@@ -1,38 +1,62 @@
 package com.example.fooddeliveryproject.View.AuthPages
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.fooddeliveryproject.R
+import com.example.fooddeliveryproject.ViewModel.AuthenticatorViewModel
 import com.example.fooddeliveryproject.navigation.StoreScreen
-
+@Preview
 @Composable
-fun LoginPage(navHostController: NavHostController= rememberNavController()){
+fun LoginPage(navHostController: NavHostController= rememberNavController(),authVm: AuthenticatorViewModel) {
     Surface(
         color = Color.White,
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(28.dp)
+            .padding(20.dp)
 
     ) {
+        val password = remember {
+            mutableStateOf("")
+        }
+        val email = remember {
+            mutableStateOf("")
+        }
+
         Column(modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally) {
 
@@ -53,12 +77,56 @@ fun LoginPage(navHostController: NavHostController= rememberNavController()){
             Spacer(modifier = Modifier.height(8.dp))
             NormalTextComponent("Uygulamaya giriş yapabilmek için mail adresini gir")
             Spacer(modifier = Modifier.height(25.dp))
-            MyTextField(param = "Email")
+            MyTextField(param = "Email"){
+                email.value = it
+            }
             Spacer(modifier = Modifier.height(7.dp))
-            PasswordTextField(param = "Şifre")
+            PasswordTextField(param = "Şifre"){
+                password.value = it
+            }
+            Log.d("hatamLog", " sda" +password.value)
 
             Spacer(modifier = Modifier.height(20.dp))
-            ButtonComponent(param = "Giriş Yap")
+
+            Button(
+                onClick = {
+                          if (email.value.isNotEmpty() && password.value.isNotEmpty()) {
+                              authVm.signInWithEmail(email.value,password.value) {
+                                  Log.d("hatamSignInWithEmail", "it.toString()"+email.value+password.value)
+                                  if (it) {
+                                      navHostController.navigate(StoreScreen.HomeScreen.name) {
+                                          popUpTo(StoreScreen.LoginScreen.name) {
+                                              inclusive = true
+                                          }
+                                      }
+                                  }else{
+                                      Toast.makeText(navHostController.context, "Giriş Yapılamadı", Toast.LENGTH_SHORT).show()
+                                  }
+                              }
+                          }
+
+
+                          },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(48.dp),
+                contentPadding = PaddingValues(),
+                colors = ButtonDefaults.buttonColors(colorResource(id = R.color.orange))
+            ) {
+
+                Box(modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(48.dp),
+                    contentAlignment = Alignment.Center
+                ){
+                    Text(text = "Giriş Yap",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold)
+
+                }
+
+            }
+
             Spacer(modifier = Modifier.height(20.dp))
             DividerTextComponent(text = "Ya da")
             Spacer(modifier = Modifier.height(20.dp))
@@ -69,8 +137,8 @@ fun LoginPage(navHostController: NavHostController= rememberNavController()){
             Spacer(modifier = Modifier.height(25.dp))
             ClickableTextComponent(param1 = "Hesabın yok mu?", " Kaydolmak için tıkla!", StoreScreen.SignUpPage.name, navHostController)
 
-            Spacer(modifier = Modifier.height(70.dp))
-            ClickableTextComponent(param1 = "Restoran'ın mı var?", " Restoran Girişi", StoreScreen.SignUpPage.name, navHostController)
+            Spacer(modifier = Modifier.height(20.dp))
+            ClickableTextComponent(param1 = "Restoran'ın mı var?", " Restoran Girişi", StoreScreen.RestaurantLoginScreen.name, navHostController)
 
 
         }
@@ -80,10 +148,4 @@ fun LoginPage(navHostController: NavHostController= rememberNavController()){
 }
 
 
-@Composable
-@Preview
-fun DefaultPreview0fSignUpScreen(){
-
-    LoginPage()
-}
 

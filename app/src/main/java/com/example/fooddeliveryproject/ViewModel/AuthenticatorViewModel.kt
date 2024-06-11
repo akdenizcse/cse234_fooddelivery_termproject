@@ -3,6 +3,8 @@ package com.example.fooddeliveryproject.ViewModel
 import android.app.Activity
 import android.net.Uri
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fooddeliveryproject.Models.Restaurant
@@ -20,6 +22,12 @@ class AuthenticatorViewModel:ViewModel() {
     private val db=Firebase.firestore
     private val storage= FirebaseStorage.getInstance()
     private val storageReference=storage.reference
+    private val _isRestaurantUser = MutableLiveData<Boolean>()
+    val isRestaurantUser: LiveData<Boolean> get() = _isRestaurantUser
+
+    fun setUserType(isRestaurant: Boolean) {
+        _isRestaurantUser.value = isRestaurant
+    }
     fun signInWithEmail(email: String, password: String, onResult: (Boolean) -> Unit) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
@@ -84,6 +92,37 @@ class AuthenticatorViewModel:ViewModel() {
         viewModelScope.launch {
             auth.signOut()
         }
+    }
+
+    fun restaurantSignIn(email: String, password: String, onResult: (Boolean) -> Unit) {
+        db.collection("RestaurantList").document(email).get().addOnCompleteListener(){
+            if(it.result!=null && it.result.exists()){
+                auth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            onResult(true)
+                        } else {
+                            onResult(false)
+                        }
+                    }
+
+                }else{
+                    onResult(false)
+                }
+        }
+
+    }
+
+    fun restaurantSignUp(email: String, password: String, onResult: (Boolean) -> Unit) {
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    db.collection("RestaurantList").document(email).set("restaurantEmail" to email)
+                    onResult(true)
+                } else {
+                    onResult(false)
+                }
+            }
     }
 
 

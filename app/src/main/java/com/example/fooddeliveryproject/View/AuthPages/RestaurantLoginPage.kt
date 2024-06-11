@@ -1,7 +1,7 @@
 package com.example.fooddeliveryproject.View.AuthPages
 
+import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -32,37 +32,33 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.fooddeliveryproject.R
+import com.example.fooddeliveryproject.Utils.ConstantValues
 import com.example.fooddeliveryproject.ViewModel.AuthenticatorViewModel
 import com.example.fooddeliveryproject.navigation.StoreScreen
 @Preview
 @Composable
-fun SignUpPage(navHostController: NavHostController,viewModel: AuthenticatorViewModel){
-
+fun RestaurantLoginPage(navHostController: NavHostController= rememberNavController(),authVm: AuthenticatorViewModel,) {
     Surface(
         color = Color.White,
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(28.dp)
+            .padding(20.dp)
 
     ) {
-        val name = remember {
-            mutableStateOf("")
-        }
-        val surname = remember {
-            mutableStateOf("")
-        }
         val password = remember {
             mutableStateOf("")
         }
         val email = remember {
             mutableStateOf("")
         }
+
         Column(modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally) {
 
-            Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(100.dp))
             Surface(
                 modifier = Modifier
                     .size(100.dp)
@@ -72,24 +68,13 @@ fun SignUpPage(navHostController: NavHostController,viewModel: AuthenticatorView
                 Image(
                     painter = painterResource(id = R.drawable.csefoodicon),
                     contentDescription = null
-
                 )
             }
-
             Spacer(modifier = Modifier.height(20.dp))
-            HeadingTextComponent(param = "Hesap Oluştur")
-            Spacer(modifier = Modifier.height(10.dp))
-            NormalTextComponent(param = "Uygulamaya Kaydolmak için bilgilerini gir")
-
-            Spacer(modifier = Modifier.height(20.dp))
-            MyTextField(param = "İsim"){
-                name.value = it
-            }
-            Spacer(modifier = Modifier.height(7.dp))
-            MyTextField(param = "Soyisim"){
-                surname.value = it
-            }
-            Spacer(modifier = Modifier.height(7.dp))
+            HeadingTextComponent(param = "Restoran Hesabına Giriş Yap")
+            Spacer(modifier = Modifier.height(8.dp))
+            NormalTextComponent("Uygulamaya giriş yapabilmek için mail adresini gir")
+            Spacer(modifier = Modifier.height(25.dp))
             MyTextField(param = "Email"){
                 email.value = it
             }
@@ -99,14 +84,24 @@ fun SignUpPage(navHostController: NavHostController,viewModel: AuthenticatorView
             }
 
             Spacer(modifier = Modifier.height(20.dp))
+
             Button(
                 onClick = {
-                          if(name.value.isNotEmpty()&&surname.value.isNotEmpty()&&email.value.isNotEmpty()&&password.value.isNotEmpty()){
-                              viewModel.createUser(email.value,password.value){
-                                  Toast.makeText(navHostController.context,"Hesap oluşturuldu",Toast.LENGTH_SHORT).show()
-                                  navHostController.navigate(StoreScreen.HomeScreen.name)
-                              }
-                          }
+                    if (email.value.isNotEmpty() && password.value.isNotEmpty()) {
+                        authVm.restaurantSignIn(email.value,password.value) {
+                            if (it) {
+                                authVm.setUserType(true)
+                                navHostController.navigate(StoreScreen.HomeScreen.name) {
+                                    popUpTo(StoreScreen.LoginScreen.name) {
+                                        inclusive = true
+                                    }
+                                }
+                            }else{
+                                Toast.makeText(navHostController.context, "Giriş Yapılamadı", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+
 
                 },
                 modifier = Modifier
@@ -121,27 +116,33 @@ fun SignUpPage(navHostController: NavHostController,viewModel: AuthenticatorView
                     .heightIn(48.dp),
                     contentAlignment = Alignment.Center
                 ){
-
-                    Text(text = "Kaydol",
+                    Text(text = "Giriş Yap",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold)
 
                 }
+
             }
 
-            Spacer(modifier = Modifier.height(15.dp))
-            FadedTextComponent(param = "Kaydol’a tıklayarak CSEFOOD Hizmet Şartlarımızı ve Gizlilik Politikamızı kabul etmiş olursunuz.")
+            Spacer(modifier = Modifier.height(20.dp))
+            DividerTextComponent(text = "Ya da")
+            Spacer(modifier = Modifier.height(20.dp))
+            ButtonComponentGoogle(param = "Google")
+            Spacer(modifier = Modifier.height(10.dp))
+            FadedTextComponent(param = "Girş yap’a tıklayarak CSEFOOD Hizmet Şartlarımızı ve Gizlilik Politikamızı kabul etmiş olursunuz.")
 
-            Spacer(modifier = Modifier.height(15.dp))
-            ClickableTextComponent(param1 = "Hesabın var mı?", param2 = " Giriş Yap",StoreScreen.LoginScreen.name, navHostController)
-            Spacer(modifier = Modifier.height(90.dp))
-            ClickableTextComponent(param1 = "", param2 = "Restoran Hesabı Oluştur", StoreScreen.RestaurantSignUpPage.name, navHostController)
+            Spacer(modifier = Modifier.height(25.dp))
+            ClickableTextComponent(param1 = "Restoran Hesabın yok mu?", " Kaydolmak için tıkla!", StoreScreen.RestaurantSignUpPage.name, navHostController)
+
+            Spacer(modifier = Modifier.height(20.dp))
+            ClickableTextComponent(param1 = "Müşeteri misiniz?", " Müşteri Girişi", StoreScreen.LoginScreen.name, navHostController)
+
 
         }
 
-        
     }
 
 }
+
 
 

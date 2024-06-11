@@ -1,6 +1,9 @@
 package com.example.fooddeliveryproject
 
+import android.content.Context
 import android.os.Bundle
+import android.util.AttributeSet
+import android.view.View
 import android.widget.SearchView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,31 +12,35 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.LifecycleOwner
+import com.example.fooddeliveryproject.Utils.ConstantValues
 import com.example.fooddeliveryproject.View.Pages.MainPage
 import com.example.fooddeliveryproject.ViewModel.AuthenticatorViewModel
+import com.example.fooddeliveryproject.ViewModel.UserViewModel
 import com.example.fooddeliveryproject.navigation.RestaurantAppNavigation
 import com.example.fooddeliveryproject.navigation.StoreAppNavigation
 import com.example.fooddeliveryproject.ui.theme.FoodDeliveryProjectTheme
 
 class MainActivity : ComponentActivity() ,SearchView.OnQueryTextListener{
-    lateinit var authVM:AuthenticatorViewModel
-    var isRestourantApp:Boolean=true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val authenticatorViewModel: AuthenticatorViewModel by viewModels()
         setContent {
             FoodDeliveryProjectTheme {
+                val isRestaurantUser by authenticatorViewModel.isRestaurantUser.observeAsState(initial = false)
 
-                if(isRestourantApp){
+                if (isRestaurantUser == true) {
                     RestaurantAppNavigation()
-                }else{
+                } else {
                     StoreAppNavigation()
                 }
-
-                val temp : AuthenticatorViewModel by viewModels()
-                authVM = temp
             }
         }
     }

@@ -19,6 +19,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.fooddeliveryproject.View.AuthPages.LoginPage
+import com.example.fooddeliveryproject.View.AuthPages.RestaurantLoginPage
+import com.example.fooddeliveryproject.View.AuthPages.RestaurantSignUpPage
 import com.example.fooddeliveryproject.View.AuthPages.SignUpPage
 import com.example.fooddeliveryproject.View.Pages.CampaignPage
 import com.example.fooddeliveryproject.View.Pages.CartPage
@@ -108,7 +110,7 @@ fun RestaurantAppNavigation() {
                 RestaurantChangeRestaurantNamePage(navController)
             }
             composable(route = RestaurantScreen.RestaurantLoginScreen.name) {
-                LoginPage()
+                LoginPage(navController,authenticatorViewModel)
             }
 
         }
@@ -126,7 +128,9 @@ fun StoreAppNavigation() {
         bottomBar = {
             val listOfFullScreen = listOf(
                 StoreScreen.LoginScreen.name,
-                StoreScreen.SignUpPage.name
+                StoreScreen.SignUpPage.name,
+                StoreScreen.RestaurantSignUpPage.name,
+                StoreScreen.RestaurantLoginScreen.name
             )
             if (!listOfFullScreen.contains(currentDestination?.route)) {
                 NavigationBar {
@@ -163,7 +167,7 @@ fun StoreAppNavigation() {
             modifier = Modifier.padding(paddingValues)
         ) {
             composable(route = StoreScreen.LoginScreen.name) {
-                LoginPage(navController)
+                LoginPage(navController,authenticatorViewModel)
             }
             composable(route = StoreScreen.HomeScreen.name) {
                 MainPage()
@@ -179,7 +183,13 @@ fun StoreAppNavigation() {
             }
 
             composable(route = StoreScreen.SignUpPage.name) {
-                SignUpPage()
+                SignUpPage(navController,authenticatorViewModel)
+            }
+            composable(route=StoreScreen.RestaurantSignUpPage.name){
+                RestaurantSignUpPage(navController)
+            }
+            composable(route=StoreScreen.RestaurantLoginScreen.name){
+                RestaurantLoginPage(navController,authenticatorViewModel)
             }
 
 

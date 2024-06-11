@@ -157,7 +157,7 @@ fun DividerTextComponent(text : String){
 
 @OptIn(ExperimentalMaterial3Api::class)  //?
 @Composable
-fun MyTextField(param: String){
+fun MyTextField(param: String,callback: (String) -> Unit){
 
     val textValue = remember {
         mutableStateOf("")
@@ -178,6 +178,7 @@ fun MyTextField(param: String){
         value = textValue.value,
         onValueChange = {
             textValue.value = it
+            callback(it)
         }
     )
 }
@@ -186,7 +187,7 @@ fun MyTextField(param: String){
 
 @OptIn(ExperimentalMaterial3Api::class)  //?
 @Composable
-fun PasswordTextField(param: String){
+fun PasswordTextField(param: String,callback : (String) -> Unit){
 
     val password = remember {
         mutableStateOf("")
@@ -212,6 +213,8 @@ fun PasswordTextField(param: String){
         value = password.value,
         onValueChange = {
             password.value = it
+
+            callback(it)
         },
 
         trailingIcon = {
