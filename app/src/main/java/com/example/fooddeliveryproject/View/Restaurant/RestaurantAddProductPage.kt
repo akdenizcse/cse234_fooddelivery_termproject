@@ -103,9 +103,6 @@ fun RestaurantAddProductPage(navHostController: NavHostController,viewModel: Res
             bitmap.value = ImageDecoder.decodeBitmap(source)
         }
 
-
-
-
         bitmap.value?.let { btm ->
             Image(
                 bitmap = btm.asImageBitmap(),

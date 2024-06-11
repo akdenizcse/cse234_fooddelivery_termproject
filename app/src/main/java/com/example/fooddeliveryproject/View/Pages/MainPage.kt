@@ -12,6 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.fooddeliveryproject.View.SpecialWidgets.CarouselCardOrigin
 import com.example.fooddeliveryproject.View.SpecialWidgets.CategoryCard
 import com.example.fooddeliveryproject.View.SpecialWidgets.Header
@@ -20,7 +22,7 @@ import com.example.fooddeliveryproject.View.SpecialWidgets.Restorants
 import com.example.fooddeliveryproject.View.SpecialWidgets.SearchBar
 
 @Composable
-fun MainPage() {
+fun MainPage(navHostController: NavHostController=rememberNavController()) {
     Scaffold(
         topBar = {
             Header()
@@ -39,7 +41,7 @@ fun MainPage() {
                 CarouselCardOrigin()
             }
             item {
-                CategoryCard()
+                CategoryCard(navHostController)
                 Spacer(modifier = Modifier.size(8.dp))
             }
             item {
