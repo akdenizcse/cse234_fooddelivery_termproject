@@ -2,6 +2,7 @@ package com.example.fooddeliveryproject.View.Pages
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
@@ -19,6 +20,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fooddeliveryproject.R
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.Scaffold
 
 @Composable
 fun AddressPage() {
@@ -80,27 +89,31 @@ fun AddressForm(paddingValues: PaddingValues) {
             modifier = Modifier.fillMaxWidth()
         )
 
+        Row( modifier = Modifier.fillMaxWidth()){
+        OutlinedTextField(
+        value = city,
+        onValueChange = { city = it },
+        label = { Text("İl") },
+        placeholder = { Text("İl Seçin") },
+        )
+            DropdownMenu()
+        }
+
+
+        Row( modifier = Modifier.fillMaxWidth()) {
+            OutlinedTextField(
+                value = country,
+                onValueChange = { country = it },
+                label = { Text("İlçe") },
+                placeholder = { Text("İlçe Seçin") },
+            )
+            DropdownMenu()
+        }
         OutlinedTextField(
             value = address,
             onValueChange = { address = it },
             label = { Text("Adres") },
             placeholder = { Text("Adresinizi girin") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        OutlinedTextField(
-            value = city,
-            onValueChange = { city = it },
-            label = { Text("İl") },
-            placeholder = { Text("İl Seçin") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        OutlinedTextField(
-            value = country,
-            onValueChange = { country = it },
-            label = { Text("Ülke") },
-            placeholder = { Text("Ülke Seçin") },
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -115,6 +128,57 @@ fun AddressForm(paddingValues: PaddingValues) {
         }
     }
 }
+
+@Composable
+fun DropdownMenu(){
+        val countryList = listOf("", "Antalya", "Bursa", "Edirne", "İstanbul")
+
+        var control by remember { mutableStateOf(value = false) }
+
+        var countryIndex by remember { mutableStateOf(value = 0) }
+
+                Box {
+                        // Seçilen ülkenin adını gösteren metin
+                        Text(text = countryList[countryIndex])
+                        // Dropdown menü simgesi
+                        Image(
+                            painter = painterResource(id = R.drawable.arrow_down),
+                            contentDescription = "Aç/Kapat",
+                            modifier = Modifier.size(32.dp)
+
+                        )
+
+
+                    // Dropdown menü
+                    if (control) {
+                        DropdownMenu(
+                            expanded = control,
+                            onDismissRequest = { control = false }
+                        ) {
+                            // Ülkeler listesini her bir öğeye dönüştür
+                            countryList.forEachIndexed { index, country ->
+                                DropdownMenuItem(
+                                    onClick = {
+                                        // Seçilen ülkeyi güncelle
+                                        countryIndex = index
+
+                                        // Dropdown menüyü kapat
+                                        control = false
+                                    },
+                                    content = { Text(text = country) }
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+
+
+
+
+
+
+
 
 @Preview(showBackground = true)
 @Composable
