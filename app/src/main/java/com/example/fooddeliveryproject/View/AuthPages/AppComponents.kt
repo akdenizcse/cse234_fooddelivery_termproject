@@ -13,10 +13,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
@@ -33,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
@@ -330,12 +335,65 @@ fun ButtonComponentGoogle(param: String, ){
             Text(text = param,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.Black)
+                color = Color.Black
+            )
 
         }
 
     }
+}
 
+
+
+@Composable
+fun QuantityComponent(){
+
+    Row (modifier = Modifier,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically)
+    {
+
+        Button(onClick = {},
+            modifier = Modifier
+                .heightIn(48.dp),
+            contentPadding = PaddingValues(),
+            colors = ButtonDefaults.buttonColors(colorResource(id = R.color.orange))
+        ){
+            Icon(Icons.Outlined.Add, contentDescription = "Artır")
+        }
+
+
+        Text(
+            text = "1",
+            modifier = Modifier.padding(10.dp),
+            color = colorResource(id = R.color.signUpBlack),
+            style = TextStyle(
+                fontSize = 14.sp,
+                //fontWeight = FontWeight.Bold,
+            )
+        )
+
+        Button(onClick = {},
+            modifier = Modifier
+                .heightIn(48.dp),
+            contentPadding = PaddingValues(),
+            colors = ButtonDefaults.buttonColors(colorResource(id = R.color.orange))
+        ){
+            Icon(Icons.Outlined.Add, contentDescription = "Artır")
+        }
+
+
+        Text(
+            text = "189TL",
+            modifier = Modifier.padding(30.dp),
+            color = colorResource(id = R.color.signUpBlack),
+            style = TextStyle(
+                fontSize = 14.sp,
+                //fontWeight = FontWeight.Bold,
+            )
+        )
+
+    }
 
 }
 

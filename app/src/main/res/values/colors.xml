@@ -13,6 +13,8 @@
     <color name="backgroundGray">#F0FFFFFF</color>
     <color name="silikMetin">#828282</color>
     <color name="googleColor">#EEEEEE</color>
+    <color name="detailsPageColor">#E2E2E2</color>
+
 
 
 </resources>

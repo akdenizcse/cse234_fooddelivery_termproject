@@ -124,7 +124,6 @@ fun AccountOptionItem(iconResId: Int, text: String, onClick: () -> Unit = {}) {
         Spacer(modifier = Modifier.weight(1f))
     }
 }
-
 @Preview(showBackground = true)
 @Composable
 fun AccountPagePreview() {

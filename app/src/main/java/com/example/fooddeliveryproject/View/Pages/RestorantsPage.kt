@@ -2,6 +2,7 @@ package com.example.fooddeliveryproject.View.Pages
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,7 +17,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.fooddeliveryproject.R
+import com.example.fooddeliveryproject.ViewModel.RestaurantViewModel
 
 data class Restaurant(
     val imageRes: Int,
@@ -27,7 +32,7 @@ data class Restaurant(
 )
 
 @Composable
-fun RestaurantPage() {
+fun RestaurantPage(navigate: NavHostController = rememberNavController(),restaurantVM:RestaurantViewModel= viewModel()) {
     val restaurants = listOf(
         Restaurant(R.drawable.dukkan1, "Çorbacı Şükrü", "Kültür, Antalya", 4.1, 500),
         Restaurant(R.drawable.dukkan6, "Hastayım Döner", "Konyaaltı, Antalya", 3.6, 400),
@@ -55,7 +60,11 @@ fun RestaurantPage() {
                         Icon(
                             painter = painterResource(id = R.drawable.arrow_left),
                             contentDescription = "Back",
-                            tint = Color.White
+                            tint = Color.White,
+                            modifier = Modifier.clickable {
+                                navigate.popBackStack()
+
+                            }
                         )
                     }
                 },

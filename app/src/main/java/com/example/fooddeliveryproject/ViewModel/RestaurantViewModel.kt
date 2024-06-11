@@ -30,6 +30,9 @@ class RestaurantViewModel ():ViewModel() {
     val _restaurant=MutableLiveData<Restaurant>()
     val restaurant :LiveData<Restaurant> get() = _restaurant
 
+    val _restaurantList=MutableLiveData<ArrayList<Restaurant>>()
+    val restaurantList :LiveData<ArrayList<Restaurant>> get() = _restaurantList
+
 
 
     fun getRestaurantInfo(){
@@ -107,6 +110,16 @@ class RestaurantViewModel ():ViewModel() {
             }
         } catch (e: Exception) {
             Log.d("hatamAddProduct", "error Add poroduct" + e.toString())
+
+        }
+    }
+
+    fun getRestaurantList(){
+        try {
+            db.collection("Restaurant").get().addOnSuccessListener {
+                _restaurantList.value=it.toObjects(Restaurant::class.java) as ArrayList<Restaurant>
+            }
+        }catch (e:Exception){
 
         }
     }

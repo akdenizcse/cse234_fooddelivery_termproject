@@ -2,6 +2,7 @@ package com.example.fooddeliveryproject.ViewModel
 
 import android.app.Activity
 import android.net.Uri
+import android.util.Log
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -49,7 +50,7 @@ class AuthenticatorViewModel:ViewModel() {
     }
 
     fun createUser(email:String, password:String, onResult: (Boolean) -> Unit){
-        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,password).addOnCompleteListener {
+        auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener {
             if(it.isSuccessful){
                 db.collection("Users").document(it.result?.user?.uid.toString()).set(Restaurant(id = auth.uid.toString()))
                     .addOnSuccessListener {
@@ -66,26 +67,43 @@ class AuthenticatorViewModel:ViewModel() {
 
     fun createRestaurant(email:String, password:String,name:String ,imageUri: Uri, onResult: (Boolean) -> Unit){
         //Restoran için restoran fotoğrafı eklenecek
-        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,password).addOnCompleteListener {
-            if (it.isSuccessful) {
-                uploadImage(imageUri,"RestaurantImage",storageReference){imageUrl->
-                    if ("error"!=imageUrl){
-                        db.collection("Restaurant").document(it.result?.user?.uid.toString())
-                            .set(Restaurant(id = auth.uid.toString(),name=name,imageUrl=imageUrl))
-                            .addOnSuccessListener {
-                                onResult(true)
-                            }.addOnFailureListener{
-                                onResult(false)
-                            }
-                    }else{
-                        onResult(false)
-                    }
-                }
+        Log.d("hatamAuthR","work User")
 
-            } else {
-                onResult(false)
+        try {
+            auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener {
+                Log.d("hatamAuthR","create User")
+                if (it.isSuccessful) {
+                    Log.d("hatamAuthR","create success")
+
+                    uploadImage(imageUri,"RestaurantImage",storageReference){imageUrl->
+                        Log.d("hatamAuthR","create imageUrl"+imageUrl.toString())
+
+                        if ("error"!=imageUrl){
+                            Log.d("hatamAuthR","image error değil")
+                            db.collection("Restaurant").document(it.result?.user?.uid.toString())
+                                .set(Restaurant(id = auth.uid.toString(),name=name,imageUrl=imageUrl))
+                                .addOnSuccessListener {
+                                    db.collection("RestaurantList").document(email).set("email" to email).addOnSuccessListener {
+                                        onResult(true)
+                                    }.addOnFailureListener(){
+                                        onResult(false)
+                                    }
+                                }.addOnFailureListener{
+                                    onResult(false)
+                                }
+                        }else{
+                            onResult(false)
+                        }
+                    }
+                } else {
+                    onResult(false)
+                }
             }
+        }catch (e:Exception){
+            Log.e("hatamAuthR",e.toString())
         }
+
+
     }
 
     fun signOut(){
@@ -112,18 +130,5 @@ class AuthenticatorViewModel:ViewModel() {
         }
 
     }
-
-    fun restaurantSignUp(email: String, password: String, onResult: (Boolean) -> Unit) {
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    db.collection("RestaurantList").document(email).set("restaurantEmail" to email)
-                    onResult(true)
-                } else {
-                    onResult(false)
-                }
-            }
-    }
-
 
 }

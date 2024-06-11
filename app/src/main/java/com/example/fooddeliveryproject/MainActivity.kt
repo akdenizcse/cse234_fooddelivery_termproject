@@ -1,9 +1,6 @@
 package com.example.fooddeliveryproject
 
-import android.content.Context
 import android.os.Bundle
-import android.util.AttributeSet
-import android.view.View
 import android.widget.SearchView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,15 +11,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.LifecycleOwner
-import com.example.fooddeliveryproject.Utils.ConstantValues
 import com.example.fooddeliveryproject.View.Pages.MainPage
 import com.example.fooddeliveryproject.ViewModel.AuthenticatorViewModel
-import com.example.fooddeliveryproject.ViewModel.UserViewModel
 import com.example.fooddeliveryproject.navigation.RestaurantAppNavigation
 import com.example.fooddeliveryproject.navigation.StoreAppNavigation
 import com.example.fooddeliveryproject.ui.theme.FoodDeliveryProjectTheme
