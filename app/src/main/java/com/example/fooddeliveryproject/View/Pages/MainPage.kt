@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.fooddeliveryproject.View.SpecialWidgets.BottomNavigationBar
 import com.example.fooddeliveryproject.View.SpecialWidgets.CarouselCardOrigin
 import com.example.fooddeliveryproject.View.SpecialWidgets.CategoryCard
 import com.example.fooddeliveryproject.View.SpecialWidgets.Header
@@ -25,9 +24,6 @@ fun MainPage() {
     Scaffold(
         topBar = {
             Header()
-        },
-        bottomBar = {
-            BottomNavigationBar()
         }
     ) { innerPadding ->
         LazyColumn(

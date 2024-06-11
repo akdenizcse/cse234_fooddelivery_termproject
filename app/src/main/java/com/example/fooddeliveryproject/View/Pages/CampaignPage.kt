@@ -25,7 +25,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import com.example.fooddeliveryproject.R
-import com.example.fooddeliveryproject.View.SpecialWidgets.BottomNavigationBar
 
 @Composable
 fun CampaignPage() {
@@ -53,9 +52,6 @@ fun CampaignPage() {
                 backgroundColor = Color(0xFFF8742A),
                 elevation =1000.dp
             )
-        },
-        bottomBar = {
-            BottomNavigationBar()
         }
     ) { paddingValues ->
         CampaignList(paddingValues)
