@@ -84,7 +84,7 @@ fun CategoryItem(category: Category) {
             .fillMaxWidth()
             .padding(8.dp),
         shape = RoundedCornerShape(8.dp),
-        elevation = 2.dp
+        elevation = 16.dp
     ) {
         Row(
             modifier = Modifier
