@@ -60,7 +60,7 @@ fun AddressPage() {
                     }
                 },
                 backgroundColor = Color.White,
-                elevation = 0.dp
+                elevation = 16.dp
             )
         }
     ) {
@@ -88,27 +88,21 @@ fun AddressForm(paddingValues: PaddingValues) {
             label = { Text("Adres Adı (Ev, iş vb.)") },
             modifier = Modifier.fillMaxWidth()
         )
-
+        Spacer(modifier = Modifier.size(8.dp))
         Row( modifier = Modifier.fillMaxWidth()){
-        OutlinedTextField(
-        value = city,
-        onValueChange = { city = it },
-        label = { Text("İl") },
-        placeholder = { Text("İl Seçin") },
-        )
+            Text(text = "İL")
+            Spacer(modifier = Modifier.size(8.dp))
             DropdownMenu()
         }
-
+        Spacer(modifier = Modifier.size(8.dp))
 
         Row( modifier = Modifier.fillMaxWidth()) {
-            OutlinedTextField(
-                value = country,
-                onValueChange = { country = it },
-                label = { Text("İlçe") },
-                placeholder = { Text("İlçe Seçin") },
-            )
+            Text(text = "İLÇE")
+            Spacer(modifier = Modifier.size(8.dp))
             DropdownMenu()
         }
+
+        Spacer(modifier = Modifier.size(8.dp))
         OutlinedTextField(
             value = address,
             onValueChange = { address = it },
@@ -116,6 +110,7 @@ fun AddressForm(paddingValues: PaddingValues) {
             placeholder = { Text("Adresinizi girin") },
             modifier = Modifier.fillMaxWidth()
         )
+        Spacer(modifier = Modifier.size(8.dp))
 
         Button(
             onClick = { /* Handle save action */ },
@@ -131,25 +126,24 @@ fun AddressForm(paddingValues: PaddingValues) {
 
 @Composable
 fun DropdownMenu(){
-        val countryList = listOf("", "Antalya", "Bursa", "Edirne", "İstanbul")
-
+        val countryList = listOf("Seçim Yapınız", "1", "2", "3", "4")
         var control by remember { mutableStateOf(value = false) }
-
         var countryIndex by remember { mutableStateOf(value = 0) }
+               Row(
+                   modifier = Modifier.clickable{
+                       control=true
+                   }
+               )
+                   {
+                       Image(
+                           painter = painterResource(id = R.drawable.arrow_down),
+                           contentDescription = "Aç/Kapat",
+                           modifier = Modifier.size(24.dp)
+                       )
+                       Text(text = countryList[countryIndex])
+                   }
 
-                Box {
-                        // Seçilen ülkenin adını gösteren metin
-                        Text(text = countryList[countryIndex])
-                        // Dropdown menü simgesi
-                        Image(
-                            painter = painterResource(id = R.drawable.arrow_down),
-                            contentDescription = "Aç/Kapat",
-                            modifier = Modifier.size(32.dp)
 
-                        )
-
-
-                    // Dropdown menü
                     if (control) {
                         DropdownMenu(
                             expanded = control,
@@ -171,7 +165,7 @@ fun DropdownMenu(){
                         }
                     }
                 }
-            }
+
 
 
 
