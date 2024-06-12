@@ -51,7 +51,7 @@ fun DetailsPage(){
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(10.dp)
+            //.padding(10.dp)
 
     ) {
 
@@ -74,7 +74,8 @@ fun DetailsPage(){
                             Image(
                                 modifier = Modifier
                                     .size(90.dp)
-                                    .clip(RoundedCornerShape(15.dp)),
+                                    .clip(RoundedCornerShape(15.dp))
+                                    .padding(2.dp),
                                 painter = painterResource(id = R.drawable.dukkan13),
                                 contentDescription = null,
                                 contentScale = ContentScale.Crop
@@ -126,14 +127,14 @@ fun Details(paddingValues: PaddingValues){
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(20.dp)
+            //.padding(20.dp)
 
     ) {
         Column(modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally)
         {
 
-            Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(120.dp))
             Image(
                 modifier = Modifier
                     .size(200.dp)

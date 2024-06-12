@@ -14,7 +14,9 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.fooddeliveryproject.View.Pages.CartPage
 import com.example.fooddeliveryproject.View.Pages.MainPage
+import com.example.fooddeliveryproject.View.Search.SearchBarPage
 import com.example.fooddeliveryproject.ViewModel.AuthenticatorViewModel
 import com.example.fooddeliveryproject.navigation.RestaurantAppNavigation
 import com.example.fooddeliveryproject.navigation.StoreAppNavigation
@@ -27,6 +29,7 @@ class MainActivity : ComponentActivity() ,SearchView.OnQueryTextListener{
         val authenticatorViewModel: AuthenticatorViewModel by viewModels()
         setContent {
             FoodDeliveryProjectTheme {
+                /*
                 val isRestaurantUser by authenticatorViewModel.isRestaurantUser.observeAsState(initial = false)
 
                 if (isRestaurantUser == true) {
@@ -34,6 +37,9 @@ class MainActivity : ComponentActivity() ,SearchView.OnQueryTextListener{
                 } else {
                     StoreAppNavigation()
                 }
+
+                 */
+                SearchBarPage()
             }
         }
     }
