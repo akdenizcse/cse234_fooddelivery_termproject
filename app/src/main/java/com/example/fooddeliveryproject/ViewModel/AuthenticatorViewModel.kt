@@ -1,15 +1,13 @@
 package com.example.fooddeliveryproject.ViewModel
 
-import android.app.Activity
 import android.net.Uri
 import android.util.Log
-import androidx.compose.ui.res.stringResource
+import androidx.compose.runtime.Composable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fooddeliveryproject.Models.Restaurant
-import com.example.fooddeliveryproject.R
 import com.example.fooddeliveryproject.Utils.uploadImage
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
@@ -23,7 +21,7 @@ class AuthenticatorViewModel:ViewModel() {
     private val db=Firebase.firestore
     private val storage= FirebaseStorage.getInstance()
     private val storageReference=storage.reference
-    private val _isRestaurantUser = MutableLiveData<Boolean>()
+    private val _isRestaurantUser = MutableLiveData<Boolean>(false)
     val isRestaurantUser: LiveData<Boolean> get() = _isRestaurantUser
 
     fun setUserType(isRestaurant: Boolean) {
@@ -40,12 +38,18 @@ class AuthenticatorViewModel:ViewModel() {
             }
     }
 
-    fun isLogin(): Boolean{
-        if(auth.currentUser != null){
-            return true
-        }else{
-            return false
+    fun isLogin(callBack: (Boolean) -> Unit){
+        db.collection("RestaurantList").document(auth.currentUser?.email.toString())
+            .get().addOnCompleteListener() {
+            if (it.result?.exists() == true) {
+                if(auth.currentUser != null){
+                    callBack(true)
+                }else{
+                    callBack(false)
+                }
+            }
         }
+
 
     }
 
@@ -130,5 +134,4 @@ class AuthenticatorViewModel:ViewModel() {
         }
 
     }
-
 }

@@ -16,30 +16,38 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.fooddeliveryproject.View.Pages.MainPage
 import com.example.fooddeliveryproject.ViewModel.AuthenticatorViewModel
+import com.example.fooddeliveryproject.ViewModel.RestaurantViewModel
 import com.example.fooddeliveryproject.navigation.RestaurantAppNavigation
-import com.example.fooddeliveryproject.navigation.StoreAppNavigation
 import com.example.fooddeliveryproject.ui.theme.FoodDeliveryProjectTheme
 
 class MainActivity : ComponentActivity() ,SearchView.OnQueryTextListener{
-
+    val authenticatorViewModel: AuthenticatorViewModel by viewModels()
+    val restaurantViewModel: RestaurantViewModel by viewModels()
+    var isRestaurantUser: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val authenticatorViewModel: AuthenticatorViewModel by viewModels()
         setContent {
             FoodDeliveryProjectTheme {
-                val isRestaurantUser by authenticatorViewModel.isRestaurantUser.observeAsState(initial = false)
+                RestaurantAppNavigation(authenticatorViewModel,restaurantViewModel)
 
-                if (isRestaurantUser == true) {
-                    RestaurantAppNavigation()
-                } else {
-                    StoreAppNavigation()
-                }
+
+
+//
+//                isRestaurantUser = authenticatorViewModel.isRestaurantUser.observeAsState(initial = false).value
+//
+//                if (isRestaurantUser == true) {
+//                    RestaurantAppNavigation(authenticatorViewModel,restaurantViewModel)
+//                } else {
+//                    StoreAppNavigation()
+//                }
             }
         }
     }
 
-
-
+    override fun onDestroy() {
+        super.onDestroy()
+        authenticatorViewModel.signOut()
+    }
 
 
 

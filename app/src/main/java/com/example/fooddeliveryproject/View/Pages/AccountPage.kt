@@ -19,10 +19,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.fooddeliveryproject.R
+import com.example.fooddeliveryproject.ViewModel.AuthenticatorViewModel
+import com.example.fooddeliveryproject.navigation.StoreScreen
 
 @Composable
-fun AccountPage() {
+fun AccountPage(navigate:NavHostController= rememberNavController(),authVM:AuthenticatorViewModel= viewModel()) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -80,7 +85,10 @@ fun AccountPage() {
                         )
                         Spacer(modifier = Modifier.height(32.dp))
                         Button(
-                            onClick = { /* Handle logout */ },
+                            onClick = {
+                                      authVM.signOut()
+                                      navigate.navigate(StoreScreen.LoginScreen.name)
+                                      },
                             colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFF8742A)),
                             modifier = Modifier
                                 .fillMaxWidth()

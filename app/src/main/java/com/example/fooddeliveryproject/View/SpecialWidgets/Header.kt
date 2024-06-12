@@ -2,12 +2,14 @@ package com.example.fooddeliveryproject.View.SpecialWidgets
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -21,47 +23,56 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontVariation.weight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.fooddeliveryproject.R
+import com.example.fooddeliveryproject.navigation.StoreScreen
 import com.example.fooddeliveryproject.ui.theme.CardItemBg
 import com.example.fooddeliveryproject.ui.theme.IconColor
 import com.example.fooddeliveryproject.ui.theme.Orange500
-
 @Composable
-fun Header(){
+fun Header(navController: NavHostController = rememberNavController(), addressTitle: String = "", addressDesc: String = "") {
     Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                navController.navigate(StoreScreen.AddressScreen.name)
+            }
+            .padding(16.dp) // Add padding if needed
+    ) {
         BoxWithResource(resId = R.drawable.location, description = "menu")
-        Column {
-            Row ( modifier = Modifier.fillMaxWidth()){
-                Column {
-                    Row {
-                        Text(text = "EV")
-                        Icon(
-                            painter = painterResource(id = R.drawable.arrow_down),
-                            contentDescription = "down",
-                            modifier = Modifier.size(16.dp),
-                            tint = Orange500
 
-                        )
-                    }
-                    Text(text = "Kepez,Antalya", color = Color.Gray)
-                }
+        Column(
+            modifier = Modifier.weight(1f).padding(start = 8.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = addressTitle)
                 Icon(
-                    painter = painterResource(id = R.drawable.baseline_shopping_cart_24),
-                    contentDescription ="aktif",
-                    modifier = Modifier.size(32.dp),
-                    tint = Orange500,
+                    painter = painterResource(id = R.drawable.arrow_down),
+                    contentDescription = "down",
+                    modifier = Modifier.size(16.dp),
+                    tint = Orange500
                 )
             }
-
+            Text(text = addressDesc, color = Color.Gray)
         }
 
-
-        }
+        Icon(
+            painter = painterResource(id = R.drawable.baseline_shopping_cart_24),
+            contentDescription = "aktif",
+            modifier = Modifier
+                .size(36.dp)
+                .padding(start = 5.dp)
+                .align(Alignment.CenterVertically),
+            tint = Orange500
+        )
     }
-
+}
 
 @Composable
 fun BoxWithResource(
@@ -77,23 +88,18 @@ fun BoxWithResource(
             .size(boxSize!!.dp)
             .clip(RoundedCornerShape(10.dp))
             .background(bgColor!!)
-        ,contentAlignment = Alignment.Center
-    )
-    {
+            .padding(8.dp), // Adjust padding if needed
+        contentAlignment = Alignment.Center
+    ) {
         Icon(
-
             painter = painterResource(id = resId),
             contentDescription = description,
             modifier = Modifier.size(iconSize!!.dp),
             tint = Orange500
-            )
-        Row {
-
-        }
-
+        )
     }
-
 }
+
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview45() {

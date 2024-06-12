@@ -123,9 +123,9 @@ fun RestaurantLoginPage(navHostController: NavHostController= rememberNavControl
             }
 
             Spacer(modifier = Modifier.height(20.dp))
-            DividerTextComponent(text = "Ya da")
-            Spacer(modifier = Modifier.height(20.dp))
-            ButtonComponentGoogle(param = "Google")
+//            DividerTextComponent(text = "Ya da")
+//            Spacer(modifier = Modifier.height(20.dp))
+//            ButtonComponentGoogle(param = "Google")
             Spacer(modifier = Modifier.height(10.dp))
             FadedTextComponent(param = "Girş yap’a tıklayarak CSEFOOD Hizmet Şartlarımızı ve Gizlilik Politikamızı kabul etmiş olursunuz.")
 

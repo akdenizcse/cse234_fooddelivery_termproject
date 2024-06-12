@@ -1,16 +1,12 @@
 package com.example.fooddeliveryproject.View.Pages
 
+import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,29 +15,34 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.fooddeliveryproject.R
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Scaffold
+import com.example.fooddeliveryproject.Models.District
+import com.example.fooddeliveryproject.Models.Province
+import com.example.fooddeliveryproject.ViewModel.AddressPageViewModel
 
 @Composable
-fun AddressPage() {
+fun AddressPage(
+    navigate: NavHostController = rememberNavController(),
+    addressVM: AddressPageViewModel = viewModel()
+) {
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        IconButton(onClick = { /* Handle navigation */ }) {
+                        IconButton(onClick = {
+                            navigate.popBackStack()
+                        }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.arrow_left),
                                 contentDescription = "Back",
                                 tint = Color.Black,
-                                modifier = Modifier.size(48.dp)
+                                modifier = Modifier.size(48.dp).clickable {
+                                    navigate.popBackStack()
+                                }
                             )
                         }
                         Spacer(modifier = Modifier.width(8.dp))
@@ -64,16 +65,20 @@ fun AddressPage() {
             )
         }
     ) {
-        AddressForm(it)
+        AddressForm(it, addressVM = addressVM,navigate = navigate)
     }
 }
 
 @Composable
-fun AddressForm(paddingValues: PaddingValues) {
+fun AddressForm(paddingValues: PaddingValues, addressVM: AddressPageViewModel,navigate: NavHostController) {
     var addressName by remember { mutableStateOf(TextFieldValue("")) }
     var address by remember { mutableStateOf(TextFieldValue("")) }
-    var city by remember { mutableStateOf(TextFieldValue("")) }
-    var country by remember { mutableStateOf(TextFieldValue("")) }
+    var city by remember { mutableStateOf<Province?>(null) }
+    var district by remember { mutableStateOf("") }
+
+    addressVM.getProvinceList()
+    val provinceList by addressVM.provinceList.observeAsState()
+    var districtList = city?.districts
 
     Column(
         modifier = Modifier
@@ -89,17 +94,35 @@ fun AddressForm(paddingValues: PaddingValues) {
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.size(8.dp))
-        Row( modifier = Modifier.fillMaxWidth()){
+
+        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text(text = "İL")
             Spacer(modifier = Modifier.size(8.dp))
-            DropdownMenu()
+            if (provinceList != null) {
+                DropdownMenuCity(provinceList?.data) { selectedProvince ->
+                    city = selectedProvince
+                    district = ""
+                    districtList?.clear()
+                    districtList=selectedProvince.districts
+                    Log.d("hatam2", "AddressForm: $districtList $city")
+                }
+            }
         }
+
         Spacer(modifier = Modifier.size(8.dp))
 
-        Row( modifier = Modifier.fillMaxWidth()) {
+        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text(text = "İLÇE")
             Spacer(modifier = Modifier.size(8.dp))
-            DropdownMenu()
+            DropdownMenuDistrict(districtList) {
+                district = it
+            }
+            Log.d("hatam", "AddressForm: $districtList")
+//            if (districtList != null && districtList.isNotEmpty()) {
+//
+//            } else {
+//                Text(text = "İlçeler Bulunamadı")
+//            }
         }
 
         Spacer(modifier = Modifier.size(8.dp))
@@ -113,7 +136,11 @@ fun AddressForm(paddingValues: PaddingValues) {
         Spacer(modifier = Modifier.size(8.dp))
 
         Button(
-            onClick = { /* Handle save action */ },
+            onClick = {
+                addressVM.addressTitle = addressName.text
+                addressVM.addressDesc = (city?.name ?: "") +" / " + district
+                navigate.popBackStack()
+            },
             colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFF8742A)),
             modifier = Modifier
                 .fillMaxWidth()
@@ -125,54 +152,72 @@ fun AddressForm(paddingValues: PaddingValues) {
 }
 
 @Composable
-fun DropdownMenu(){
-        val countryList = listOf("Seçim Yapınız", "1", "2", "3", "4")
-        var control by remember { mutableStateOf(value = false) }
-        var countryIndex by remember { mutableStateOf(value = 0) }
-               Row(
-                   modifier = Modifier.clickable{
-                       control=true
-                   }
-               )
-                   {
-                       Image(
-                           painter = painterResource(id = R.drawable.arrow_down),
-                           contentDescription = "Aç/Kapat",
-                           modifier = Modifier.size(24.dp)
-                       )
-                       Text(text = countryList[countryIndex])
-                   }
+fun DropdownMenuCity(provinceList: List<Province>?, callback: (Province) -> Unit) {
+    var expanded by remember { mutableStateOf(false) }
+    var selectedIndex by remember { mutableStateOf(0) }
 
+    Box(modifier = Modifier.clickable { expanded = true }) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Image(
+                painter = painterResource(id = R.drawable.arrow_down),
+                contentDescription = "Aç/Kapat",
+                modifier = Modifier.size(24.dp)
+            )
+            if (provinceList != null && provinceList.isNotEmpty()) {
+                Text(text = provinceList[selectedIndex].name)
+            }
+        }
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            provinceList?.forEachIndexed { index, province ->
+                DropdownMenuItem(
+                    onClick = {
+                        selectedIndex = index
+                        callback(province)
+                        expanded = false
+                    },
+                    content = { Text(text = province.name) }
+                )
+            }
+        }
+    }
+}
 
-                    if (control) {
-                        DropdownMenu(
-                            expanded = control,
-                            onDismissRequest = { control = false }
-                        ) {
-                            // Ülkeler listesini her bir öğeye dönüştür
-                            countryList.forEachIndexed { index, country ->
-                                DropdownMenuItem(
-                                    onClick = {
-                                        // Seçilen ülkeyi güncelle
-                                        countryIndex = index
+@Composable
+fun DropdownMenuDistrict(districtList: List<District>?, callback: (String) -> Unit) {
+    var expanded by remember { mutableStateOf(false) }
+    var selectedIndex by remember { mutableStateOf(0) }
 
-                                        // Dropdown menüyü kapat
-                                        control = false
-                                    },
-                                    content = { Text(text = country) }
-                                )
-                            }
-                        }
-                    }
-                }
-
-
-
-
-
-
-
-
+    Box(modifier = Modifier.clickable { expanded = true }) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Image(
+                painter = painterResource(id = R.drawable.arrow_down),
+                contentDescription = "Aç/Kapat",
+                modifier = Modifier.size(24.dp)
+            )
+            if (districtList != null && districtList.isNotEmpty()) {
+                Text(text = districtList[selectedIndex].name)
+            }
+        }
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            districtList?.forEachIndexed { index, district ->
+                DropdownMenuItem(
+                    onClick = {
+                        selectedIndex = index
+                        callback(district.name)
+                        expanded = false
+                    },
+                    content = { Text(text = district.name) }
+                )
+            }
+        }
+    }
+}
 
 @Preview(showBackground = true)
 @Composable
