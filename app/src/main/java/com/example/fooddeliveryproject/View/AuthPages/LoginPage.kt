@@ -21,8 +21,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,9 +41,13 @@ import androidx.navigation.compose.rememberNavController
 import com.example.fooddeliveryproject.R
 import com.example.fooddeliveryproject.ViewModel.AuthenticatorViewModel
 import com.example.fooddeliveryproject.navigation.StoreScreen
+
 @Preview
 @Composable
-fun LoginPage(navHostController: NavHostController= rememberNavController(),authVm: AuthenticatorViewModel) {
+fun LoginPage(
+    navHostController: NavHostController = rememberNavController(),
+    authVm: AuthenticatorViewModel
+) {
     Surface(
         color = Color.White,
         modifier = Modifier
@@ -57,8 +63,10 @@ fun LoginPage(navHostController: NavHostController= rememberNavController(),auth
             mutableStateOf("")
         }
 
-        Column(modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
 
             Spacer(modifier = Modifier.height(100.dp))
             Surface(
@@ -77,36 +85,44 @@ fun LoginPage(navHostController: NavHostController= rememberNavController(),auth
             Spacer(modifier = Modifier.height(8.dp))
             NormalTextComponent("Uygulamaya giriş yapabilmek için mail adresini gir")
             Spacer(modifier = Modifier.height(25.dp))
-            MyTextField(param = "Email"){
+            MyTextField(param = "Email") {
                 email.value = it
             }
             Spacer(modifier = Modifier.height(7.dp))
-            PasswordTextField(param = "Şifre"){
+            PasswordTextField(param = "Şifre") {
                 password.value = it
             }
-            Log.d("hatamLog", " sda" +password.value)
+            Log.d("hatamLog", " sda" + password.value)
 
             Spacer(modifier = Modifier.height(20.dp))
 
             Button(
                 onClick = {
-                          if (email.value.isNotEmpty() && password.value.isNotEmpty()) {
-                              authVm.signInWithEmail(email.value,password.value) {
-                                  Log.d("hatamSignInWithEmail", "it.toString()"+email.value+password.value)
-                                  if (it) {
-                                      navHostController.navigate(StoreScreen.HomeScreen.name) {
-                                          popUpTo(StoreScreen.LoginScreen.name) {
-                                              inclusive = true
-                                          }
-                                      }
-                                  }else{
-                                      Toast.makeText(navHostController.context, "Giriş Yapılamadı", Toast.LENGTH_SHORT).show()
-                                  }
-                              }
-                          }
+                    if (email.value.isNotEmpty() && password.value.isNotEmpty()) {
+                        authVm.signInWithEmail(email.value, password.value) {
+                            Log.d(
+                                "hatamSignInWithEmail",
+                                "it.toString()" + email.value + password.value
+                            )
+                            if (it) {
+                                authVm.setUserType(false)
+                                navHostController.navigate(StoreScreen.HomeScreen.name) {
+                                    popUpTo(StoreScreen.LoginScreen.name) {
+                                        inclusive = true
+                                    }
+                                }
+                            } else {
+                                Toast.makeText(
+                                    navHostController.context,
+                                    "Giriş Yapılamadı",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                    }
 
 
-                          },
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .heightIn(48.dp),
@@ -114,31 +130,44 @@ fun LoginPage(navHostController: NavHostController= rememberNavController(),auth
                 colors = ButtonDefaults.buttonColors(colorResource(id = R.color.orange))
             ) {
 
-                Box(modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(48.dp),
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(48.dp),
                     contentAlignment = Alignment.Center
-                ){
-                    Text(text = "Giriş Yap",
+                ) {
+                    Text(
+                        text = "Giriş Yap",
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold)
+                        fontWeight = FontWeight.Bold
+                    )
 
                 }
 
             }
 
             Spacer(modifier = Modifier.height(20.dp))
-            DividerTextComponent(text = "Ya da")
-            Spacer(modifier = Modifier.height(20.dp))
-            ButtonComponentGoogle(param = "Google")
+//            DividerTextComponent(text = "Ya da")
+//            Spacer(modifier = Modifier.height(20.dp))
+//            ButtonComponentGoogle(param = "Google")
             Spacer(modifier = Modifier.height(10.dp))
             FadedTextComponent(param = "Girş yap’a tıklayarak CSEFOOD Hizmet Şartlarımızı ve Gizlilik Politikamızı kabul etmiş olursunuz.")
 
             Spacer(modifier = Modifier.height(25.dp))
-            ClickableTextComponent(param1 = "Hesabın yok mu?", " Kaydolmak için tıkla!", StoreScreen.SignUpPage.name, navHostController)
+            ClickableTextComponent(
+                param1 = "Hesabın yok mu?",
+                " Kaydolmak için tıkla!",
+                StoreScreen.SignUpPage.name,
+                navHostController
+            )
 
             Spacer(modifier = Modifier.height(20.dp))
-            ClickableTextComponent(param1 = "Restoran'ın mı var?", " Restoran Girişi", StoreScreen.RestaurantLoginScreen.name, navHostController)
+            ClickableTextComponent(
+                param1 = "Restoran'ın mı var?",
+                " Restoran Girişi",
+                StoreScreen.RestaurantLoginScreen.name,
+                navHostController
+            )
 
 
         }

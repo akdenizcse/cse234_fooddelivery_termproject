@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.fooddeliveryproject.View.SpecialWidgets.CarouselCardOrigin
@@ -20,12 +21,13 @@ import com.example.fooddeliveryproject.View.SpecialWidgets.Header
 import com.example.fooddeliveryproject.View.SpecialWidgets.Favs
 import com.example.fooddeliveryproject.View.SpecialWidgets.Restorants
 import com.example.fooddeliveryproject.View.SpecialWidgets.SearchBar
+import com.example.fooddeliveryproject.ViewModel.AddressPageViewModel
 
 @Composable
-fun MainPage(navHostController: NavHostController=rememberNavController()) {
+fun MainPage(navHostController: NavHostController=rememberNavController(),addressPageViewModel: AddressPageViewModel= viewModel()) {
     Scaffold(
         topBar = {
-            Header()
+            Header(navController = navHostController,addressPageViewModel.addressTitle,addressPageViewModel.addressDesc)
         }
     ) { innerPadding ->
         LazyColumn(

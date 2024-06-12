@@ -2,13 +2,13 @@ package com.example.fooddeliveryproject.Models
 
 data class ApiResponse(
     var status:String,
-    var data : ArrayList<Data>
+    var data : ArrayList<Province>
 )
 
-data class Data(
+data class Province(
     var id:Int,
     var name:String,
-    var district:ArrayList<District>
+    var districts:ArrayList<District>
 )
 
 data class District(

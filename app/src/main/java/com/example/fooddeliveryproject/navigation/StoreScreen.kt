@@ -17,5 +17,6 @@ enum class StoreScreen {
     RestaurantScreen,
     CampaignScreen,
     RestaurantSignUpPage,
-    RestaurantLoginScreen
+    RestaurantLoginScreen,
+    AddressScreen
 }
