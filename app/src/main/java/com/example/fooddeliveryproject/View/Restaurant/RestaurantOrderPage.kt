@@ -26,6 +26,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -38,15 +39,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.fooddeliveryproject.Models.Food
 import com.example.fooddeliveryproject.Models.OrderedFood
 import com.example.fooddeliveryproject.R
 import com.example.fooddeliveryproject.Utils.AppBar
+import com.example.fooddeliveryproject.ViewModel.RestaurantViewModel
+
 @Preview
 @Composable
-fun RestaurantOrderPage(){
-
-
+fun RestaurantOrderPage(navHostController: NavHostController,restaurantViewModel: RestaurantViewModel){
+    restaurantViewModel.getRestaurantOrderList()
+    val foodList by restaurantViewModel.restaurantOrderList.observeAsState()
+    val totalPrice =0
+        //TODO
     Scaffold(
         topBar = {
             AppBar(imageId = R.drawable.fork_and_spoon,"Orders")
@@ -57,20 +63,19 @@ fun RestaurantOrderPage(){
             .padding(it)
             .background(Color.White)
         ){
-
-
-            val list= ArrayList<OrderedFood>()
-            list.add(OrderedFood("1","Kebap","100 gr etli kebap","100",1000,"Et"))
-            list.add(OrderedFood("2","100","100","100",1000,"100",2))
-            list.add(OrderedFood("3","100","100","100",1000,"100"))
-            list.add(OrderedFood("4","100","100","100",1000,"100"))
-            list.add(OrderedFood("5","Kebap","100 gr etli kebap","100",1000,"Et",3))
-            list.add(OrderedFood("6","100","100","100",1000,"100",2))
-            list.add(OrderedFood("7","100","100","100",1000,"100"))
-            val totalPrice = calculate(list)
+            
+//            val list= ArrayList<OrderedFood>()
+//            list.add(OrderedFood("1","Kebap","100 gr etli kebap","100",1000,"Et"))
+//            list.add(OrderedFood("2","100","100","100",1000,"100",2))
+//            list.add(OrderedFood("3","100","100","100",1000,"100"))
+//            list.add(OrderedFood("4","100","100","100",1000,"100"))
+//            list.add(OrderedFood("5","Kebap","100 gr etli kebap","100",1000,"Et",3))
+//            list.add(OrderedFood("6","100","100","100",1000,"100",2))
+//            list.add(OrderedFood("7","100","100","100",1000,"100"))
+//            val totalPrice = calculate(list)
             Box(modifier = Modifier.fillMaxHeight(.9f)){
 
-                 OrderFoodListDesig(list = list)
+                 foodList?.let { it1 -> OrderFoodListDesig(list = it1) }
 
                 Box(
                     modifier = Modifier

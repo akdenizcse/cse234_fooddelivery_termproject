@@ -5,7 +5,7 @@ data class Restaurant(
     var name:String="",
     var imageUrl:String="",
     var foodList: ArrayList<String> =ArrayList<String>(),
-    var soldFood:ArrayList<Food> =ArrayList<Food>(),
+    var soldFood:ArrayList<OrderedFood> =ArrayList<OrderedFood>(),
     var commentCount:Int=0,
     var starRate:Double=0.0,
 

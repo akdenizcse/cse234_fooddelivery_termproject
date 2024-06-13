@@ -45,6 +45,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.fooddeliveryproject.Models.Food
 import com.example.fooddeliveryproject.R
 import com.example.fooddeliveryproject.Utils.AppBar
+import com.example.fooddeliveryproject.Utils.downladImage
 import com.example.fooddeliveryproject.ViewModel.RestaurantViewModel
 import com.example.fooddeliveryproject.navigation.RestaurantScreen
 
@@ -52,8 +53,7 @@ import com.example.fooddeliveryproject.navigation.RestaurantScreen
 @Composable
 @Preview
 fun RestaurantHomePage(navHostController: NavHostController= rememberNavController(),restaurantViewModel: RestaurantViewModel) {
-    restaurantViewModel.getRestaurantFoodList()
-    val foodList by restaurantViewModel.restaurantFoodList.observeAsState()
+
     Scaffold(
         topBar = {
             AppBar(imageId = R.drawable.fork_and_spoon,"Food Delivery")
@@ -63,6 +63,9 @@ fun RestaurantHomePage(navHostController: NavHostController= rememberNavControll
         Surface(modifier = Modifier
             .padding(it)
             .background(Color.White), ) {
+            restaurantViewModel.getRestaurantFoodList()
+            val foodList by restaurantViewModel.restaurantFoodList.observeAsState()
+            Log.d("hatam12", "sa" +foodList?.size.toString())
             val list= ArrayList<Food>()
             list.add(Food("1","Kebap","100 gr etli kebap","100",1000,"Et"))
             list.add(Food("2","100","100","100",1000,"100"))
@@ -75,6 +78,7 @@ fun RestaurantHomePage(navHostController: NavHostController= rememberNavControll
             list.add(Food("9","100","100","100",1000,"100"))
             list.add(Food("10","100","100","100",1000,"100"))
             if (foodList!=null){
+                Log.d("hatamHome","sa" +foodList?.size.toString())
                 RestaurantALlProducts(foodList!!,navHostController,restaurantViewModel)
             }
 
@@ -146,11 +150,7 @@ fun RestaurantALlProducts(list: ArrayList<Food>,navHostController: NavHostContro
                         shape = RoundedCornerShape(10.dp),
                         border = BorderStroke(width = 0.1.dp, color = Color.LightGray)
                     ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.fork_and_spoon),
-                            contentDescription = null
-
-                        )
+                        downladImage(imageUrl = food.imageUrl)
                     }
                 }
             }

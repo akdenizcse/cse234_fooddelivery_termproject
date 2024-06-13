@@ -74,7 +74,7 @@ fun RestaurantAppNavigation(authenticatorViewModel: AuthenticatorViewModel,resta
                 RestaurantHomePage(navController, restaurantViewModel)
             }
             composable(route = RestaurantScreen.RestaurantOrderedScreen.name) {
-                RestaurantOrderPage()
+                RestaurantOrderPage(navController,restaurantViewModel)
             }
             composable(route = RestaurantScreen.RestaurantProfileScreen.name) {
                 RestaurantAccountPage(
@@ -144,66 +144,6 @@ fun RestaurantAppNavigation(authenticatorViewModel: AuthenticatorViewModel,resta
     }
 }
 
-//@Composable
-//fun StoreAppNavigation() {
-//    val navController: NavHostController = rememberNavController()
-//    val navBackStackEntry by navController.currentBackStackEntryAsState()
-//    val currentDestination = navBackStackEntry?.destination
-//    val restaurantViewModel: RestaurantViewModel = viewModel()
-//    val authenticatorViewModel: AuthenticatorViewModel = viewModel()
-//    Scaffold(
-//        bottomBar = {
-//            if (currentDestination != null) {
-//                StoreBot(navController = navController, currentDestination = currentDestination)
-//            }
-//        }
-//    ) { paddingValues ->
-//
-//        NavHost(
-//            navController = navController,
-//            startDestination = StoreScreen.LoginScreen.name,
-//            modifier = Modifier.padding(paddingValues)
-//        ) {
-//            composable(route = StoreScreen.LoginScreen.name) {
-//                LoginPage(navController,authenticatorViewModel)
-//            }
-//            composable(route = StoreScreen.HomeScreen.name) {
-//                MainPage(navController)
-//            }
-//            composable(route = StoreScreen.OrderedScreen.name) {
-//                OrderPage()
-//            }
-//            composable(route = StoreScreen.CartScreen.name) {
-//                CartPage()
-//            }
-//            composable(route = StoreScreen.CampaignScreen.name) {
-//                CampaignPage()
-//            }
-//            composable(route = StoreScreen.ProfileScreen.name) {
-//                AccountPage(navController,authenticatorViewModel)
-//            }
-//
-//            composable(route = StoreScreen.SignUpPage.name) {
-//                SignUpPage(navController,authenticatorViewModel)
-//            }
-//            composable(route=StoreScreen.RestaurantSignUpPage.name){
-//                RestaurantSignUpPage(navController,authenticatorViewModel)
-//            }
-//            composable(route=StoreScreen.RestaurantLoginScreen.name){
-//                RestaurantLoginPage(navController,authenticatorViewModel)
-//            }
-//            composable(route=StoreScreen.CategoryScreen.name){
-//                CategoriesPage(navController)
-//            }
-//            composable(route=StoreScreen.RestaurantScreen.name){
-//                RestaurantPage()
-//            }
-//
-//
-//
-//        }
-//    }
-//}
 @Composable
 fun StoreBot(navController: NavHostController ,currentDestination:NavDestination){
     val listOfStoreFullScreen = listOf(
