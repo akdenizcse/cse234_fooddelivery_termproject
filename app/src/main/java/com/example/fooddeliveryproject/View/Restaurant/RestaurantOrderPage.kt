@@ -39,6 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fooddeliveryproject.Models.Food
+import com.example.fooddeliveryproject.Models.OrderedFood
 import com.example.fooddeliveryproject.R
 import com.example.fooddeliveryproject.Utils.AppBar
 @Preview
@@ -58,14 +59,14 @@ fun RestaurantOrderPage(){
         ){
 
 
-            val list= ArrayList<Food>()
-            list.add(Food("1","Kebap","100 gr etli kebap","100",1000,"Et",3))
-            list.add(Food("2","100","100","100",1000,"100",2))
-            list.add(Food("3","100","100","100",1000,"100"))
-            list.add(Food("4","100","100","100",1000,"100"))
-            list.add(Food("5","Kebap","100 gr etli kebap","100",1000,"Et",3))
-            list.add(Food("6","100","100","100",1000,"100",2))
-            list.add(Food("7","100","100","100",1000,"100"))
+            val list= ArrayList<OrderedFood>()
+            list.add(OrderedFood("1","Kebap","100 gr etli kebap","100",1000,"Et"))
+            list.add(OrderedFood("2","100","100","100",1000,"100",2))
+            list.add(OrderedFood("3","100","100","100",1000,"100"))
+            list.add(OrderedFood("4","100","100","100",1000,"100"))
+            list.add(OrderedFood("5","Kebap","100 gr etli kebap","100",1000,"Et",3))
+            list.add(OrderedFood("6","100","100","100",1000,"100",2))
+            list.add(OrderedFood("7","100","100","100",1000,"100"))
             val totalPrice = calculate(list)
             Box(modifier = Modifier.fillMaxHeight(.9f)){
 
@@ -97,7 +98,7 @@ fun RestaurantOrderPage(){
 }
 
 @Composable
-fun OrderFoodListDesig(list: ArrayList<Food>){
+fun OrderFoodListDesig(list: ArrayList<OrderedFood>){
     var totalPrice=0
 
 
@@ -168,11 +169,11 @@ fun OrderFoodListDesig(list: ArrayList<Food>){
 
 }
 
-fun calculate(list:ArrayList<Food>):Int{
+fun calculate(list:ArrayList<OrderedFood>):Int{
     var total=0
     for (food in list){
         if (food.soldCount!=null)
-         total += (food.price*food.soldCount)
+         total += (food.price* food.soldCount!!)
     }
     return total
 }

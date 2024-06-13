@@ -18,28 +18,23 @@ import com.example.fooddeliveryproject.View.Pages.CartPage
 import com.example.fooddeliveryproject.View.Pages.MainPage
 import com.example.fooddeliveryproject.View.Search.SearchBarPage
 import com.example.fooddeliveryproject.ViewModel.AuthenticatorViewModel
+import com.example.fooddeliveryproject.ViewModel.RestaurantViewModel
 import com.example.fooddeliveryproject.navigation.RestaurantAppNavigation
-import com.example.fooddeliveryproject.navigation.StoreAppNavigation
+
 import com.example.fooddeliveryproject.ui.theme.FoodDeliveryProjectTheme
 
 class MainActivity : ComponentActivity() ,SearchView.OnQueryTextListener{
-
+    val authenticatorViewModel: AuthenticatorViewModel by viewModels()
+    val restaurantViewModel: RestaurantViewModel by viewModels()
+    var isRestaurantUser: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val authenticatorViewModel: AuthenticatorViewModel by viewModels()
         setContent {
             FoodDeliveryProjectTheme {
-                /*
-                val isRestaurantUser by authenticatorViewModel.isRestaurantUser.observeAsState(initial = false)
 
-                if (isRestaurantUser == true) {
-                    RestaurantAppNavigation()
-                } else {
-                    StoreAppNavigation()
-                }
+               RestaurantAppNavigation(authenticatorViewModel =authenticatorViewModel , restaurantViewModel = restaurantViewModel)
 
-                 */
-                SearchBarPage()
+                 
             }
         }
     }

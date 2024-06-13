@@ -34,6 +34,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.fooddeliveryproject.R
 import com.example.fooddeliveryproject.ViewModel.AuthenticatorViewModel
+import com.example.fooddeliveryproject.navigation.RestaurantScreen
 import com.example.fooddeliveryproject.navigation.StoreScreen
 @Preview
 @Composable
@@ -89,7 +90,7 @@ fun RestaurantLoginPage(navHostController: NavHostController= rememberNavControl
                         authVm.restaurantSignIn(email.value,password.value) {
                             if (it) {
                                 authVm.setUserType(true)
-                                navHostController.navigate(StoreScreen.HomeScreen.name) {
+                                navHostController.navigate(RestaurantScreen.RestaurantHomeScreen.name) {
                                     popUpTo(StoreScreen.LoginScreen.name) {
                                         inclusive = true
                                     }

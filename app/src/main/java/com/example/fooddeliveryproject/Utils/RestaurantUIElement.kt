@@ -36,7 +36,6 @@ fun AppBar(imageId: Int, title: String,isClickable:Boolean = false,navHostContro
     TopAppBar(backgroundColor = Color.White, contentColor = Color.Black, elevation = 5.dp ) {
         Row(horizontalArrangement = Arrangement.Start) {
             Spacer(modifier = Modifier.width(15.dp))
-
             Icon(
                 painter = painterResource(id = imageId), contentDescription = "",
                 modifier = Modifier

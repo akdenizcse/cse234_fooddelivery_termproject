@@ -11,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.fooddeliveryproject.Models.Food
 import com.example.fooddeliveryproject.Models.Restaurant
 import com.example.fooddeliveryproject.Utils.uploadImage
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -22,9 +23,9 @@ class RestaurantViewModel ():ViewModel() {
     private val db=Firebase.firestore
     private val storage=FirebaseStorage.getInstance()
     private val storageReference=storage.reference
-    private var uuid :String= "1231312"
+    val fauth=FirebaseAuth.getInstance()
+    private var uuid :String= fauth.currentUser?.uid ?: ""
     val isLoading= mutableStateOf(false)
-
     val editedFood: MutableState<Food?> = mutableStateOf(null)
 
     val _restaurant=MutableLiveData<Restaurant>()
@@ -32,6 +33,8 @@ class RestaurantViewModel ():ViewModel() {
 
     val _restaurantList=MutableLiveData<ArrayList<Restaurant>>()
     val restaurantList :LiveData<ArrayList<Restaurant>> get() = _restaurantList
+    val _restaurantFoodList=MutableLiveData<ArrayList<Food>>()
+    val restaurantFoodList :LiveData<ArrayList<Food>> get() = _restaurantFoodList
 
 
 
@@ -57,7 +60,7 @@ class RestaurantViewModel ():ViewModel() {
                      db.collection("Food").document(food.id).set(food)
                          .addOnSuccessListener {
                              Log.d("hatamVM","success")
-                             addFoodToRestaurant(food){
+                             addFoodToRestaurant(food.id){
                                  if (it){
                                      calllback(true)
                                  }else{
@@ -79,24 +82,25 @@ class RestaurantViewModel ():ViewModel() {
      }
     }
 
-    private fun addFoodToRestaurant(food: Food,calllback: (Boolean) -> Unit){
-        try{
-            viewModelScope.launch {
-                db.collection("Restaurant").document(uuid).collection("Food").document(food.id).set(food).addOnSuccessListener {
-                    Log.e("hatamAddProduct","success Add poroduct")
-
-                    calllback(true)
-                }.addOnFailureListener(){error->
-                    Log.e("hatamAddProduct","error Add poroduct"+error.toString())
-                    calllback(false)
+    private fun addFoodToRestaurant(foodId: String, callback: (Boolean) -> Unit) {
+        try {
+            db.collection("Restaurant").document(uuid).get().addOnSuccessListener {
+                val foodList = it.toObject(Restaurant::class.java)?.foodList ?: mutableListOf<String>()
+                if (!foodList.contains(foodId)) {
+                    foodList.add(foodId)
+                    db.collection("Restaurant").document(uuid).update("foodList", foodList)
+                    callback(true)
+                } else {
+                    callback(false)
                 }
             }
-        }catch (e:Exception){
-            Log.d("hatamAddProduct","error Add poroduct"+e.toString())
+        } catch (e: Exception) {
+            Log.e("hatamAddProduct", "Error adding food to restaurant: ${e.message}")
+            callback(false)
         }
-
     }
-    fun updateFood(food: Food,calllback: (Boolean) -> Unit) {
+
+        fun updateFood(food: Food,calllback: (Boolean) -> Unit) {
         try {
             viewModelScope.launch {
                 ///TODO LOOK AT
@@ -121,6 +125,24 @@ class RestaurantViewModel ():ViewModel() {
             }
         }catch (e:Exception){
 
+        }
+    }
+    fun getRestaurantFoodList(){
+        try {
+            db.collection("Restaurant").document(uuid).get().addOnSuccessListener { restaurant ->
+                val foodIDList: ArrayList<String?>? = restaurant?.get("foodList") as? ArrayList<String?>
+                if (foodIDList != null && foodIDList.isNotEmpty() && foodIDList.size > 0) {
+                    db.collection("Food").whereIn("id", foodIDList).get().addOnSuccessListener {
+                        _restaurantFoodList.value = it.toObjects(Food::class.java) as ArrayList<Food>
+                    }
+                } else {
+                    // Handle case where foodList is null or empty
+                    Log.d("hatamRVM", "foodList is null or empty")
+                    _restaurantFoodList.value = arrayListOf()
+                }
+            }
+        } catch (e: Exception) {
+            Log.d("hatamRVM", "error= " + e.toString())
         }
     }
 

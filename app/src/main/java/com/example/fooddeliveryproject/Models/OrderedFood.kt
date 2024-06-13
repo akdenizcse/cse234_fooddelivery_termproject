@@ -1,6 +1,5 @@
 package com.example.fooddeliveryproject.Models
 
-import com.example.fooddeliveryproject.View.Pages.OrderStatus
 
 data class OrderedFood(
     val id: String,

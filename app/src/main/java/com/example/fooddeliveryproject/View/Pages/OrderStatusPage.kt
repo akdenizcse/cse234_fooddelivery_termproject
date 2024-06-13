@@ -45,7 +45,9 @@ fun OrderStatusPage(navHostController: NavHostController= rememberNavController(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { /* Handle back navigation */ }) {
+                    IconButton(onClick = {
+                        navHostController.popBackStack()
+                    }) {
                         Icon(
                             painter = painterResource(id = R.drawable.arrow_left),
                             contentDescription = "Back",
@@ -96,7 +98,7 @@ fun ListItem(orderStatus: OrderedFood) {
 //                modifier = Modifier.size(300.dp)
 //            )
 
-            downladImage(imageUrl = "https://firebasestorage.googleapis.com/v0/b/csefooddelivery.appspot.com/o/food%2Fimage_17177640854250?alt=media&token=ee8761cf-05d0-4886-bb7d-d145b883aa5b")
+            downladImage(imageUrl = orderStatus.imageUrl)
             Column(modifier = Modifier.padding(top = 25.dp)) {
                 Text(
                     text = orderStatus.name,

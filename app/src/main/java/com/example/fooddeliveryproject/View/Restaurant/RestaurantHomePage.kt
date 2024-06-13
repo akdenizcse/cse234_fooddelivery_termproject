@@ -27,6 +27,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -49,13 +51,15 @@ import com.example.fooddeliveryproject.navigation.RestaurantScreen
 
 @Composable
 @Preview
-fun RestaurantHomePage(navHostController: NavHostController= rememberNavController(),viewModel:RestaurantViewModel) {
+fun RestaurantHomePage(navHostController: NavHostController= rememberNavController(),restaurantViewModel: RestaurantViewModel) {
+    restaurantViewModel.getRestaurantFoodList()
+    val foodList by restaurantViewModel.restaurantFoodList.observeAsState()
     Scaffold(
         topBar = {
             AppBar(imageId = R.drawable.fork_and_spoon,"Food Delivery")
         }
     ){
-        viewModel.editedFood.value=null
+        restaurantViewModel.editedFood.value=null
         Surface(modifier = Modifier
             .padding(it)
             .background(Color.White), ) {
@@ -70,7 +74,9 @@ fun RestaurantHomePage(navHostController: NavHostController= rememberNavControll
             list.add(Food("8","100","100","100",1000,"100"))
             list.add(Food("9","100","100","100",1000,"100"))
             list.add(Food("10","100","100","100",1000,"100"))
-            RestaurantALlProducts(list,navHostController,viewModel)
+            if (foodList!=null){
+                RestaurantALlProducts(foodList!!,navHostController,restaurantViewModel)
+            }
 
         }
 

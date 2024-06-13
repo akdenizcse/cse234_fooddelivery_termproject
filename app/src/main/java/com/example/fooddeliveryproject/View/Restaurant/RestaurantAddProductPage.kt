@@ -62,6 +62,7 @@ import com.example.fooddeliveryproject.R
 import com.example.fooddeliveryproject.Utils.AppBar
 import com.example.fooddeliveryproject.Utils.CircularIndeterminateProgressBar
 import com.example.fooddeliveryproject.ViewModel.RestaurantViewModel
+import com.example.fooddeliveryproject.navigation.RestaurantScreen
 
 @Preview
 @Composable
@@ -179,12 +180,21 @@ fun RestaurantAddProductPage(navHostController: NavHostController,viewModel: Res
                         Text(text = "Ürün Detayı", fontSize = 15.sp,         fontFamily = FontFamily(Font(R.font.popins_regular, style = FontStyle.Normal, weight = FontWeight.Normal)))
                     },)
 
-
                     Spacer(modifier = Modifier.padding(5.dp))
+                    try {
+
+                    }catch (e:Exception){
+
+                    }
                     OutlinedTextField(value =if (foodPrice == 0) "" else foodPrice.toString() ,
                         onValueChange ={
-                            foodPrice=it.trim().toInt()
+                            try {
+                                foodPrice=it.trim().toInt()
+                            }catch (e:Exception){
+
+                            }
                         } , label = {
+
 
                             Text(text = "Ürün Fiyatı", fontSize = 15.sp,
                                 fontFamily = FontFamily(Font(R.font.popins_regular, style = FontStyle.Normal, weight = FontWeight.Normal)))
@@ -210,9 +220,10 @@ fun RestaurantAddProductPage(navHostController: NavHostController,viewModel: Res
                                 if (isSuccess) {
                                     Log.d("hatamRestaurantAddProductPage", "Urun Eklendi")
                                     Toast.makeText(context, "Urun Eklendi", Toast.LENGTH_SHORT).show()
-
+                                    navHostController.navigate(RestaurantScreen.RestaurantHomeScreen.name)
                                 } else {
-                                    Log.d("hatamRestaurantAddProductPage", "Urun Eklenmedi")
+
+                                    Log.d("hatamRestaurantAddProductPage", "dadUrun Eklenmedi")
                                     Toast.makeText(context, "Urun Eklenemedi", Toast.LENGTH_SHORT).show()
                                     isLoading.value=false
 

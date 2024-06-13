@@ -42,7 +42,7 @@ import com.example.fooddeliveryproject.R
 import com.example.fooddeliveryproject.ViewModel.AuthenticatorViewModel
 import com.example.fooddeliveryproject.navigation.StoreScreen
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun LoginPage(
     navHostController: NavHostController = rememberNavController(),

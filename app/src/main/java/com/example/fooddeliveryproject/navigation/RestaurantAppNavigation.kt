@@ -67,11 +67,11 @@ fun RestaurantAppNavigation(authenticatorViewModel: AuthenticatorViewModel,resta
     ) { paddingValues ->
         NavHost(
             navController = navController,
-            startDestination = StoreScreen.OrderStatusScreen.name,
+            startDestination = StoreScreen.LoginScreen.name,
             modifier = Modifier.padding(paddingValues)
         ) {
             composable(route = RestaurantScreen.RestaurantHomeScreen.name) {
-                RestaurantHomePage(navController, viewModel = restaurantViewModel)
+                RestaurantHomePage(navController, restaurantViewModel)
             }
             composable(route = RestaurantScreen.RestaurantOrderedScreen.name) {
                 RestaurantOrderPage()

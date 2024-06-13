@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.fooddeliveryproject.Models.Food
 import com.example.fooddeliveryproject.Models.OrderedFood
 import com.example.fooddeliveryproject.Models.User
-import com.example.fooddeliveryproject.View.Pages.OrderStatus
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
