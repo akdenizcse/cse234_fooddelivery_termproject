@@ -91,6 +91,9 @@ dependencies {
 
     //LiveData
     implementation ("androidx.lifecycle:lifecycle-livedata:2.8.1")
+    //COIL : ımage download
+    implementation("io.coil-kt:coil-compose:2.6.0")
+
 
     //Eray:
 }

@@ -30,6 +30,7 @@ import com.example.fooddeliveryproject.View.Pages.CartPage
 import com.example.fooddeliveryproject.View.Pages.CategoriesPage
 import com.example.fooddeliveryproject.View.Pages.MainPage
 import com.example.fooddeliveryproject.View.Pages.OrderPage
+import com.example.fooddeliveryproject.View.Pages.OrderStatusPage
 import com.example.fooddeliveryproject.View.Pages.RestaurantPage
 import com.example.fooddeliveryproject.View.Restaurant.RestaurantAccountPage
 import com.example.fooddeliveryproject.View.Restaurant.RestaurantAddProductPage
@@ -66,7 +67,7 @@ fun RestaurantAppNavigation(authenticatorViewModel: AuthenticatorViewModel,resta
     ) { paddingValues ->
         NavHost(
             navController = navController,
-            startDestination = StoreScreen.HomeScreen.name,
+            startDestination = StoreScreen.OrderStatusScreen.name,
             modifier = Modifier.padding(paddingValues)
         ) {
             composable(route = RestaurantScreen.RestaurantHomeScreen.name) {
@@ -133,6 +134,9 @@ fun RestaurantAppNavigation(authenticatorViewModel: AuthenticatorViewModel,resta
             }
             composable(route=StoreScreen.AddressScreen.name){
                 AddressPage(navController,addressVM)
+            }
+            composable(route=StoreScreen.OrderStatusScreen.name){
+                OrderStatusPage()
             }
 
 

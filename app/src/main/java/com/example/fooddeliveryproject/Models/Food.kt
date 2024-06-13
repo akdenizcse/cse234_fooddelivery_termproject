@@ -7,5 +7,4 @@ data class Food(
     var imageUrl: String,
     var price: Int,
     var category:String,
-    val soldCount:Int?=null
 )

@@ -5,7 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fooddeliveryproject.Models.Food
+import com.example.fooddeliveryproject.Models.OrderedFood
 import com.example.fooddeliveryproject.Models.User
+import com.example.fooddeliveryproject.View.Pages.OrderStatus
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -16,6 +18,8 @@ class UserViewModel():ViewModel() {
     private var uuid :String= ""
     private val _user=MutableLiveData<User>()
     val user:LiveData<User> get() = _user
+    private val _preparedOrderList =MutableLiveData<List<OrderedFood>>()
+    val preparedOrderList  :LiveData<List<OrderedFood>> get() = _preparedOrderList
     fun getUserInfo(callBack:(Boolean)->Unit){
         viewModelScope.launch {
             db.collection("Users").document(uuid).get()
@@ -72,7 +76,7 @@ class UserViewModel():ViewModel() {
                 }
         }
     }
-    fun addToOrder(foodList:ArrayList<Food>,callBack:(Boolean)->Unit){
+    fun addToOrder(foodList:ArrayList<OrderedFood>,callBack:(Boolean)->Unit){
         viewModelScope.launch {
             for (food in foodList){
                 db.collection("Users").document(uuid).collection("Order")
@@ -87,6 +91,14 @@ class UserViewModel():ViewModel() {
     }
 
 
+    fun getPreparedOrderList(){
+        viewModelScope.launch {
+            db.collection("User").document(uuid).collection("Order")
+                .whereEqualTo("isDelivered",false).get().addOnSuccessListener {
+
+                }
+        }
+    }
 
 
 }
