@@ -63,7 +63,7 @@ fun RestaurantOrderPage(navHostController: NavHostController,restaurantViewModel
             .padding(it)
             .background(Color.White)
         ){
-            
+
 //            val list= ArrayList<OrderedFood>()
 //            list.add(OrderedFood("1","Kebap","100 gr etli kebap","100",1000,"Et"))
 //            list.add(OrderedFood("2","100","100","100",1000,"100",2))

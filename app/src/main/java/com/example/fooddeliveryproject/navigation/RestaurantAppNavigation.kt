@@ -41,6 +41,7 @@ import com.example.fooddeliveryproject.View.Restaurant.RestaurantPasswordChangeP
 import com.example.fooddeliveryproject.ViewModel.AddressPageViewModel
 import com.example.fooddeliveryproject.ViewModel.AuthenticatorViewModel
 import com.example.fooddeliveryproject.ViewModel.RestaurantViewModel
+import com.example.fooddeliveryproject.ViewModel.UserViewModel
 
 @Composable
 fun RestaurantAppNavigation(authenticatorViewModel: AuthenticatorViewModel,restaurantViewModel: RestaurantViewModel ) {
@@ -48,6 +49,7 @@ fun RestaurantAppNavigation(authenticatorViewModel: AuthenticatorViewModel,resta
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val addressVM:AddressPageViewModel= viewModel()
+    val userVM:UserViewModel= viewModel()
 
 
     Scaffold(
@@ -79,7 +81,8 @@ fun RestaurantAppNavigation(authenticatorViewModel: AuthenticatorViewModel,resta
             composable(route = RestaurantScreen.RestaurantProfileScreen.name) {
                 RestaurantAccountPage(
                     navController = navController,
-                    viewModel = authenticatorViewModel
+                    viewModel = authenticatorViewModel,
+                    restaurantViewModel=restaurantViewModel
                 )
             }
             composable(route = RestaurantScreen.RestaurantEditProductScreen.name) {
@@ -108,7 +111,7 @@ fun RestaurantAppNavigation(authenticatorViewModel: AuthenticatorViewModel,resta
                 OrderPage()
             }
             composable(route = StoreScreen.CartScreen.name) {
-                CartPage()
+                CartPage(navController,userVM)
             }
             composable(route = StoreScreen.CampaignScreen.name) {
                 CampaignPage()

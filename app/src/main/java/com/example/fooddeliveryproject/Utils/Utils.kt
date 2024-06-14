@@ -43,7 +43,7 @@ fun uploadImage(imageUri: Uri, folderName: String,storageReference: StorageRefer
     }
 }
 @Composable
-fun downladImage(imageUrl:String){
+fun downladImage(imageUrl:String,size:Int=150) {
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
             .data(imageUrl)
@@ -52,7 +52,7 @@ fun downladImage(imageUrl:String){
         placeholder = painterResource(R.drawable.fork_and_spoon),
         contentDescription = "",
         contentScale = ContentScale.Crop,
-        modifier = Modifier.size(150.dp)
+        modifier = Modifier.size(size.dp)
     )
 }
 

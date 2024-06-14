@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fooddeliveryproject.Models.Restaurant
+import com.example.fooddeliveryproject.Models.User
 import com.example.fooddeliveryproject.Utils.uploadImage
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
@@ -56,7 +57,7 @@ class AuthenticatorViewModel:ViewModel() {
     fun createUser(email:String, password:String, onResult: (Boolean) -> Unit){
         auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener {
             if(it.isSuccessful){
-                db.collection("Users").document(it.result?.user?.uid.toString()).set(Restaurant(id = auth.uid.toString()))
+                db.collection("Users").document(it.result?.user?.uid.toString()).set(User(id = auth.uid.toString()))
                     .addOnSuccessListener {
                     onResult(true)
                 }.addOnFailureListener {

@@ -38,13 +38,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.fooddeliveryproject.R
+import com.example.fooddeliveryproject.Utils.downladImage
 import com.example.fooddeliveryproject.ViewModel.AuthenticatorViewModel
 import com.example.fooddeliveryproject.ViewModel.RestaurantViewModel
 import com.example.fooddeliveryproject.navigation.RestaurantScreen
 
 @Preview
 @Composable
-fun RestaurantAccountPage(navController: NavHostController,viewModel: AuthenticatorViewModel) {
+fun RestaurantAccountPage(navController: NavHostController,viewModel: AuthenticatorViewModel,restaurantViewModel: RestaurantViewModel) {
+   restaurantViewModel.getRestaurantInfo()
     Scaffold(
     ) {
         Surface(modifier = Modifier
@@ -52,7 +54,8 @@ fun RestaurantAccountPage(navController: NavHostController,viewModel: Authentica
             .padding(it)) {
             Column(verticalArrangement = Arrangement.Top , modifier = Modifier.padding(top = 140.dp)) {
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
-                    Image(painter = painterResource(id = R.drawable.fork_and_spoon), contentDescription = "profile photo", modifier = Modifier.size(150.dp).background(Color.White, CircleShape))
+//                    Image(painter = painterResource(id = R.drawable.fork_and_spoon), contentDescription = "profile photo", modifier = Modifier.size(150.dp).background(Color.White, CircleShape))
+                    restaurantViewModel.restaurant.value?.let { it1 -> downladImage(imageUrl = it1.imageUrl) }
                 }
                 Divider(modifier = Modifier.padding(top = 50.dp),color = Color.White)
                 Row(modifier = Modifier

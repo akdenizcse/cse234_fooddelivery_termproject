@@ -5,7 +5,10 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
+import com.example.fooddeliveryproject.R
 
 data class NavItem(
     val label: String,
@@ -44,12 +47,12 @@ val listOfStoreNavItem = listOf(
         route = StoreScreen.HomeScreen.name),
     NavItem(
         label = "Sepetim",
-        icon = Icons.Default.Person,
-        route = StoreScreen.OrderedScreen.name
+        icon = Icons.Default.ShoppingCart,
+        route = StoreScreen.CartScreen.name
     ),
     NavItem(
         label = "Kampanyalar",//Sembolü değiştir
-        icon =  Icons.Default.Person,
+        icon =  Icons.Default.Star,
         route = StoreScreen.CampaignScreen.name
     ),
     NavItem(

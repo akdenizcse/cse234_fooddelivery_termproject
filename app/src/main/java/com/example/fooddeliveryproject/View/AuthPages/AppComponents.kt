@@ -33,6 +33,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -400,7 +401,10 @@ fun QuantityComponent(){
 }
 
 @Composable
-fun QuantityComponentCartPage(){
+fun QuantityComponentCartPage(quantity: Int , isIncrease : (Boolean) -> Unit){
+    val count by remember {
+        mutableStateOf(quantity)
+    }
 
     Surface(
         color = Color.White,
@@ -420,19 +424,21 @@ fun QuantityComponentCartPage(){
             )
         {
 
-            Button(onClick = {},
+            Button(onClick = {
+                             isIncrease(false)
+            },
                 modifier = Modifier
                     .width(36.dp)
                     .height(46.dp),
                 contentPadding = PaddingValues(),
                 colors = ButtonDefaults.buttonColors(colorResource(id = R.color.orange))
             ){
-                Icon(Icons.Outlined.Add, contentDescription = "Artır")
+                Icon(painterResource(id = R.drawable.minus), contentDescription = "Azalt")
             }
 
 
             Text(
-                text = "1",
+                text = "$quantity" ,
                 modifier = Modifier.padding(10.dp),
                 color = colorResource(id = R.color.signUpBlack),
                 style = TextStyle(
@@ -441,7 +447,9 @@ fun QuantityComponentCartPage(){
                 )
             )
 
-            Button(onClick = {},
+            Button(onClick = {
+                           isIncrease(true)
+            },
                 modifier = Modifier
                     .width(36.dp)
                     .height(46.dp),
