@@ -126,13 +126,9 @@ fun eray(){
                 .fillMaxSize())
         }
 
-
-
-
-
-
     )
 }
+
 
 @Composable
 fun SearchBar(modifier: Modifier = Modifier) {
@@ -152,9 +148,10 @@ fun SearchBar(modifier: Modifier = Modifier) {
                 .fillMaxWidth()
                 .background(
                     color = colorResource(id = R.color.detailsPageColor),
-                    shape = MaterialTheme.shapes.medium
+                    //shape = MaterialTheme.shapes.medium,
+                    shape= RoundedCornerShape(40.dp)
                 )
-                .padding(horizontal = 16.dp, vertical = 12.dp)
+                .padding(horizontal = 16.dp, vertical = 12.dp),
         ) {
             if (searchText.text.isEmpty()) {
                 Text(
@@ -287,7 +284,7 @@ fun SearchBar(modifier: Modifier = Modifier) {
                                         color = colorResource(id = R.color.white),
                                         //shape = RoundedCornerShape(14.dp),
                                         modifier = Modifier
-                                            .size(20.dp, 15.dp)
+                                            .size(10.dp, 9.dp)
                                             .background(Color.White)
 
                                         ) {
@@ -297,11 +294,12 @@ fun SearchBar(modifier: Modifier = Modifier) {
                                             modifier = Modifier
                                                 .fillMaxSize()
                                                 //.size(200.dp)
-                                                //.padding(bottom=16.dp)
+                                                .padding(bottom=1.dp)
                                         )
 
                                     }
 
+                                    Spacer(modifier = Modifier.width(2.dp))
                                     Text(text = "4.1(500+ Yorum))",
                                         modifier = Modifier.fillMaxWidth(),
                                         color = colorResource(id = R.color.silikMetin),
