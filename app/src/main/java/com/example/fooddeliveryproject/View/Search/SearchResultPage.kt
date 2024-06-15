@@ -21,14 +21,18 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material.BottomAppBar
 import androidx.compose.material.Card
+import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.contentColorFor
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
@@ -59,71 +63,27 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fooddeliveryproject.R
+import com.example.fooddeliveryproject.View.AuthPages.FadedTextComponent
 import com.example.fooddeliveryproject.View.AuthPages.QuantityComponentCartPage
-
-
-@Composable
-fun SearchResultPage(
-    name: String,
-    location: String,
-    rating: Double,
-    reviews: String,
-    price: String,
-    imageRes: Int
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Image(painter = painterResource(id = R.drawable.arrow_left), contentDescription = null,
-                modifier = Modifier
-                    .size(50.dp)
-                    .clip(CircleShape),
-            contentScale = ContentScale.Crop
-        )
-
-        Spacer(modifier = Modifier.width(16.dp))
-        Column(modifier = Modifier.weight(1f)) {
-            Text(text = name, fontWeight = FontWeight.Bold, fontSize = 18.sp)
-            Text(text = location, color = Color.Gray, fontSize = 14.sp)
-            Row(verticalAlignment = Alignment.CenterVertically) {
-
-                Button(onClick = {},
-                    modifier = Modifier
-                        .width(36.dp)
-                        .height(46.dp),
-                    contentPadding = PaddingValues(),
-                    colors = ButtonDefaults.buttonColors(colorResource(id = R.color.orange))
-                ){
-                    androidx.compose.material3.Icon(Icons.Outlined.Add, contentDescription = "Artır")
-                }
-                Text(
-                    text = "$rating ($reviews)",
-                    color = Color.Gray,
-                    fontSize = 14.sp,
-                    modifier = Modifier.padding(start = 4.dp)
-                )
-            }
-        }
-        Text(text = price, fontWeight = FontWeight.Bold, fontSize = 18.sp)
-    }
-}
+import com.example.fooddeliveryproject.View.Pages.CartPageView
+import com.example.fooddeliveryproject.View.Pages.ExistCartView
+import com.example.fooddeliveryproject.View.Pages.calculateTotalPrice
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 @Preview
-fun eray(){
+fun SearchResultPage(){
     Scaffold(
         topBar = {
         },
         content = { paddingValues ->
-            SearchBar(modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxSize())
+
+
+            SearchBar(modifier = Modifier.padding(paddingValues).fillMaxSize())
+
+
         }
 
     )
@@ -140,7 +100,8 @@ fun SearchBar(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .padding(1.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+        ,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
@@ -149,12 +110,14 @@ fun SearchBar(modifier: Modifier = Modifier) {
                 .background(
                     color = colorResource(id = R.color.detailsPageColor),
                     //shape = MaterialTheme.shapes.medium,
-                    shape= RoundedCornerShape(40.dp)
+                    shape = RoundedCornerShape(40.dp)
                 )
                 .padding(horizontal = 16.dp, vertical = 12.dp),
         ) {
             if (searchText.text.isEmpty()) {
+
                 Text(
+                    modifier = Modifier.padding(start = 20.dp),
                     text = "Search...",
                     color = Color.Gray,
                     fontSize = 16.sp
@@ -193,6 +156,7 @@ fun SearchBar(modifier: Modifier = Modifier) {
         val numbers = listOf(1,2,3,4)
         LazyColumn(
             Modifier
+                .fillMaxSize()
                 .background(color = colorResource(id = R.color.googleColor))
         ) {
             items(numbers) { number ->
@@ -294,7 +258,7 @@ fun SearchBar(modifier: Modifier = Modifier) {
                                             modifier = Modifier
                                                 .fillMaxSize()
                                                 //.size(200.dp)
-                                                .padding(bottom=1.dp)
+                                                .padding(bottom = 1.dp)
                                         )
 
                                     }
@@ -373,3 +337,107 @@ fun SearchBar(modifier: Modifier = Modifier) {
 
     }
 }
+
+
+@Composable
+fun eray(paddingValues: PaddingValues){
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+
+
+
+
+        Spacer(modifier = Modifier.height(250.dp))
+
+
+
+        Spacer(modifier = Modifier.height(40.dp))
+        Text(
+            text = "Sonuç Bulunamadı",
+            color = colorResource(id = R.color.signUpBlack),
+            style = TextStyle(
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Normal,
+            )
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+        FadedTextComponent(param = "Yeniden Aramayı Deneyebilirsiniz")
+    }
+
+}
+
+
+/*
+@Composable
+@Preview
+fun NotFound(){
+
+    var searchText by remember { mutableStateOf(TextFieldValue("Çiğköfte")) }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(
+                                color = colorResource(id = R.color.purple_200),
+                                //shape = MaterialTheme.shapes.medium,
+                                shape = RoundedCornerShape(40.dp)
+                            )
+                            .padding(top = 12.dp, bottom = 12.dp),
+                    ) {
+                        if (searchText.text.isEmpty()) {
+
+
+                            Text(
+                                modifier = Modifier.padding(start = 20.dp),
+                                text = "Search...",
+                                color = Color.Gray,
+                                fontSize = 16.sp
+                            )
+                        }
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+
+                            Spacer(modifier = Modifier.width(15.dp))
+                            androidx.compose.material3.Icon(
+                                Icons.Outlined.Search,
+                                contentDescription = "Artır",
+                                tint = colorResource(id = R.color.orange)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            BasicTextField(
+                                value = searchText,
+                                onValueChange = { searchText = it },
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                textStyle = TextStyle(
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.Normal
+                                )
+                            )
+                        }
+                    }
+                },
+                modifier = Modifier
+                    .height(60.dp)
+                    .fillMaxWidth(),
+                backgroundColor = colorResource(id = R.color.black),
+                contentColor = contentColorFor(backgroundColor = MaterialTheme.colors.primary)
+            )
+        }
+    ) {
+
+        eray(it)
+
+    }
+
+}
+
+ */
