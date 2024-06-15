@@ -29,6 +29,7 @@ import com.example.fooddeliveryproject.View.Pages.CampaignPage
 import com.example.fooddeliveryproject.View.Pages.CartPage
 import com.example.fooddeliveryproject.View.Pages.CategoriesPage
 import com.example.fooddeliveryproject.View.Pages.MainPage
+import com.example.fooddeliveryproject.View.Pages.OrderConfirmPage
 import com.example.fooddeliveryproject.View.Pages.OrderPage
 import com.example.fooddeliveryproject.View.Pages.OrderStatusPage
 import com.example.fooddeliveryproject.View.Pages.RestaurantPage
@@ -140,6 +141,9 @@ fun RestaurantAppNavigation(authenticatorViewModel: AuthenticatorViewModel,resta
             }
             composable(route=StoreScreen.OrderStatusScreen.name){
                 OrderStatusPage()
+            }
+            composable(route=StoreScreen.OrderConfirmScreen.name){
+                OrderConfirmPage(navController)
             }
 
 

@@ -58,6 +58,7 @@ import com.example.fooddeliveryproject.Utils.downladImage
 import com.example.fooddeliveryproject.View.AuthPages.FadedTextComponent
 import com.example.fooddeliveryproject.View.AuthPages.QuantityComponentCartPage
 import com.example.fooddeliveryproject.ViewModel.UserViewModel
+import com.example.fooddeliveryproject.navigation.StoreScreen
 
 @Preview
 @Composable
@@ -81,15 +82,6 @@ fun CartPage(
                 TopAppBar(
                     title = {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-
-                            IconButton(onClick = { /* Handle navigation */ }) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.arrow_left),
-                                    contentDescription = "Back",
-                                    tint = Color.White,
-                                    modifier = Modifier.size(30.dp),
-                                )
-                            }
 
                             Spacer(modifier = Modifier.width(80.dp))
                             Text(
@@ -117,7 +109,7 @@ fun CartPage(
             //CartPageView(it)
             if (cartList != null) {
                 val totalPrice = calculateTotalPrice(cartList!!)
-                ExistCartView(it, totalPrice, userViewModel)
+                ExistCartView(it, totalPrice, userViewModel,navHostController)
             } else {
                 CartPageView(it)
             }
@@ -352,7 +344,8 @@ fun Deneme2(paddingValues: PaddingValues) {
 fun ExistCartView(
     paddingValues: PaddingValues,
     totalPrice: Int,
-    userViewModel: UserViewModel
+    userViewModel: UserViewModel,
+    navHostController: NavHostController
 ) {
     val context = LocalContext.current
 
@@ -375,7 +368,17 @@ fun ExistCartView(
                     color = colorResource(id = R.color.signUpBlack)
                 )
                 Button(
-                    onClick = { /* Handle button click */ },
+                    onClick = { 
+                                    userViewModel.order(){
+                                        if (it){
+                                            navHostController.navigate(StoreScreen.OrderConfirmScreen.name)
+                                            Toast.makeText(context,"Sipariş Alındı",Toast.LENGTH_LONG).show()
+                                        }else{
+                                            Toast.makeText(context,"Sipariş Alınırken Hata Oluştu",Toast.LENGTH_LONG).show()
+                                        }
+                                    }
+
+                              },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),

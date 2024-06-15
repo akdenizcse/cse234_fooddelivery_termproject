@@ -6,18 +6,14 @@ enum class StoreScreen {
     ProfileScreen,
     SearchScreen,
     CartScreen,
-    FavoriteScreen,
-    AddProductScreen,
-    ChangeRestaurantNameScreen,
-    PasswordChangeScreen,
     LoginScreen,
     SignUpPage,
-    AccountScreen,
     CategoryScreen,
     RestaurantScreen,
     CampaignScreen,
     RestaurantSignUpPage,
     RestaurantLoginScreen,
     AddressScreen,
-    OrderStatusScreen
+    OrderStatusScreen,
+    OrderConfirmScreen
 }

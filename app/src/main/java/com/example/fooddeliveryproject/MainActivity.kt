@@ -1,6 +1,7 @@
 package com.example.fooddeliveryproject
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.SearchView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -32,7 +33,7 @@ class MainActivity : ComponentActivity() ,SearchView.OnQueryTextListener{
         setContent {
             FoodDeliveryProjectTheme {
 
-               RestaurantAppNavigation(authenticatorViewModel =authenticatorViewModel , restaurantViewModel = restaurantViewModel)
+                RestaurantAppNavigation(authenticatorViewModel =authenticatorViewModel , restaurantViewModel = restaurantViewModel)
 
                  
             }

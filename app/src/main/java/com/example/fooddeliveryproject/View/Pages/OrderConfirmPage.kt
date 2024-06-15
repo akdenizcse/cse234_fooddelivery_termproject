@@ -23,17 +23,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.fooddeliveryproject.R
+import com.example.fooddeliveryproject.navigation.StoreScreen
 
 @Composable
-@Preview
-fun OrderConfirmPage(){
+@Preview(showBackground = true)
+fun OrderConfirmPage(navHostController: NavHostController){
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { },
                 navigationIcon = {
-                    IconButton(onClick = {  }) {
+                    IconButton(onClick = {
+                        navHostController.navigate(StoreScreen.HomeScreen.name)
+                    }) {
                         Icon(
                             painter = painterResource(id = R.drawable.arrow_left), // Replace with your back icon resource
                             contentDescription = null

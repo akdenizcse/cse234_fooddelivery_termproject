@@ -1,9 +1,11 @@
 package com.example.fooddeliveryproject.ViewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.fooddeliveryproject.Models.Food
 import com.example.fooddeliveryproject.Models.OrderedFood
 import com.example.fooddeliveryproject.Models.User
@@ -12,16 +14,22 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class UserViewModel():ViewModel() {
     private val db= Firebase.firestore
-    private var uuid :String= FirebaseAuth.getInstance().currentUser!!.uid
+    private var uuid :String=""
     private val _user=MutableLiveData<User>()
     private val _cartList=MutableLiveData<List<OrderedFood>>()
     val cartList:LiveData<List<OrderedFood>> get() = _cartList
     val user:LiveData<User> get() = _user
     private val _preparedOrderList =MutableLiveData<List<OrderedFood>>()
     val preparedOrderList  :LiveData<List<OrderedFood>> get() = _preparedOrderList
+    init {
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            uuid = FirebaseAuth.getInstance().currentUser!!.uid
+        }
+    }
     fun getUserInfo(callBack:(Boolean)->Unit){
         viewModelScope.launch {
             db.collection("Users").document(uuid).get()
@@ -115,21 +123,38 @@ class UserViewModel():ViewModel() {
                 }
         }
     }
-//    fun addCart(food:Food,callBack:(Boolean)->Unit){
-//        val newOrder=OrderedFood(food.id,food.name,food.description,food.imageUrl,food.price,food.category,1,System.currentTimeMillis().toString(),false,uuid)
-//        _cartList.value?.add(newOrder)
-//
-//    }
-//    fun removeCart(food:Food,callBack:(Boolean)->Unit){
-//        val newOrder=OrderedFood(food.id,food.name,food.description,food.imageUrl,food.price,food.category,1,System.currentTimeMillis().toString(),false,uuid)
-//        if(_cartList.value?.contains(newOrder)!!){
-//            _cartList.value?.remove(newOrder)
-//        }
-//
-//    }
-//    fun updateCartCount(food:OrderedFood,uptadeCount:Int){
-//
-//    }
+//    db.collection("User").document(uuid).collection("Cart").document(food.id).delete()
 
+    fun order(callBack: (Boolean) -> Unit) {
+        if (cartList == null || cartList.value == null) {
+            callBack(false)
+            return
+        }
+
+        Log.d("hatamCart", cartList.value.toString())
+        viewModelScope.launch {
+            var successCount = 0
+            var failureCount = 0
+            val cartItems = cartList.value!!
+
+            for (food in cartItems) {
+                try {
+                    db.collection("User").document(uuid).collection("Order").add(food).await()
+                    try {
+                        db.collection("User").document(uuid).collection("Cart").document(food.id).delete().await()
+                        successCount++
+                    } catch (e: Exception) {
+                        failureCount++
+                    }
+                } catch (e: Exception) {
+                    failureCount++
+                }
+
+                if (successCount + failureCount == cartItems.size) {
+                    callBack(failureCount == 0)
+                }
+            }
+        }
+    }
 
 }
