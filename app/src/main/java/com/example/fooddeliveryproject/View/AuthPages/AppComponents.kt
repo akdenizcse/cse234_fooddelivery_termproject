@@ -19,7 +19,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
@@ -39,8 +41,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
@@ -48,6 +53,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -238,6 +244,100 @@ fun PasswordTextField(param: String,callback : (String) -> Unit){
             })
         }
 
+    )
+}
+
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun LoginMyTextField(param: String, focusRequester: FocusRequester, onImeAction: () -> Unit, callback: (String) -> Unit) {
+    val textValue = remember { mutableStateOf("") }
+
+    OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(MaterialTheme.shapes.extraSmall)
+            .focusRequester(focusRequester),
+        label = { Text(text = param) },
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            //containerColor = colorResource(id = R.color.backgroundField),
+            focusedBorderColor = Color.Blue,
+            focusedLabelColor = Color.Blue,
+            cursorColor = Color.Blue,
+        ),
+        keyboardOptions = KeyboardOptions.Default.copy(
+            imeAction = ImeAction.Next
+        ),
+        keyboardActions = KeyboardActions(
+            onNext = {
+                onImeAction()
+            }
+        ),
+        value = textValue.value,
+        onValueChange = {
+            textValue.value = it
+            callback(it)
+        }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun LoginPasswordTextField(
+    param: String,
+    focusRequester: FocusRequester,
+    onImeAction: () -> Unit,
+    callback: (String) -> Unit
+) {
+    val password = remember { mutableStateOf("") }
+    val passwordVisible = remember { mutableStateOf(false) }
+
+    // Klavye işlemleri için kullanacağımız KeyboardController
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(MaterialTheme.shapes.small)
+            .focusRequester(focusRequester),
+        label = { Text(text = param) },
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = Color.Blue,
+            focusedLabelColor = Color.Blue,
+            cursorColor = Color.Blue,
+        ),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Password,
+            imeAction = ImeAction.Done
+        ),
+        visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
+        value = password.value,
+        onValueChange = {
+            password.value = it
+            callback(it)
+        },
+        keyboardActions = KeyboardActions(
+            onDone = {
+                onImeAction()
+                keyboardController?.hide()
+            }
+        ),
+        trailingIcon = {
+            val iconImage = if (passwordVisible.value) {
+                painterResource(id = R.drawable.visible)
+            } else {
+                painterResource(id = R.drawable.not_visible)
+            }
+            IconButton(
+                onClick = {
+                    passwordVisible.value = !passwordVisible.value
+                },
+                modifier = Modifier
+            ) {
+                Icon(painter = iconImage, contentDescription = "Şifreyi göster/gizle")
+            }
+        }
     )
 }
 
