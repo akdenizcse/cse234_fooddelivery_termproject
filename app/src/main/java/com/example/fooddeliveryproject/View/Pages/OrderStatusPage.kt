@@ -2,6 +2,7 @@ package com.example.fooddeliveryproject.View.Pages
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,6 +18,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.fooddeliveryproject.R
 
 data class OrderStatus(
@@ -28,7 +31,7 @@ data class OrderStatus(
 )
 
 @Composable
-fun OrderStatusPage() {
+fun OrderStatusPage(navHostController: NavHostController = rememberNavController()) {
     val categories = listOf(
         OrderStatus(R.drawable.dukkan1, "Çorbacı Şükrü", "29-01-2024", "Mercimek Çorbası","Hazırlanıyor..."),
     )
@@ -45,11 +48,14 @@ fun OrderStatusPage() {
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { /* Handle back navigation */ }) {
+                    IconButton(onClick = {navHostController.popBackStack()}) {
                         Icon(
                             painter = painterResource(id = R.drawable.arrow_left),
                             contentDescription = "Back",
-                            tint = Color.White
+                            tint = Color.White,
+                            modifier = Modifier
+                                .clickable{(navHostController.popBackStack())}
+
                         )
                     }
                 },

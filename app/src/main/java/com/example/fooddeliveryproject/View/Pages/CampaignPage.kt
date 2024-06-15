@@ -24,21 +24,28 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.clickable
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.fooddeliveryproject.R
 
 @Composable
-fun CampaignPage() {
+fun CampaignPage(navHostController: NavHostController = rememberNavController()) {
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        IconButton(onClick = { /* Handle navigation */ }) {
+                        IconButton(onClick = {}) {
                             Icon(
                                 painter = painterResource(id = R.drawable.arrow_left),
                                 contentDescription = "Back",
                                 tint = Color.White,
-                                modifier = Modifier.size(24.dp)
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .clickable {
+                                        navHostController.popBackStack()
+                                    }
+
                             )
                         }
                         Spacer(modifier = Modifier.width(8.dp))
