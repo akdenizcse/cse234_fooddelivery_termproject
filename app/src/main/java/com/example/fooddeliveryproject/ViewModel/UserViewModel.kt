@@ -77,10 +77,17 @@ class UserViewModel():ViewModel() {
     }
     fun getCartList(){
         viewModelScope.launch {
-            db.collection("Users").document(uuid).collection("Cart")
-                .get().addOnSuccessListener {
-                    _cartList.value = it.toObjects(OrderedFood::class.java)
-                }
+            try {
+                db.collection("Users").document(uuid).collection("Cart")
+                    .get().addOnSuccessListener {
+                        _cartList.value = it.toObjects(OrderedFood::class.java)
+                    }.addOnFailureListener{
+                        Log.e("hatamUVM",it.toString())
+                    }
+            }catch (e:Exception){
+                Log.e("hatamUVM",e.toString())
+            }
+
         }
     }
     fun removeFromCart(food: OrderedFood,callBack:(Boolean)->Unit){

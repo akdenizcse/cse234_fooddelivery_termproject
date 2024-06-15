@@ -68,7 +68,6 @@ fun CartPage(
 ) {
     userViewModel.getCartList()
     val cartList by userViewModel.cartList.observeAsState(initial = null)
-    val cart = cartList
     Surface(
         color = Color.White,
         modifier = Modifier
@@ -107,7 +106,7 @@ fun CartPage(
 
 
             //CartPageView(it)
-            if (cartList != null) {
+            if (cartList != null && cartList!!.isNotEmpty()) {
                 val totalPrice = calculateTotalPrice(cartList!!)
                 ExistCartView(it, totalPrice, userViewModel,navHostController)
             } else {

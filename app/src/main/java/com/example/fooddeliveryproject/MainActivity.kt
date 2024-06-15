@@ -25,15 +25,13 @@ import com.example.fooddeliveryproject.navigation.RestaurantAppNavigation
 import com.example.fooddeliveryproject.ui.theme.FoodDeliveryProjectTheme
 
 class MainActivity : ComponentActivity() ,SearchView.OnQueryTextListener{
-    val authenticatorViewModel: AuthenticatorViewModel by viewModels()
-    val restaurantViewModel: RestaurantViewModel by viewModels()
-    var isRestaurantUser: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             FoodDeliveryProjectTheme {
 
-                RestaurantAppNavigation(authenticatorViewModel =authenticatorViewModel , restaurantViewModel = restaurantViewModel)
+                RestaurantAppNavigation()
 
                  
             }

@@ -45,12 +45,14 @@ import com.example.fooddeliveryproject.ViewModel.RestaurantViewModel
 import com.example.fooddeliveryproject.ViewModel.UserViewModel
 
 @Composable
-fun RestaurantAppNavigation(authenticatorViewModel: AuthenticatorViewModel,restaurantViewModel: RestaurantViewModel ) {
+fun RestaurantAppNavigation( ) {
     val navController: NavHostController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val addressVM:AddressPageViewModel= viewModel()
     val userVM:UserViewModel= viewModel()
+    val authenticatorViewModel: AuthenticatorViewModel = viewModel()
+    val restaurantViewModel: RestaurantViewModel= viewModel()
 
 
     Scaffold(
