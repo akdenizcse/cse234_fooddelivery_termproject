@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.fooddeliveryproject.R
+import com.example.fooddeliveryproject.navigation.StoreScreen
 
 data class OrderStatus(
     val imageRes: Int,
@@ -48,13 +49,11 @@ fun OrderStatusPage(navHostController: NavHostController = rememberNavController
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = {navHostController.popBackStack()}) {
+                    IconButton(onClick = { navHostController.navigate(StoreScreen.HomeScreen.name) }) {
                         Icon(
                             painter = painterResource(id = R.drawable.arrow_left),
                             contentDescription = "Back",
                             tint = Color.White,
-                            modifier = Modifier
-                                .clickable{(navHostController.popBackStack())}
 
                         )
                     }

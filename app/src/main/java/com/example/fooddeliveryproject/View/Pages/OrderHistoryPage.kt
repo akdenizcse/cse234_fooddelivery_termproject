@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.fooddeliveryproject.R
+import com.example.fooddeliveryproject.navigation.StoreScreen
 
 data class OrderHistory(
     val imageRes: Int,
@@ -51,7 +52,7 @@ fun OrderHistoryPage(navHostController: NavHostController = rememberNavControlle
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { /* Handle back navigation */ }) {
+                    IconButton(onClick = { navHostController.navigate(StoreScreen.HomeScreen.name) }) {
                         Icon(
                             painter = painterResource(id = R.drawable.arrow_left),
                             contentDescription = "Back",

@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.fooddeliveryproject.R
+import com.example.fooddeliveryproject.navigation.StoreScreen
 
 @Composable
 fun CampaignPage(navHostController: NavHostController = rememberNavController()) {
@@ -35,7 +36,7 @@ fun CampaignPage(navHostController: NavHostController = rememberNavController())
             TopAppBar(
                 title = {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        IconButton(onClick = {}) {
+                        IconButton(onClick = { navHostController.navigate(StoreScreen.HomeScreen.name) }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.arrow_left),
                                 contentDescription = "Back",

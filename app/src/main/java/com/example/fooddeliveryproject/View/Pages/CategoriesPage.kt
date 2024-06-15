@@ -2,7 +2,6 @@ package com.example.fooddeliveryproject.View.Pages
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,16 +20,17 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.fooddeliveryproject.R
+import com.example.fooddeliveryproject.navigation.StoreScreen
 
 data class Category(val imageRes: Int, val name: String)
 
 @Composable
-fun CategoriesPage(navHostController: NavHostController= rememberNavController()) {
+fun CategoriesPage(navHostController: NavHostController = rememberNavController()) {
     val categories = listOf(
         Category(R.drawable.doner, "Döner"),
         Category(R.drawable.hamburgerr, "Hamburger"),
         Category(R.drawable.pitza, "Pizza"),
-        Category(R.drawable.iceceksoguk,"İçeçek"),
+        Category(R.drawable.iceceksoguk, "İçeçek"),
         Category(R.drawable.balik, "Balık"),
         Category(R.drawable.fastfood, "Fast Food"),
         Category(R.drawable.kahvaltilik, "Kahvaltılık"),
@@ -38,8 +38,7 @@ fun CategoriesPage(navHostController: NavHostController= rememberNavController()
         Category(R.drawable.yemekk, "Çorba"),
         Category(R.drawable.noodle, "Makarna"),
         Category(R.drawable.kahve, "Kahve"),
-
-        )
+    )
 
     Scaffold(
         topBar = {
@@ -53,14 +52,11 @@ fun CategoriesPage(navHostController: NavHostController= rememberNavController()
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { /* Handle back navigation */ }) {
+                    IconButton(onClick = { navHostController.navigate(StoreScreen.HomeScreen.name) }) {
                         Icon(
                             painter = painterResource(id = R.drawable.arrow_left),
                             contentDescription = "Back",
-                            tint = Color.White,
-                            modifier = Modifier.clickable {
-                                navHostController.popBackStack()
-                            }
+                            tint = Color.White
                         )
                     }
                 },

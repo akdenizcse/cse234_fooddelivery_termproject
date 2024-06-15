@@ -22,6 +22,7 @@ import com.example.fooddeliveryproject.R
 import com.example.fooddeliveryproject.Models.District
 import com.example.fooddeliveryproject.Models.Province
 import com.example.fooddeliveryproject.ViewModel.AddressPageViewModel
+import com.example.fooddeliveryproject.navigation.StoreScreen
 
 @Composable
 fun AddressPage(
@@ -34,7 +35,7 @@ fun AddressPage(
                 title = {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         IconButton(onClick = {
-                            navigate.popBackStack()
+                            navigate.navigate(StoreScreen.HomeScreen.name)
                         }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.arrow_left),
