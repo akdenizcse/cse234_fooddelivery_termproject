@@ -1,7 +1,6 @@
 package com.example.fooddeliveryproject.View.AuthPages
 
 import android.widget.Toast
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -24,6 +23,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -47,6 +47,11 @@ fun SignUpPage(navHostController: NavHostController,viewModel: AuthenticatorView
             .padding(28.dp)
 
     ) {
+        val isimFocusRequester = remember { FocusRequester() }
+        val soyisimFocusRequester = remember { FocusRequester() }
+        val emailFocusRequester = remember { FocusRequester() }
+        val passwordFocusRequester = remember { FocusRequester() }
+
         val name = remember {
             mutableStateOf("")
         }
@@ -82,21 +87,33 @@ fun SignUpPage(navHostController: NavHostController,viewModel: AuthenticatorView
             NormalTextComponent(param = "Uygulamaya Kaydolmak için bilgilerini gir")
 
             Spacer(modifier = Modifier.height(20.dp))
-            MyTextField(param = "İsim"){
+            LoginMyTextField(param = "İsim", focusRequester = isimFocusRequester, onImeAction = {
+                soyisimFocusRequester.requestFocus()
+            }) {
                 name.value = it
             }
             Spacer(modifier = Modifier.height(7.dp))
-            MyTextField(param = "Soyisim"){
+            LoginMyTextField(param = "Soyisim", focusRequester = soyisimFocusRequester, onImeAction = {
+                emailFocusRequester.requestFocus()
+            }) {
                 surname.value = it
             }
             Spacer(modifier = Modifier.height(7.dp))
-            MyTextField(param = "Email"){
+            LoginMyTextField(param = "Email", focusRequester = emailFocusRequester, onImeAction = {
+                passwordFocusRequester.requestFocus()
+            }) {
                 email.value = it
             }
             Spacer(modifier = Modifier.height(7.dp))
-            PasswordTextField(param = "Şifre"){
-                password.value = it
-            }
+            LoginPasswordTextField(
+                param = "Şifre",
+                focusRequester = passwordFocusRequester,
+                onImeAction = {
+                },
+                callback = {
+                    password.value = it
+                }
+            )
 
             Spacer(modifier = Modifier.height(20.dp))
             Button(

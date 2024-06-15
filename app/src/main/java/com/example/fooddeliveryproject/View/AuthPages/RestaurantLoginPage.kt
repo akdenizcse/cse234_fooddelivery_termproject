@@ -23,6 +23,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -47,6 +48,9 @@ fun RestaurantLoginPage(navHostController: NavHostController= rememberNavControl
             .padding(20.dp)
 
     ) {
+        val emailFocusRequester = remember { FocusRequester() }
+        val passwordFocusRequester = remember { FocusRequester() }
+
         val password = remember {
             mutableStateOf("")
         }
@@ -74,13 +78,21 @@ fun RestaurantLoginPage(navHostController: NavHostController= rememberNavControl
             Spacer(modifier = Modifier.height(8.dp))
             NormalTextComponent("Uygulamaya giriş yapabilmek için mail adresini gir")
             Spacer(modifier = Modifier.height(25.dp))
-            MyTextField(param = "Email"){
+            LoginMyTextField(param = "Email", focusRequester = emailFocusRequester, onImeAction = {
+                passwordFocusRequester.requestFocus()
+            }) {
                 email.value = it
             }
             Spacer(modifier = Modifier.height(7.dp))
-            PasswordTextField(param = "Şifre"){
-                password.value = it
-            }
+            LoginPasswordTextField(
+                param = "Şifre",
+                focusRequester = passwordFocusRequester,
+                onImeAction = {
+                },
+                callback = {
+                    password.value = it
+                }
+            )
 
             Spacer(modifier = Modifier.height(20.dp))
 

@@ -1,6 +1,5 @@
 package com.example.fooddeliveryproject.View.Pages
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -19,8 +18,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
@@ -32,9 +29,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -51,7 +45,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.fooddeliveryproject.Models.Food
 import com.example.fooddeliveryproject.Models.OrderedFood
 import com.example.fooddeliveryproject.R
 import com.example.fooddeliveryproject.Utils.downladImage
@@ -80,9 +73,9 @@ fun CartPage(
             topBar = {
                 TopAppBar(
                     title = {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
+                        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.End) {
 
-                            Spacer(modifier = Modifier.width(80.dp))
+                            //Spacer(modifier = Modifier.width(150.dp))
                             Text(
                                 text = "Sepet",
                                 modifier = Modifier.fillMaxWidth(),
@@ -112,9 +105,6 @@ fun CartPage(
             } else {
                 CartPageView(it)
             }
-
-            //deneme(it)
-            //Deneme2(paddingValues = it)
 
 
         }
@@ -168,175 +158,6 @@ fun CartPageView(paddingValues: PaddingValues) {
 
 }
 
-@Composable
-fun Deneme2(paddingValues: PaddingValues) {
-
-    val numbers = listOf(1, 2, 3, 4)
-
-    Surface(
-        color = Color.White,
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-        //.padding(20.dp)
-
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            //horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                //Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "Ürünler",
-                    modifier = Modifier.padding(20.dp),
-                    style = TextStyle(
-                        fontSize = 17.sp,
-                        fontWeight = FontWeight.Bold
-                    ),
-                    color = colorResource(id = R.color.silikMetin)
-                )
-
-                Spacer(modifier = Modifier.width(105.dp))
-                Text(
-                    text = "Fiyat",
-                    modifier = Modifier.padding(20.dp),
-                    style = TextStyle(
-                        fontSize = 17.sp,
-                        fontWeight = FontWeight.Bold
-                    ),
-                    color = colorResource(id = R.color.silikMetin)
-                )
-
-                Spacer(modifier = Modifier.width(5.dp))
-                Text(
-                    text = "Adet",
-                    modifier = Modifier.padding(16.dp),
-                    style = TextStyle(
-                        fontSize = 17.sp,
-                        fontWeight = FontWeight.Bold
-                    ),
-                    color = colorResource(id = R.color.silikMetin)
-                )
-            }
-
-            Surface(
-                color = Color.Black,
-                //shape = RoundedCornerShape(14.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .size(100.dp, 3.dp)
-                    //.fillMaxSize()
-                    .background(Color.White)
-                    .padding(start = 5.dp, end = 5.dp),
-
-                ) {}
-
-
-            Spacer(modifier = Modifier.height(10.dp))
-            Surface(
-                color = Color.Black,
-                //shape = RoundedCornerShape(14.dp),
-                modifier = Modifier
-                    .fillMaxSize()
-                    //.size(100.dp, 3.dp)
-                    //.fillMaxSize()
-                    .background(Color.White)
-                //.padding(start = 5.dp, end = 5.dp),
-
-            ) {
-
-
-                LazyColumn(
-                    Modifier
-                        .background(color = colorResource(id = R.color.googleColor)) //renk
-                    //.border(BorderStroke(1.dp, Color.Gray))
-                ) {
-                    items(numbers) { number ->
-
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(110.dp)
-                                //.padding(16.dp)
-                                .padding(top = 5.dp, bottom = 5.dp),
-                        ) {
-                            Column(
-                                modifier = Modifier.fillMaxSize(),
-                                verticalArrangement = Arrangement.Center,
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.Start,
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Spacer(modifier = Modifier.width(5.dp))
-                                    Image(
-                                        modifier = Modifier
-                                            .padding(top = 1.dp, bottom = 1.dp)
-                                            .size(70.dp)
-                                            .clip(RoundedCornerShape(20.dp)),
-                                        painter = painterResource(id = R.drawable.dukkan13),
-                                        contentDescription = null,
-                                        contentScale = ContentScale.Crop
-                                    )
-
-                                    Spacer(modifier = Modifier.width(10.dp))
-                                    Surface(
-                                        color = Color.White,  //Tavuk Tantuni renk
-                                        modifier = Modifier
-                                            .size(125.dp, 55.dp)
-                                    ) {
-                                        Row(
-                                            modifier = Modifier.fillMaxWidth(),
-                                            horizontalArrangement = Arrangement.Center,
-                                            verticalAlignment = Alignment.CenterVertically
-                                        )
-                                        {
-                                            Text(
-                                                text = "Tavuk Tantuni Dürüm",
-                                                modifier = Modifier.align(Alignment.CenterVertically),
-                                                color = colorResource(id = R.color.signUpBlack),
-                                                style = TextStyle(
-                                                    fontSize = 16.sp,
-                                                    fontWeight = FontWeight.Bold,
-                                                )
-                                            )
-                                        }
-
-                                    }
-
-                                    Spacer(modifier = Modifier.width(15.dp))
-                                    Text(text = "$number TL")
-
-
-                                    QuantityComponentCartPage(2) {
-
-                                    }
-                                }
-
-                            }
-
-
-                        }
-                    }
-                }
-
-
-            }
-
-
-        }
-
-    }
-
-}
 
 
 @Composable
