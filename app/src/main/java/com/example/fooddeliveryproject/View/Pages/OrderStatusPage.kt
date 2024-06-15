@@ -8,8 +8,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,19 +17,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.example.fooddeliveryproject.Models.OrderedFood
 import com.example.fooddeliveryproject.R
-import com.example.fooddeliveryproject.Utils.downladImage
-import com.example.fooddeliveryproject.ViewModel.UserViewModel
 
+data class OrderStatus(
+    val imageRes: Int,
+    val name: String,
+    val tarih: String,
+    val urun: String,
+    val currentStatus : String,
+)
 
 @Composable
-fun OrderStatusPage(navHostController: NavHostController= rememberNavController(), userViewModel: UserViewModel= viewModel()) {
-    userViewModel.getPreparedOrderList()
-    val preparedList by userViewModel.preparedOrderList.observeAsState()
+fun OrderStatusPage() {
+    val categories = listOf(
+        OrderStatus(R.drawable.dukkan1, "Çorbacı Şükrü", "29-01-2024", "Mercimek Çorbası","Hazırlanıyor..."),
+    )
 
     Scaffold(
         topBar = {
@@ -45,9 +45,7 @@ fun OrderStatusPage(navHostController: NavHostController= rememberNavController(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = {
-                        navHostController.popBackStack()
-                    }) {
+                    IconButton(onClick = { /* Handle back navigation */ }) {
                         Icon(
                             painter = painterResource(id = R.drawable.arrow_left),
                             contentDescription = "Back",
@@ -66,19 +64,16 @@ fun OrderStatusPage(navHostController: NavHostController= rememberNavController(
                     .background(Color.White),
                 verticalArrangement = Arrangement.spacedBy(1.dp)
             ) {
-                if (preparedList != null) {
-                    items(preparedList!!) { category ->
-                        ListItem(category)
-                    }
+                items(categories) { category ->
+                    ListItem(category)
                 }
-
             }
         }
     )
 }
 
 @Composable
-fun ListItem(orderStatus: OrderedFood) {
+fun ListItem(orderStatus: OrderStatus) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -90,16 +85,14 @@ fun ListItem(orderStatus: OrderedFood) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(32.dp),
-            verticalArrangement = Arrangement.Center
         ) {
-//            Image(
-//                painter = painterResource(id = orderStatus.imageRes),
-//                contentDescription = orderStatus.name,
-//                modifier = Modifier.size(300.dp)
-//            )
+            Image(
+                painter = painterResource(id = orderStatus.imageRes),
+                contentDescription = orderStatus.name,
+                modifier = Modifier.size(300.dp)
+            )
 
-            downladImage(imageUrl = orderStatus.imageUrl)
-            Column(modifier = Modifier.padding(top = 25.dp)) {
+            Column {
                 Text(
                     text = orderStatus.name,
                     fontSize = 18.sp,
@@ -108,7 +101,7 @@ fun ListItem(orderStatus: OrderedFood) {
                     textAlign = TextAlign.Start
                 )
                 Text(
-                    text = orderStatus.orderedDate!!,
+                    text = orderStatus.tarih,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Normal,
                     color = Color.Black,
@@ -116,27 +109,27 @@ fun ListItem(orderStatus: OrderedFood) {
                 )
                 Spacer(modifier = Modifier.size(16.dp))
                 Text(
-                    text = orderStatus.name,
+                    text = orderStatus.urun,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Light,
                     color = Color.Black,
                     textAlign = TextAlign.Start
                 )
                 Spacer(modifier = Modifier.size(32.dp))
-Row (){
-    Image(
-        painter = painterResource(id = R.drawable.baseline_access_time_24),
-        contentDescription ="time",
-        modifier = Modifier.size(30.dp)
-    )
-    Text(
-        text ="Hazırlanıyor",
-        fontSize = 20.sp,
-        fontWeight = FontWeight.Normal,
-        color = Color.Black,
-        textAlign = TextAlign.Start
-    )
-}
+                Row (){
+                    Image(
+                        painter = painterResource(id = R.drawable.baseline_access_time_24),
+                        contentDescription ="time",
+                        modifier = Modifier.size(30.dp)
+                    )
+                    Text(
+                        text = orderStatus.currentStatus,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Normal,
+                        color = Color.Black,
+                        textAlign = TextAlign.Start
+                    )
+                }
 
             }
 

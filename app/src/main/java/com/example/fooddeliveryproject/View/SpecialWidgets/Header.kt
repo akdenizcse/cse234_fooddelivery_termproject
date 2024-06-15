@@ -1,16 +1,8 @@
 package com.example.fooddeliveryproject.View.SpecialWidgets
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -20,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontVariation.weight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -30,6 +21,7 @@ import com.example.fooddeliveryproject.navigation.StoreScreen
 import com.example.fooddeliveryproject.ui.theme.CardItemBg
 import com.example.fooddeliveryproject.ui.theme.IconColor
 import com.example.fooddeliveryproject.ui.theme.Orange500
+
 @Composable
 fun Header(navController: NavHostController = rememberNavController(), addressTitle: String = "", addressDesc: String = "") {
     Row(
@@ -37,39 +29,49 @@ fun Header(navController: NavHostController = rememberNavController(), addressTi
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
             .fillMaxWidth()
-            .clickable {
-                navController.navigate(StoreScreen.AddressScreen.name)
-            }
-            .padding(16.dp) // Add padding if needed
-    ) {
-        BoxWithResource(resId = R.drawable.location, description = "menu")
+            .padding(16.dp)
 
-        Column(
-            modifier = Modifier.weight(1f).padding(start = 8.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start,
+            modifier = Modifier.weight(1f)
+                .clickable {
+                    navController.navigate(StoreScreen.AddressScreen.name)
+                }
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
+            BoxWithResource(resId = R.drawable.location, description = "menu")
+            Spacer(modifier = Modifier.width(8.dp))
+            Column(
+                modifier = Modifier.weight(1f)
             ) {
-                Text(text = addressTitle)
-                Icon(
-                    painter = painterResource(id = R.drawable.arrow_down),
-                    contentDescription = "down",
-                    modifier = Modifier.size(16.dp),
-                    tint = Orange500
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(text = addressTitle)
+                    Icon(
+                        painter = painterResource(id = R.drawable.arrow_down),
+                        contentDescription = "down",
+                        modifier = Modifier.size(16.dp),
+                        tint = Orange500
+                    )
+                }
+                Text(text = addressDesc, color = Color.Gray)
             }
-            Text(text = addressDesc, color = Color.Gray)
         }
 
         Icon(
             painter = painterResource(id = R.drawable.baseline_shopping_cart_24),
             contentDescription = "aktif",
             modifier = Modifier
+                .clickable {
+                    navController.navigate(StoreScreen.OrderStatusScreen.name)
+                }
                 .size(36.dp)
-                .padding(start = 5.dp)
-                .align(Alignment.CenterVertically),
+                .padding(start = 5.dp),
             tint = Orange500
+
         )
     }
 }
@@ -88,7 +90,7 @@ fun BoxWithResource(
             .size(boxSize!!.dp)
             .clip(RoundedCornerShape(10.dp))
             .background(bgColor!!)
-            .padding(8.dp), // Adjust padding if needed
+            .padding(8.dp),
         contentAlignment = Alignment.Center
     ) {
         Icon(
