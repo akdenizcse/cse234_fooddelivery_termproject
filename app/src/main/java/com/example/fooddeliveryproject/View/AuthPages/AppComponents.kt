@@ -175,6 +175,7 @@ fun MyTextField(param: String,callback: (String) -> Unit){
         modifier = Modifier
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.extraSmall),
+        shape = RoundedCornerShape(20.dp),
         label = { Text(text = param) },
         colors = TextFieldDefaults.outlinedTextFieldColors(
             //containerColor = colorResource(id = R.color.backgroundField),
@@ -209,6 +210,7 @@ fun PasswordTextField(param: String,callback : (String) -> Unit){
         modifier = Modifier
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.extraSmall),
+        shape = RoundedCornerShape(20.dp),
         label = { Text(text = param) },
         colors = TextFieldDefaults.outlinedTextFieldColors(
             //containerColor = colorResource(id = R.color.backgroundField),
@@ -253,6 +255,7 @@ fun LoginMyTextField(param: String, focusRequester: FocusRequester, onImeAction:
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.extraSmall)
             .focusRequester(focusRequester),
+        shape = RoundedCornerShape(20.dp),
         label = { Text(text = param) },
         colors = TextFieldDefaults.outlinedTextFieldColors(
             //containerColor = colorResource(id = R.color.backgroundField),
@@ -295,6 +298,7 @@ fun LoginPasswordTextField(
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.small)
             .focusRequester(focusRequester),
+        shape = RoundedCornerShape(20.dp),
         label = { Text(text = param) },
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = Color.Blue,
@@ -315,6 +319,70 @@ fun LoginPasswordTextField(
             onDone = {
                 onImeAction()
                 keyboardController?.hide()
+            }
+        ),
+        trailingIcon = {
+            val iconImage = if (passwordVisible.value) {
+                painterResource(id = R.drawable.visible)
+            } else {
+                painterResource(id = R.drawable.not_visible)
+            }
+            IconButton(
+                onClick = {
+                    passwordVisible.value = !passwordVisible.value
+                },
+                modifier = Modifier
+            ) {
+                Icon(painter = iconImage, contentDescription = "Şifreyi göster/gizle")
+            }
+        }
+    )
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ChangePasswordTextField(
+    param: String,
+    last: Boolean,
+    focusRequester: FocusRequester,
+    onImeAction: () -> Unit,
+    callback: (String) -> Unit
+) {
+    val password = remember { mutableStateOf("") }
+    val passwordVisible = remember { mutableStateOf(false) }
+
+    // Klavye işlemleri için kullanacağımız KeyboardController
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(MaterialTheme.shapes.small)
+            .focusRequester(focusRequester),
+        shape = RoundedCornerShape(20.dp),
+        label = { Text(text = param) },
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = Color.Blue,
+            focusedLabelColor = Color.Blue,
+            cursorColor = Color.Blue,
+        ),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Password,
+            imeAction = ImeAction.Done
+        ),
+        visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
+        value = password.value,
+        onValueChange = {
+            password.value = it
+            callback(it)
+        },
+        keyboardActions = KeyboardActions(
+            onDone = {
+                onImeAction()
+                if(last){
+                    keyboardController?.hide()
+                }
             }
         ),
         trailingIcon = {
