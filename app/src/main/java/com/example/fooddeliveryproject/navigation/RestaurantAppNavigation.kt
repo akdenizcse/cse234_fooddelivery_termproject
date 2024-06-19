@@ -1,6 +1,5 @@
 package com.example.fooddeliveryproject.navigation
 
-import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -39,8 +38,10 @@ import com.example.fooddeliveryproject.View.Restaurant.RestaurantChangeRestauran
 import com.example.fooddeliveryproject.View.Restaurant.RestaurantHomePage
 import com.example.fooddeliveryproject.View.Restaurant.RestaurantOrderPage
 import com.example.fooddeliveryproject.View.Restaurant.RestaurantPasswordChangePage
+import com.example.fooddeliveryproject.View.Search.SearchResultPage
 import com.example.fooddeliveryproject.ViewModel.AddressPageViewModel
 import com.example.fooddeliveryproject.ViewModel.AuthenticatorViewModel
+import com.example.fooddeliveryproject.ViewModel.FoodViewModel
 import com.example.fooddeliveryproject.ViewModel.RestaurantViewModel
 import com.example.fooddeliveryproject.ViewModel.UserViewModel
 
@@ -53,6 +54,7 @@ fun RestaurantAppNavigation( ) {
     val userVM:UserViewModel= viewModel()
     val authenticatorViewModel: AuthenticatorViewModel = viewModel()
     val restaurantViewModel: RestaurantViewModel= viewModel()
+    val foodViewModel:FoodViewModel= viewModel()
 
 
     Scaffold(
@@ -72,7 +74,7 @@ fun RestaurantAppNavigation( ) {
     ) { paddingValues ->
         NavHost(
             navController = navController,
-            startDestination = StoreScreen.LoginScreen.name,
+            startDestination = StoreScreen.HomeScreen.name,
             modifier = Modifier.padding(paddingValues)
         ) {
             composable(route = RestaurantScreen.RestaurantHomeScreen.name) {
@@ -108,7 +110,7 @@ fun RestaurantAppNavigation( ) {
                 LoginPage(navController,authenticatorViewModel)
             }
             composable(route = StoreScreen.HomeScreen.name) {
-                MainPage(navController,addressVM)
+                MainPage(navController,addressVM, foodViewModel = foodViewModel,restaurantViewModel=restaurantViewModel)
             }
             composable(route = StoreScreen.OrderedScreen.name) {
                 OrderPage()
@@ -136,7 +138,7 @@ fun RestaurantAppNavigation( ) {
                 CategoriesPage(navController)
             }
             composable(route=StoreScreen.RestaurantScreen.name){
-                RestaurantPage()
+                RestaurantPage(navigate = navController, restaurantVM = restaurantViewModel)
             }
             composable(route=StoreScreen.AddressScreen.name){
                 AddressPage(navController,addressVM)
@@ -147,7 +149,16 @@ fun RestaurantAppNavigation( ) {
             composable(route=StoreScreen.OrderConfirmScreen.name){
                 OrderConfirmPage(navController)
             }
-
+            composable(route=StoreScreen.SearchResultScreen.name){
+                SearchResultPage(navController, foodVM =foodViewModel)
+            }
+            composable(route = StoreScreen.SearchResultScreen.name + "/{search}") { backStackEntry ->
+                SearchResultPage(
+                    navHostController = navController,
+                    foodVM = foodViewModel,
+                    search = backStackEntry.arguments?.getString("search")
+                )
+            }
 
         }
     }

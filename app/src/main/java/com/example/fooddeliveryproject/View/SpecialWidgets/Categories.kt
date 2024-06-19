@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.Navigator
 import androidx.navigation.compose.rememberNavController
 import com.example.fooddeliveryproject.R
 import com.example.fooddeliveryproject.navigation.StoreScreen
@@ -26,13 +27,15 @@ import com.example.fooddeliveryproject.ui.theme.orange
 data class Category(val imageRes: Int, val title: String)
 
 @Composable
-fun CategoryCard(category: Category) {
+fun CategoryCard(category: Category,navigation:NavHostController) {
     Card(
         shape = RoundedCornerShape(16.dp),
         backgroundColor = Color(0xFFF1F1F1),
         modifier = Modifier
             .padding(vertical = 8.dp, horizontal = 8.dp)
-            .size(96.dp)
+            .size(96.dp).clickable {
+                navigation.navigate(StoreScreen.SearchResultScreen.name+"/${category.title}")
+            }
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -53,7 +56,7 @@ fun CategoryCard(category: Category) {
 }
 
 @Composable
-fun CategoriesSection(categories: List<Category>,navigate:NavHostController = rememberNavController()) {
+fun CategoriesSection(categories: List<Category>,navigate:NavHostController ) {
     Column(
 
     ) {
@@ -82,7 +85,7 @@ fun CategoriesSection(categories: List<Category>,navigate:NavHostController = re
         LazyRow(
         ) {
             items(categories) { category ->
-                CategoryCard(category = category)
+                CategoryCard(category = category,navigate)
             }
         }
     }

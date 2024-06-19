@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.example.fooddeliveryproject.View.Pages.CartPage
 import com.example.fooddeliveryproject.View.Pages.MainPage
 import com.example.fooddeliveryproject.View.Search.SearchBarPage
+import com.example.fooddeliveryproject.View.Search.SearchResultPage
 import com.example.fooddeliveryproject.ViewModel.AuthenticatorViewModel
 import com.example.fooddeliveryproject.ViewModel.RestaurantViewModel
 import com.example.fooddeliveryproject.navigation.RestaurantAppNavigation
@@ -32,7 +33,7 @@ class MainActivity : ComponentActivity() ,SearchView.OnQueryTextListener{
             FoodDeliveryProjectTheme {
 
                 RestaurantAppNavigation()
-
+//                SearchResultPage()
                  
             }
         }

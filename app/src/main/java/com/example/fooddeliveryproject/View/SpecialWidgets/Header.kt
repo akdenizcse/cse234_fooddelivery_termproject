@@ -29,7 +29,7 @@ fun Header(navController: NavHostController = rememberNavController(), addressTi
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(10.dp)
 
     ) {
         Row(

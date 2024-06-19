@@ -1,12 +1,21 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.example.fooddeliveryproject.View.SpecialWidgets
 
+import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SearchBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,7 +27,9 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.fooddeliveryproject.R
+import com.example.fooddeliveryproject.navigation.StoreScreen
 
 @Composable
 fun ModernSearchBar(
@@ -62,15 +73,67 @@ fun ModernSearchBar(
 }
 
 @Composable
-fun SearchBar() {
-    var query by remember { mutableStateOf("") }
-    ModernSearchBar(query) { newQuery ->
-        query = newQuery
+fun SearchBarView(navHostController: NavHostController) {
+    var searchText by remember { mutableStateOf("") }
+    var onActive by remember {
+        mutableStateOf(false)
     }
+    SearchBar(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.White),
+        query = searchText ,
+        onQueryChange = {
+            searchText = it
+        },
+        onSearch = {
+            try {
+                onActive=false
+                Log.e( "hatam212","dsaActive"+searchText)
+                if (searchText!=null || searchText !="" ) {
+                    navHostController.navigate(StoreScreen.SearchResultScreen.name + "/$searchText")
+                }else{
+                    navHostController.navigate(StoreScreen.SearchResultScreen.name)
+                }
+            }catch (e:Exception) {
+                Log.d("hatam213","hataOnSearch : "+e.toString())
+                navHostController.navigate(StoreScreen.SearchResultScreen.name)
+            }
+        },
+        active =onActive ,
+        onActiveChange ={
+            onActive=it
+        },
+        placeholder = {
+            Text(text = "Ürün Arayın ...")
+        },
+        leadingIcon = {
+            Icon(imageVector = Icons.Default.Search, contentDescription ="Ara" )
+        },trailingIcon = {
+            if(onActive){
+                Icon(imageVector = Icons.Default.Close,
+                    contentDescription ="" ,
+                    modifier=Modifier.clickable {
+                        if(searchText.isNotEmpty()){
+                            searchText=""
+                        }else{
+                            onActive=false
+                        }
+                    })
+
+            }
+        }
+    ) {
+        Log.d("hatam214","dsa"+searchText)
+    }
+
 }
 
-@Preview(showBackground = true)
-@Composable
-fun SearchBarPreview() {
-    SearchBar()
-}
+
+
+
+//@Preview(showBackground = true)
+//@Composable
+//fun SearchBarPreview() {
+//    SearchBar()
+//}

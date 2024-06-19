@@ -1,13 +1,15 @@
 package com.example.fooddeliveryproject.View.SpecialWidgets
 
+import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,38 +17,33 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.fooddeliveryproject.Models.Restaurant
 import com.example.fooddeliveryproject.R
+import com.example.fooddeliveryproject.Utils.downladImage
+import com.example.fooddeliveryproject.ViewModel.RestaurantViewModel
+import com.example.fooddeliveryproject.navigation.StoreScreen
 
-data class Restaurant(
-    val imageRes: Int,
-    val name: String,
-    val location: String,
-    val rating: Float,
-    val reviewCount: Int
-)
 
 @Composable
 fun RestaurantItem(restaurant: Restaurant) {
-    Row(
+    Row(modifier = Modifier.padding(start = 5.dp, top = 10.dp, end = 5.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(
-            painter = painterResource(id = restaurant.imageRes),
-            contentDescription = restaurant.name,
-            modifier = Modifier
-                .size(64.dp)
-                .padding(end = 8.dp)
-        )
+        Box(modifier = Modifier.align(Alignment.CenterVertically)){
+            downladImage(imageUrl =restaurant.imageUrl , size = 64)
+        }
         Column(
-            modifier = Modifier.weight(1f)
+            modifier = Modifier
+                .weight(1f)
+                .align(Alignment.CenterVertically)
+                .padding(start = 10.dp)
         ) {
             Text(
                 text = restaurant.name,
                 color = Color.Black
-            )
-            Text(
-                text = restaurant.location,
-                color = Color.Gray
             )
         }
         Row(
@@ -59,7 +56,7 @@ fun RestaurantItem(restaurant: Restaurant) {
                 modifier = Modifier.size(16.dp)
             )
             Text(
-                text = "${restaurant.rating}",
+                text = "${restaurant.starRate}",
                 color = Color.Gray
             )
         }
@@ -67,7 +64,7 @@ fun RestaurantItem(restaurant: Restaurant) {
 }
 
 @Composable
-fun TopRestaurantsSection(restaurants: List<Restaurant>) {
+fun TopRestaurantsSection(restaurants: ArrayList<Restaurant>?,navHostController: NavHostController= rememberNavController()) {
     Column(
         modifier = Modifier
             .padding(8.dp)
@@ -84,31 +81,29 @@ fun TopRestaurantsSection(restaurants: List<Restaurant>) {
             )
             Text(
                 text = "Tümünü Gör",
-                style = MaterialTheme.typography.body1.copy(color = Color(0xFFF8742A))
+                style = MaterialTheme.typography.body1.copy(color = Color(0xFFF8742A)),
+                modifier = Modifier.clickable {
+                    navHostController.navigate(StoreScreen.RestaurantScreen.name)
+                }
             )
         }
 
         Column{
-            for (restaurant in restaurants) {
-                RestaurantItem(restaurant = restaurant)
+            if (restaurants != null) {
+                for (restaurant in restaurants) {
+                    RestaurantItem(restaurant = restaurant)
+                }
             }
         }
     }
 }
 
 @Composable
-fun Restorants() {
-    val restaurants = listOf(
-        Restaurant(R.drawable.dukkan1, "Çorbacı Şükrü", "Kültür, Antalya", 4.1f, 500),
-        Restaurant(R.drawable.dukkan12, "Dürümcü Bedir", "Konyaaltı, Antalya", 3.6f, 400),
-        Restaurant(R.drawable.dukkan18, "Burger King", "Güvercin, Kültür", 4.7f, 150),
-        Restaurant(R.drawable.dukkan3, "Burger King", "Güvercin, Kültür", 4.7f, 150),
-        Restaurant(R.drawable.dukkan11, "Burger King", "Güvercin, Kültür", 4.7f, 150),
-        Restaurant(R.drawable.dukkan16, "Burger King", "Güvercin, Kültür", 4.7f, 150),
-        Restaurant(R.drawable.dukkan13, "Burger King", "Güvercin, Kültür", 4.7f, 150),
-    )
+fun Restorants(navHostController: NavHostController= rememberNavController(), restaurantViewModel: RestaurantViewModel= viewModel()) {
 
-    TopRestaurantsSection(restaurants = restaurants)
+    restaurantViewModel.getRestaurantWithCount(5)
+    val list by restaurantViewModel._restaurantList.observeAsState()
+    TopRestaurantsSection(restaurants = list,navHostController = navHostController)
 }
 
 @Preview(showBackground = true)

@@ -2,6 +2,7 @@ package com.example.fooddeliveryproject.View.SpecialWidgets
 
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,7 +26,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.fooddeliveryproject.R
+import com.example.fooddeliveryproject.navigation.StoreScreen
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -34,7 +38,7 @@ data class CarouselItem(val imageRes: Int, val title: String)
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun CarouselCard(items: List<CarouselItem>) {
+fun CarouselCard(items: List<CarouselItem>,navHostController: NavHostController) {
     val pagerState = rememberPagerState()
 
     HorizontalPager(
@@ -54,13 +58,17 @@ fun CarouselCard(items: List<CarouselItem>) {
                 painter = painterResource(id = item.imageRes),
                 contentDescription = item.title,
                 contentScale = ContentScale.FillBounds,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        navHostController.navigate(StoreScreen.SearchResultScreen.name + "/${item.title}")
+                    }
             )
         }
     }
 }
 @Composable
-fun CarouselCardOrigin (){
+fun CarouselCardOrigin (navHostController: NavHostController){
     Row {
             Column(
                 modifier = Modifier
@@ -68,13 +76,13 @@ fun CarouselCardOrigin (){
             ) {
                 val items = remember {
                     listOf(
-                        CarouselItem(R.drawable.card_1, ""),
-                        CarouselItem(R.drawable.card_2, ""),
-                        CarouselItem(R.drawable.card_3, ""),
-                        CarouselItem(R.drawable.card_4, ""),
+                        CarouselItem(R.drawable.card_1, "dondurma"),
+                        CarouselItem(R.drawable.card_2, "burger"),
+                        CarouselItem(R.drawable.card_3, "pizza"),
+                        CarouselItem(R.drawable.card_4, "pizza"),
                     )
                 }
-                CarouselCard(items = items)
+                CarouselCard(items = items,navHostController)
             }
         }
     }
@@ -82,5 +90,5 @@ fun CarouselCardOrigin (){
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview485() {
-    CarouselCardOrigin()
+    CarouselCardOrigin(rememberNavController())
 }

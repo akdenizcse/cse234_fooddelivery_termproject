@@ -4,7 +4,7 @@ enum class StoreScreen {
     HomeScreen,
     OrderedScreen,
     ProfileScreen,
-    SearchScreen,
+    SearchResultScreen,
     CartScreen,
     LoginScreen,
     SignUpPage,

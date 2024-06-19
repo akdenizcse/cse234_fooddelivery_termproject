@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.fooddeliveryproject.Models.Food
 import com.example.fooddeliveryproject.Models.OrderedFood
 import com.example.fooddeliveryproject.Models.Restaurant
@@ -121,14 +122,49 @@ class RestaurantViewModel ():ViewModel() {
     }
 
     fun getRestaurantList(){
-        try {
-            db.collection("Restaurant").get().addOnSuccessListener {
-                _restaurantList.value=it.toObjects(Restaurant::class.java) as ArrayList<Restaurant>
-            }
-        }catch (e:Exception){
+        viewModelScope.launch {
+            try {
+                db.collection("Restaurant").get().addOnSuccessListener {
+                    _restaurantList.value=it.toObjects(Restaurant::class.java) as ArrayList<Restaurant>
+                }
+            }catch (e:Exception){
 
+            }
         }
+
     }
+
+    fun getRestaurantWithCount(count: Int) {
+        viewModelScope.launch {
+            val restaurantCollection = db.collection("Restaurant")
+            var isShuffled = false
+
+            Log.d("hatamRVM", "count = $count")
+            restaurantCollection.get().addOnSuccessListener { result ->
+                Log.d("hatamRVM", "result = $result")
+                val restaurantItem = result.documents.mapNotNull { it.toObject(Restaurant::class.java) }
+                if (_restaurantList.value==null){
+                    if (!isShuffled) {
+                        val randomItems = ArrayList(restaurantItem.take(count))
+                        isShuffled = true
+                        Log.d("hatamRVM", "randomItems size = ${randomItems.size}")
+                        Log.d("hatamRVM", "_restaurantList  = ${_restaurantList.value?.size}")
+                        _restaurantList.value = randomItems
+                    }else{
+                        Log.d("hatamRVM", "isShuffled = true")
+                    }
+                }else{
+                    Log.d("hatamRVM", "_restaurantList  = null")
+                }
+            }.addOnFailureListener { exception ->
+                Log.e("hatamRV", "Error fetching restaurant list", exception)
+            }
+        }
+
+    }
+
+
+
     fun getRestaurantFoodList() {
         viewModelScope.launch {
             try {

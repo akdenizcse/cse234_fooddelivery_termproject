@@ -49,7 +49,7 @@ fun downladImage(imageUrl:String,size:Int=150) {
             .data(imageUrl)
             .crossfade(true)
             .build(),
-        placeholder = painterResource(R.drawable.fork_and_spoon),
+        placeholder = painterResource(R.drawable.foodplaceholder),
         contentDescription = "",
         contentScale = ContentScale.Crop,
         modifier = Modifier.size(size.dp)
