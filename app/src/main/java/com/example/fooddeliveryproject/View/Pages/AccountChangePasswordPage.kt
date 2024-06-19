@@ -11,7 +11,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -51,34 +55,71 @@ fun AccountChangePassword(){
                 TopAppBar(
                     title = {
 
-                        Row {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+
+                            IconButton(onClick = { /* Handle navigation */ }) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.arrow_left),
+                                    contentDescription = "Back",
+                                    tint = Color.Black,
+                                    modifier = Modifier.size(40.dp)
+                                        //.padding(bottom = 5.dp)
+                                )
+                            }
+                            //Spacer(modifier = Modifier.width(15.dp))
 
 
-                            Column(modifier = Modifier.fillMaxSize(),
+                            Column(modifier = Modifier.fillMaxWidth(),
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.Center)
                             {
-                                Image(
-                                    painter = painterResource(id = R.drawable.csefoodicon),
-                                    contentDescription = null
-                                )
-                                Spacer(modifier = Modifier.height(20.dp))
-                                Text(
-                                    text = "Şifreyi Değiştir",
-                                    //modifier = Modifier.fillMaxWidth(),
-                                    color = colorResource(id = R.color.black),
-                                    style = TextStyle(
-                                        fontSize = 25.sp,
-                                        fontWeight = FontWeight.Bold
+                                Row {
+                                    Image(
+                                        painter = painterResource(id = R.drawable.csefoodicon),
+                                        contentDescription = null
                                     )
-                                )
+                                    Text(
+                                        text = "        ",
+                                        //modifier = Modifier.fillMaxWidth(),
+                                        color = colorResource(id = R.color.purple_200),
+                                        style = TextStyle(
+                                            fontSize = 25.sp,
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                    )
+                                }
+
+                                Spacer(modifier = Modifier.height(15.dp))
+                                Row {
+                                    Text(
+                                        text = "Şifreyi Değiştir",
+                                        //modifier = Modifier.fillMaxWidth(),
+                                        color = colorResource(id = R.color.black),
+                                        style = TextStyle(
+                                            fontSize = 25.sp,
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                    )
+                                    Text(
+                                        text = "        ",
+                                        //modifier = Modifier.fillMaxWidth(),
+                                        color = colorResource(id = R.color.purple_200),
+                                        style = TextStyle(
+                                            fontSize = 25.sp,
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                    )
+
+                                }
+
 
                             }
+
                         }
 
                     },
                     modifier = Modifier
-                        .height(180.dp)
+                        .height(150.dp)
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(bottomStart = 50.dp, bottomEnd = 50.dp)),
                     backgroundColor = colorResource(id = R.color.orange),
