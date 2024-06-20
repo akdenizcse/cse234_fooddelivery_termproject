@@ -54,6 +54,7 @@ fun MainPage(navHostController: NavHostController=rememberNavController(),addres
 
         SearchBarView(navHostController)
 
+//        foodViewModel.getRestaurantFoodList()
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()

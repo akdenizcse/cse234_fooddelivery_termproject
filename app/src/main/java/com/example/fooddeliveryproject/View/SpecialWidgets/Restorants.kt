@@ -28,9 +28,11 @@ import com.example.fooddeliveryproject.navigation.StoreScreen
 
 
 @Composable
-fun RestaurantItem(restaurant: Restaurant) {
-    Row(modifier = Modifier.padding(start = 5.dp, top = 10.dp, end = 5.dp),
-        verticalAlignment = Alignment.CenterVertically
+fun RestaurantItem(restaurant: Restaurant,navHostController: NavHostController) {
+    Row(verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(start = 5.dp, top = 10.dp, end = 5.dp).clickable {
+            navHostController.navigate(StoreScreen.SearchResultScreen.name+ "?search=${restaurant.id}&isRestaurantProduct=true")
+        }
     ) {
         Box(modifier = Modifier.align(Alignment.CenterVertically)){
             downladImage(imageUrl =restaurant.imageUrl , size = 64)
@@ -91,7 +93,7 @@ fun TopRestaurantsSection(restaurants: ArrayList<Restaurant>?,navHostController:
         Column{
             if (restaurants != null) {
                 for (restaurant in restaurants) {
-                    RestaurantItem(restaurant = restaurant)
+                    RestaurantItem(restaurant = restaurant,navHostController)
                 }
             }
         }

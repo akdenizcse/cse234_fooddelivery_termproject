@@ -32,6 +32,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateListOf
@@ -52,6 +53,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.fooddeliveryproject.Models.Food
 import com.example.fooddeliveryproject.R
 import com.example.fooddeliveryproject.Utils.downladImage
 import com.example.fooddeliveryproject.View.AuthPages.FadedTextComponent
@@ -66,7 +68,8 @@ import com.example.fooddeliveryproject.navigation.StoreScreen
 fun SearchResultPage(
     navHostController: NavHostController,
     foodVM: FoodViewModel= viewModel(),
-    search:String?=null){
+    search:String?=null,
+    isRestaurantProduct:Boolean=false){
     Scaffold(
         topBar = {
         },
@@ -74,7 +77,7 @@ fun SearchResultPage(
 
             FoodListPage(modifier = Modifier
                 .padding(paddingValues)
-                .fillMaxSize(),navHostController,foodVM,search)
+                .fillMaxSize(), navHostController =  navHostController, serach = search, isRestaurantProduct =  isRestaurantProduct)
 
 
         }
@@ -84,13 +87,27 @@ fun SearchResultPage(
 
 
 @Composable
-fun FoodListPage(modifier: Modifier = Modifier,  navHostController: NavHostController, foodVM: FoodViewModel, serach:String?=null) {
+fun FoodListPage(modifier: Modifier = Modifier, navHostController: NavHostController, foodVM: FoodViewModel= viewModel(), serach:String?=null, isRestaurantProduct:Boolean=false) {
     val context= LocalContext.current
-    val foodList by foodVM.foodList.observeAsState()
-    if(serach!=null){
+    var foodList:ArrayList<Food>?
+
+    Log.d("hatamisRs","isRes"+isRestaurantProduct + "serach"+serach)
+
+    if (isRestaurantProduct && serach!=null) {
+        Log.d("hatamisRs","XisRes"+isRestaurantProduct + "serach"+serach)
+        foodVM.getRestaurantFood(serach!!)
+        val list by foodVM.restaurantFoodList.observeAsState()
+        foodList = list
+//        foodList = foodVM.restaurantFoodList.observeAsState()
+    } else if(serach!=null){
         foodVM.searchFood(serach!!)
-    }else{
+        val list by foodVM.foodList.observeAsState()
+        foodList = list
+    }
+    else{
         foodVM.getFoodList()
+        val list by foodVM.foodList.observeAsState()
+        foodList = list
     }
 
 

@@ -26,6 +26,7 @@ import com.example.fooddeliveryproject.Models.Restaurant
 import com.example.fooddeliveryproject.R
 import com.example.fooddeliveryproject.Utils.downladImage
 import com.example.fooddeliveryproject.ViewModel.RestaurantViewModel
+import com.example.fooddeliveryproject.navigation.StoreScreen
 
 
 @Composable
@@ -81,7 +82,7 @@ fun RestaurantPage(navigate: NavHostController = rememberNavController(),restaur
                     verticalArrangement = Arrangement.spacedBy(1.dp)
                 ) {
                     items(restaurantList!!) { restaurant ->
-                        RestaurantItem(restaurant)
+                        RestaurantItem(restaurant, navHostController = navigate)
                     }
                 }
             }
@@ -91,7 +92,7 @@ fun RestaurantPage(navigate: NavHostController = rememberNavController(),restaur
 }
 
 @Composable
-fun RestaurantItem(restaurant: Restaurant) {
+fun RestaurantItem(restaurant: Restaurant,navHostController: NavHostController) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -99,10 +100,13 @@ fun RestaurantItem(restaurant: Restaurant) {
         elevation = 16.dp
     ) {
         Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .padding(8.dp).clickable {
+                    navHostController.navigate(StoreScreen.SearchResultScreen.name+ "?search=${restaurant.id}&isRestaurantProduct=true")
+
+                }
         ) {
             downladImage(imageUrl = restaurant.imageUrl, size = 80)
             Spacer(modifier = Modifier.width(16.dp))

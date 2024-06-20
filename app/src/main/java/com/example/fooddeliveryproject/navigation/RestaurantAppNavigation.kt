@@ -14,10 +14,12 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.fooddeliveryproject.View.AuthPages.LoginPage
 import com.example.fooddeliveryproject.View.AuthPages.RestaurantLoginPage
 import com.example.fooddeliveryproject.View.AuthPages.RestaurantSignUpPage
@@ -157,6 +159,26 @@ fun RestaurantAppNavigation( ) {
                     navHostController = navController,
                     foodVM = foodViewModel,
                     search = backStackEntry.arguments?.getString("search")
+                )
+            }
+            composable(
+                route = StoreScreen.SearchResultScreen.name + "?search={search}&isRestaurantProduct={isRestaurantProduct}",
+                arguments = listOf(
+                    navArgument("search") {
+                        type = NavType.StringType
+                        defaultValue = ""
+                    },
+                    navArgument("isRestaurantProduct") {
+                        type = NavType.BoolType
+                        defaultValue = false
+                    }
+                )
+            ) { backStackEntry ->
+                SearchResultPage(
+                    navHostController = navController,
+                    foodVM = foodViewModel,
+                    search = backStackEntry.arguments?.getString("search") ?: "",
+                    isRestaurantProduct = backStackEntry.arguments?.getBoolean("isRestaurantProduct") ?: false
                 )
             }
 
