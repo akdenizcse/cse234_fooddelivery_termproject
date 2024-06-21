@@ -70,7 +70,7 @@ fun MainPage(navHostController: NavHostController=rememberNavController(),addres
                 Spacer(modifier = Modifier.size(8.dp))
             }
             item {
-                Favs(navHostController, foodViewModel =foodViewModel)
+                Favs(navHostController=navHostController, foodViewModel =foodViewModel)
             }
             item {
                 Restorants(navHostController, restaurantViewModel )

@@ -7,6 +7,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -20,6 +21,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.fooddeliveryproject.Models.Food
 import com.example.fooddeliveryproject.View.AuthPages.LoginPage
 import com.example.fooddeliveryproject.View.AuthPages.RestaurantLoginPage
 import com.example.fooddeliveryproject.View.AuthPages.RestaurantSignUpPage
@@ -40,6 +42,7 @@ import com.example.fooddeliveryproject.View.Restaurant.RestaurantChangeRestauran
 import com.example.fooddeliveryproject.View.Restaurant.RestaurantHomePage
 import com.example.fooddeliveryproject.View.Restaurant.RestaurantOrderPage
 import com.example.fooddeliveryproject.View.Restaurant.RestaurantPasswordChangePage
+import com.example.fooddeliveryproject.View.Search.DetailsPage
 import com.example.fooddeliveryproject.View.Search.SearchResultPage
 import com.example.fooddeliveryproject.ViewModel.AddressPageViewModel
 import com.example.fooddeliveryproject.ViewModel.AuthenticatorViewModel
@@ -182,6 +185,14 @@ fun RestaurantAppNavigation( ) {
                 )
             }
 
+            composable(StoreScreen.DetailsScreen.name){
+
+                val result = navController.previousBackStackEntry?.savedStateHandle?.get<Food>(key = "food")
+                if(result!=null){
+                    DetailsPage(food = result, navHostController = navController, userVM = userVM)
+                }
+
+            }
         }
     }
 }

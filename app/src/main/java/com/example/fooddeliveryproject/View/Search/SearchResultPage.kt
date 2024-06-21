@@ -176,52 +176,7 @@ fun FoodListPage(modifier: Modifier = Modifier, navHostController: NavHostContro
 
 
         }
-//        Box(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .background(
-//                    color = colorResource(id = R.color.detailsPageColor),
-//                    //shape = MaterialTheme.shapes.medium,
-//                    shape = RoundedCornerShape(40.dp)
-//                )
-//                .padding(horizontal = 16.dp, vertical = 12.dp),
-//        ) {
-//            if (searchText.text.isEmpty()) {
-//
-//                Text(
-//                    modifier = Modifier.padding(start = 20.dp),
-//                    text = "Search...",
-//                    color = Color.Gray,
-//                    fontSize = 16.sp
-//                )
-//            }
-//            Row(verticalAlignment = Alignment.CenterVertically) {
-//                Button(onClick = {},
-//                    modifier = Modifier
-//                        .width(16.dp)
-//                        .height(16.dp),
-//                    contentPadding = PaddingValues(),
-//                    colors = ButtonDefaults.buttonColors(colorResource(id = R.color.detailsPageColor))
-//                ){
-//                    androidx.compose.material3.Icon(
-//                        Icons.Outlined.Search,
-//                        contentDescription = "Ara",
-//                        tint = colorResource(id = R.color.orange)
-//                    )
-//                }
-//                Spacer(modifier = Modifier.width(6.dp))
-//                BasicTextField(
-//                    value = searchText,
-//                    onValueChange = { searchText = it },
-//                    modifier = Modifier
-//                        .fillMaxWidth(),
-//                    textStyle = TextStyle(
-//                        fontSize = 16.sp,
-//                        fontWeight = FontWeight.Normal
-//                    )
-//                )
-//            }
-//        }
+
 
         if(foodList!=null){
             if(foodList!!.size>0){
@@ -244,9 +199,20 @@ fun FoodListPage(modifier: Modifier = Modifier, navHostController: NavHostContro
                             ) {
 
                                 Row(
-                                    modifier = Modifier.fillMaxWidth(),
                                     horizontalArrangement = Arrangement.Start,
-                                    verticalAlignment = Alignment.CenterVertically
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.fillMaxWidth().clickable {
+                                        try {
+                                            navHostController.currentBackStackEntry?.savedStateHandle?.set(
+                                                key = "food",
+                                                value = food
+                                            )
+                                            navHostController.navigate(StoreScreen.DetailsScreen.name)
+
+                                        }catch (e:Exception){
+                                            Log.d("hatamFavsItem",e.toString())
+                                        }
+                                    }
                                 ) {
                                     Spacer(modifier = Modifier.width(5.dp))
 
@@ -357,41 +323,6 @@ fun FoodListPage(modifier: Modifier = Modifier, navHostController: NavHostContro
 
 
                                 }
-
-//                                Surface(
-//                                    color = colorResource(id = R.color.white),
-//                                    //shape = RoundedCornerShape(14.dp),
-//                                    modifier = Modifier
-//                                        .fillMaxWidth()
-//                                        .size(100.dp, 45.dp)
-//                                        //.fillMaxSize()
-//                                        .background(Color.White)
-//                                        .padding(
-//                                            start = 5.dp,
-//                                            end = 5.dp,
-//                                            bottom = 5.dp,
-//                                            top = 4.dp
-//                                        ),
-//
-//                                    ) {
-////
-////                                    Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.End) {
-////
-////                                        Spacer(modifier = Modifier.width(5.dp))
-////                                        Text(text = food.price.toString()+" TL",
-////                                            color = colorResource(id = R.color.black),
-////                                            style = TextStyle(
-////                                                fontSize = 14.sp,
-////                                                fontWeight = FontWeight.Normal
-////                                            ),
-//////                                            modifier=Modifier.padding(bottom = 10.dp, end = 10.dp)
-////                                        )
-////
-////                                    }
-//
-//
-//                                }
-
 
                             }
                         }

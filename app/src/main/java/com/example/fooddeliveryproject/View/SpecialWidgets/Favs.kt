@@ -33,18 +33,25 @@ import com.example.fooddeliveryproject.R
 import com.example.fooddeliveryproject.Utils.downladImage
 import com.example.fooddeliveryproject.ViewModel.FoodViewModel
 import com.example.fooddeliveryproject.navigation.StoreScreen
-
-data class Favs(
-    val imageRes: Int,
-    val name: String,
-    val location: String,
-)
+import kotlinx.serialization.json.Json
 
 @Composable
-fun FavsItem(favs: Food) {
+fun FavsItem(favs: Food,navHostController: NavHostController) {
     Column(
         modifier = Modifier
-            .padding(horizontal = 8.dp, vertical = 6.dp),
+            .padding(horizontal = 8.dp, vertical = 6.dp)
+            .clickable {
+                try {
+                    navHostController.currentBackStackEntry?.savedStateHandle?.set(
+                        key = "food",
+                        value = favs
+                    )
+                    navHostController.navigate(StoreScreen.DetailsScreen.name)
+
+                }catch (e:Exception){
+                    Log.d("hatamFavsItem",e.toString())
+                }
+                    },
         //horizontalAlignment = Alignment.CenterHorizontally
     ) {
         downladImage(imageUrl = favs.imageUrl, size = 100 )
@@ -97,7 +104,7 @@ fun TopFavsSection(favs: ArrayList<Food>?,navHostController: NavHostController) 
         ) {
             if (favs != null) {
                 items(favs.toList()) { favsall ->
-                    FavsItem(favs = favsall)
+                    FavsItem(favs = favsall,navHostController)
                 }
             }
         }
@@ -106,15 +113,7 @@ fun TopFavsSection(favs: ArrayList<Food>?,navHostController: NavHostController) 
 
 @Composable
 fun Favs(navHostController: NavHostController ,foodViewModel: FoodViewModel,) {
-//    val favs = listOf(
-//        Favs(R.drawable.dukkan9, "Ev Yemeği Menü", "192 TL",),
-//        Favs(R.drawable.dukkan10, "Enginarlı Salata", "122 TL",),
-//        Favs(R.drawable.dukkan3, "Kahvaltı Menü", "142 TL",),
-//        Favs(R.drawable.dukkan11, "Burger King", "165 TL",),
-//        Favs(R.drawable.dukkan5, "Burger King", "45 TL",),
-//        Favs(R.drawable.dukkan6, "Burger King", "127 TL",),
-//        Favs(R.drawable.dukkan7, "Burger King", "69 TL",),
-//    )
+
     foodViewModel.getRandomFoodItems(5)
     val list by foodViewModel.foodList.observeAsState()
     TopFavsSection(favs = list ,navHostController)

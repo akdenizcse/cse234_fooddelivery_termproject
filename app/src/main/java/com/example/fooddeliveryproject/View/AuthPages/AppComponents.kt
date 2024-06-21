@@ -460,7 +460,6 @@ fun ButtonComponent(param: String, ){
         contentPadding = PaddingValues(),
         colors = ButtonDefaults.buttonColors(colorResource(id = R.color.orange))
     ) {
-
         Box(modifier = Modifier
             .fillMaxWidth()
             .heightIn(48.dp),
@@ -472,7 +471,6 @@ fun ButtonComponent(param: String, ){
                     fontWeight = FontWeight.Bold)
 
             }
-
         }
 
 
@@ -512,12 +510,10 @@ fun ButtonComponentGoogle(param: String, ){
 
 @Composable
 fun QuantityComponent(){
-
     Row (modifier = Modifier,
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically)
     {
-
         Button(onClick = {},
             modifier = Modifier
                 .heightIn(48.dp),
@@ -526,8 +522,6 @@ fun QuantityComponent(){
         ){
             Icon(Icons.Outlined.Add, contentDescription = "Artır")
         }
-
-
         Text(
             text = "1",
             modifier = Modifier.padding(10.dp),
@@ -537,7 +531,6 @@ fun QuantityComponent(){
                 //fontWeight = FontWeight.Bold,
             )
         )
-
         Button(onClick = {},
             modifier = Modifier
                 .heightIn(48.dp),
@@ -546,8 +539,6 @@ fun QuantityComponent(){
         ){
             Icon(Icons.Outlined.Add, contentDescription = "Artır")
         }
-
-
         Text(
             text = "189TL",
             modifier = Modifier.padding(30.dp),

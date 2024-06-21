@@ -15,5 +15,6 @@ enum class StoreScreen {
     RestaurantLoginScreen,
     AddressScreen,
     OrderStatusScreen,
-    OrderConfirmScreen
+    OrderConfirmScreen,
+    DetailsScreen
 }
