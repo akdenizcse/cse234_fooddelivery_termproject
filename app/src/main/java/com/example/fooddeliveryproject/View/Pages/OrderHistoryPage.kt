@@ -9,6 +9,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,27 +20,29 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.fooddeliveryproject.Models.OrderedFood
 import com.example.fooddeliveryproject.R
+import com.example.fooddeliveryproject.Utils.downladImage
+import com.example.fooddeliveryproject.ViewModel.UserViewModel
 import com.example.fooddeliveryproject.navigation.StoreScreen
 
-data class OrderHistory(
-    val imageRes: Int,
-    val name: String,
-    val tarih: String,
-    val urun: String,
-)
+
 
 @Composable
-fun OrderHistoryPage(navHostController: NavHostController = rememberNavController()) {
-    val categories = listOf(
-        OrderHistory(R.drawable.dukkan1, "Çorbacı Şükrü", "29-01-2024", "Mercimek Çorbası"),
-        OrderHistory(R.drawable.dukkan6, "Hastayım Döner", "22-01-2023", "Tavuk Döner"),
-        OrderHistory(R.drawable.dukkan12, "Burger King", "06-01-2023", "Double King Burger Menu"),
-        OrderHistory(R.drawable.dukkan11, "Makarna Yıldızı", "17-08-2022", "Bol Kremalı Makarna"),
-        OrderHistory(R.drawable.dukkan13, "Gogalo Döner", "14-05-2019", "Et Döner"),
-        )
+fun OrderHistoryPage(navHostController: NavHostController = rememberNavController(),userViewModel: UserViewModel = viewModel()) {
+//    val categories = listOf(
+//        OrderHistory(R.drawable.dukkan1, "Çorbacı Şükrü", "29-01-2024", "Mercimek Çorbası"),
+//        OrderHistory(R.drawable.dukkan6, "Hastayım Döner", "22-01-2023", "Tavuk Döner"),
+//        OrderHistory(R.drawable.dukkan12, "Burger King", "06-01-2023", "Double King Burger Menu"),
+//        OrderHistory(R.drawable.dukkan11, "Makarna Yıldızı", "17-08-2022", "Bol Kremalı Makarna"),
+//        OrderHistory(R.drawable.dukkan13, "Gogalo Döner", "14-05-2019", "Et Döner"),
+//        )
+    userViewModel.getOrderHistoryList()
+    val orderHistoryList by userViewModel._orderHistoryList.observeAsState()
+
 
     Scaffold(
         topBar = {
@@ -75,16 +79,19 @@ fun OrderHistoryPage(navHostController: NavHostController = rememberNavControlle
                     .background(Color.White),
                 verticalArrangement = Arrangement.spacedBy(1.dp)
             ) {
-                items(categories) { category ->
-                    ListItem(category)
+                if (orderHistoryList != null){
+                    items(orderHistoryList!!) { category ->
+                        ListItem(category)
+                    }
                 }
+
             }
         }
     )
 }
 
 @Composable
-fun ListItem(orderHistory: OrderHistory) {
+fun ListItem(orderHistory: OrderedFood) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -98,11 +105,7 @@ fun ListItem(orderHistory: OrderHistory) {
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = painterResource(id = orderHistory.imageRes),
-                contentDescription = orderHistory.name,
-                modifier = Modifier.size(48.dp)
-            )
+            downladImage(imageUrl = orderHistory.imageUrl, size = 48)
             Spacer(modifier = Modifier.width(16.dp))
     Column {
         Text(
@@ -113,20 +116,38 @@ fun ListItem(orderHistory: OrderHistory) {
             textAlign = TextAlign.Start
         )
         Text(
-            text = orderHistory.tarih,
-            fontSize = 18.sp,
+            text = if(orderHistory.isDelivered) "Teslim edildi" else "Sipariş Hazırlanıyor",
+            fontSize = 14.sp,
             fontWeight = FontWeight.Normal,
             color = Color.Black,
-            textAlign = TextAlign.Start
+            textAlign = TextAlign.Start,
+            modifier = Modifier.padding(top = 5.dp)
         )
         Spacer(modifier = Modifier.size(16.dp))
-        Text(
-            text = orderHistory.urun,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Light,
-            color = Color.Black,
-            textAlign = TextAlign.Start
-        )
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = orderHistory.soldCount.toString() + " Adet",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Light,
+                color = Color.Black,
+                textAlign = TextAlign.Start,
+                modifier = Modifier.weight(1f)
+            )
+            Text(
+                text = orderHistory.orderedDate.toString(),
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Light,
+                color = Color.Black,
+                textAlign = TextAlign.End,
+                modifier = Modifier.weight(1f)
+            )
+        }
+
     }
 
         }

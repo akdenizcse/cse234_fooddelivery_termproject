@@ -16,5 +16,6 @@ enum class StoreScreen {
     AddressScreen,
     OrderStatusScreen,
     OrderConfirmScreen,
-    DetailsScreen
+    DetailsScreen,
+    ChangePassword
 }

@@ -21,6 +21,9 @@ import coil.compose.SubcomposeAsyncImageContent
 import coil.request.ImageRequest
 import com.example.fooddeliveryproject.R
 import com.google.firebase.storage.StorageReference
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 fun uploadImage(imageUri: Uri, folderName: String,storageReference: StorageReference, calllback: (String) -> Unit) {
     val imageNamePrefix = "image_${System.currentTimeMillis()}"
@@ -54,5 +57,9 @@ fun downladImage(imageUrl:String,size:Int=150) {
         contentScale = ContentScale.Crop,
         modifier = Modifier.size(size.dp)
     )
+}
+fun getCurrentFormattedDate(): String {
+    val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+    return dateFormat.format(Date())
 }
 

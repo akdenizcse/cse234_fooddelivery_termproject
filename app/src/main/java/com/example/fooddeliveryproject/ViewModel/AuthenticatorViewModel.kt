@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.fooddeliveryproject.Models.Restaurant
 import com.example.fooddeliveryproject.Models.User
 import com.example.fooddeliveryproject.Utils.uploadImage
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -134,5 +135,32 @@ class AuthenticatorViewModel:ViewModel() {
                 }
         }
 
+    }
+    fun updatePassword(currentPassword: String, newPassword: String, onResult: (String) -> Unit) {
+        val user = auth.currentUser
+
+        if (user != null && currentPassword.isNotEmpty() && newPassword.isNotEmpty()) {
+            val credential = EmailAuthProvider.getCredential(user.email!!, currentPassword)
+
+            viewModelScope.launch {
+                user.reauthenticate(credential)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            user.updatePassword(newPassword)
+                                .addOnCompleteListener { updateTask ->
+                                    if (updateTask.isSuccessful) {
+                                        onResult("Şifre değiştirildi.")
+                                    } else {
+                                        onResult("Şifre değiştirilemedi: ${updateTask.exception?.message}")
+                                    }
+                                }
+                        } else {
+                            onResult("Mevcut şifre hatalı: ${task.exception?.message}")
+                        }
+                    }
+            }
+        } else {
+            onResult("Lütfen tüm alanları doldurunuz.")
+        }
     }
 }

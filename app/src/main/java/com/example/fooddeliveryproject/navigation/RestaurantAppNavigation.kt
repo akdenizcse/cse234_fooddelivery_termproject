@@ -26,6 +26,7 @@ import com.example.fooddeliveryproject.View.AuthPages.LoginPage
 import com.example.fooddeliveryproject.View.AuthPages.RestaurantLoginPage
 import com.example.fooddeliveryproject.View.AuthPages.RestaurantSignUpPage
 import com.example.fooddeliveryproject.View.AuthPages.SignUpPage
+import com.example.fooddeliveryproject.View.Pages.AccountChangePassword
 import com.example.fooddeliveryproject.View.Pages.AccountPage
 import com.example.fooddeliveryproject.View.Pages.AddressPage
 import com.example.fooddeliveryproject.View.Pages.CampaignPage
@@ -33,6 +34,7 @@ import com.example.fooddeliveryproject.View.Pages.CartPage
 import com.example.fooddeliveryproject.View.Pages.CategoriesPage
 import com.example.fooddeliveryproject.View.Pages.MainPage
 import com.example.fooddeliveryproject.View.Pages.OrderConfirmPage
+import com.example.fooddeliveryproject.View.Pages.OrderHistoryPage
 import com.example.fooddeliveryproject.View.Pages.OrderPage
 import com.example.fooddeliveryproject.View.Pages.OrderStatusPage
 import com.example.fooddeliveryproject.View.Pages.RestaurantPage
@@ -149,7 +151,8 @@ fun RestaurantAppNavigation( ) {
                 AddressPage(navController,addressVM)
             }
             composable(route=StoreScreen.OrderStatusScreen.name){
-                OrderStatusPage()
+//                OrderStatusPage()
+                OrderHistoryPage(navHostController = navController,  userViewModel = userVM)
             }
             composable(route=StoreScreen.OrderConfirmScreen.name){
                 OrderConfirmPage(navController)
@@ -193,6 +196,10 @@ fun RestaurantAppNavigation( ) {
                 }
 
             }
+            composable(route=StoreScreen.ChangePassword.name){
+                AccountChangePassword(navHostController = navController, authViewModel =authenticatorViewModel )
+            }
+
         }
     }
 }

@@ -188,15 +188,20 @@ fun ExistCartView(
                     color = colorResource(id = R.color.signUpBlack)
                 )
                 Button(
-                    onClick = { 
-                                    userViewModel.order(){
-                                        if (it){
-                                            navHostController.navigate(StoreScreen.OrderConfirmScreen.name)
-                                            Toast.makeText(context,"Sipariş Alındı",Toast.LENGTH_LONG).show()
-                                        }else{
-                                            Toast.makeText(context,"Sipariş Alınırken Hata Oluştu",Toast.LENGTH_LONG).show()
-                                        }
-                                    }
+                    onClick = {
+                        if(cartList != null && cartList!!.isNotEmpty()){
+                            userViewModel.order(cartList!!) {
+                                if (it){
+                                    navHostController.navigate(StoreScreen.OrderConfirmScreen.name)
+                                    Toast.makeText(context,"Sipariş Alındı",Toast.LENGTH_LONG).show()
+                                }else{
+                                    Toast.makeText(context,"Sipariş Alınırken Hata Oluştu",Toast.LENGTH_LONG).show()
+                                }
+                            }
+                        }else{
+                            Toast.makeText(context,"Sepetin Boş",Toast.LENGTH_LONG).show()
+                        }
+
 
                               },
                     modifier = Modifier

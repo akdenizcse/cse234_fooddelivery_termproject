@@ -25,6 +25,9 @@ class UserViewModel():ViewModel() {
     val user:LiveData<User> get() = _user
     private val _preparedOrderList =MutableLiveData<List<OrderedFood>>()
     val preparedOrderList  :LiveData<List<OrderedFood>> get() = _preparedOrderList
+
+    val _orderHistoryList =MutableLiveData<List<OrderedFood>>()
+    val orderHistoryList  :LiveData<List<OrderedFood>> get() = _orderHistoryList
     init {
         if (FirebaseAuth.getInstance().currentUser != null) {
             uuid = FirebaseAuth.getInstance().currentUser!!.uid
@@ -130,38 +133,43 @@ class UserViewModel():ViewModel() {
                 }
         }
     }
-//    db.collection("User").document(uuid).collection("Cart").document(food.id).delete()
 
-    fun order(callBack: (Boolean) -> Unit) {
-        if (cartList == null || cartList.value == null) {
-            callBack(false)
-            return
-        }
 
-        Log.d("hatamCart", cartList.value.toString())
+    fun order(foodList :List<OrderedFood>,callBack:(Boolean)->Unit){
         viewModelScope.launch {
-            var successCount = 0
-            var failureCount = 0
-            val cartItems = cartList.value!!
-
-            for (food in cartItems) {
-                try {
-                    db.collection("User").document(uuid).collection("Order").add(food).await()
-                    try {
-                        db.collection("User").document(uuid).collection("Cart").document(food.id).delete().await()
-                        successCount++
-                    } catch (e: Exception) {
-                        failureCount++
-                    }
-                } catch (e: Exception) {
-                    failureCount++
-                }
-
-                if (successCount + failureCount == cartItems.size) {
-                    callBack(failureCount == 0)
-                }
+            foodList.forEach {
+                db.collection("Users").document(uuid).collection("Order").add(it)
+            }
+            removeCartList {
+                callBack(it)
             }
         }
     }
+
+    private fun removeCartList(callBack: (Boolean) -> Unit){
+        viewModelScope.launch {
+            db.collection("Users").document(uuid).collection("Cart")
+                .get().addOnSuccessListener {
+                    for (document in it){
+                        db.collection("Users").document(uuid).collection("Cart")
+                            .document(document.id).delete().addOnSuccessListener {
+                                callBack(true)
+                            }.addOnFailureListener(){
+                                callBack(false)
+                            }
+                    }
+                }
+        }
+    }
+
+    fun getOrderHistoryList(){
+        viewModelScope.launch {
+            db.collection("Users").document(uuid).collection("Order")
+                .get().addOnSuccessListener {
+                    _orderHistoryList.value=it.toObjects(OrderedFood::class.java)
+                }
+        }
+    }
+
 
 }

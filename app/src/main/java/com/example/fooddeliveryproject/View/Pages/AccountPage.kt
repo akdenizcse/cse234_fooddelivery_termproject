@@ -29,28 +29,7 @@ import com.example.fooddeliveryproject.navigation.StoreScreen
 @Composable
 fun AccountPage(navigate:NavHostController= rememberNavController(),authVM:AuthenticatorViewModel= viewModel()) {
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "Hesabım",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = { /* Handle back navigation */ }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.arrow_left),
-                            contentDescription = "Back",
-                            tint = Color.White
-                        )
-                    }
-                },
-                backgroundColor = Color(0xFFF8742A)
-            )
-        },
+
         content = { paddingValues ->
             LazyColumn(
                 contentPadding = paddingValues,
@@ -75,13 +54,15 @@ fun AccountPage(navigate:NavHostController= rememberNavController(),authVM:Authe
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         AccountOptionItem(
-                            iconResId = R.drawable.campaign_icon, // Replace with your icon resource ID
-                            text = "Geçmiş Siparişlerim"
+                            iconResId = R.drawable.baseline_access_time_24,
+                            text = "Geçmiş Siparişlerim",
+                            navigate = navigate
                         )
                         Divider(color = Color.Gray, thickness = 1.dp)
                         AccountOptionItem(
-                            iconResId = R.drawable.menu, // Replace with your icon resource ID
-                            text = "Şifreyi Değiştir"
+                            iconResId = R.drawable.password_photo,
+                            text = "Şifreyi Değiştir",
+                            navigate=navigate
                         )
                         Spacer(modifier = Modifier.height(32.dp))
                         Button(
@@ -109,11 +90,17 @@ fun AccountPage(navigate:NavHostController= rememberNavController(),authVM:Authe
 }
 
 @Composable
-fun AccountOptionItem(iconResId: Int, text: String, onClick: () -> Unit = {}) {
+fun AccountOptionItem(iconResId: Int, text: String,navigate: NavHostController ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick)
+            .clickable(onClick = {
+                if(text=="Geçmiş Siparişlerim"){
+                    navigate.navigate(StoreScreen.OrderStatusScreen.name)
+                }else{
+
+                }
+            })
             .padding(vertical = 16.dp, horizontal = 24.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

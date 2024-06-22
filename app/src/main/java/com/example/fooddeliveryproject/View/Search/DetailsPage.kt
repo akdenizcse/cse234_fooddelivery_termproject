@@ -57,6 +57,7 @@ import com.example.fooddeliveryproject.Models.Food
 import com.example.fooddeliveryproject.Models.OrderedFood
 import com.example.fooddeliveryproject.R
 import com.example.fooddeliveryproject.Utils.downladImage
+import com.example.fooddeliveryproject.Utils.getCurrentFormattedDate
 import com.example.fooddeliveryproject.View.AuthPages.ButtonComponent
 import com.example.fooddeliveryproject.View.AuthPages.QuantityComponent
 import com.example.fooddeliveryproject.ViewModel.UserViewModel
@@ -198,7 +199,8 @@ fun Details(paddingValues: PaddingValues,food:Food,userVM:UserViewModel,navHostC
             Spacer(modifier = Modifier.height(50.dp))
             Button(
                 onClick = {
-                          val orderFood= OrderedFood(food.id,food.name,food.description,food.imageUrl,food.price,food.category,count,System.currentTimeMillis().toString(),false,FirebaseAuth.getInstance().uid)
+                    val date= getCurrentFormattedDate()
+                          val orderFood= OrderedFood(food.id,food.name,food.description,food.imageUrl,food.price,food.category,count,date,false,FirebaseAuth.getInstance().uid)
                             userVM.addToCart(orderFood){
                                 if(it){
                                     Toast.makeText(context, "Sepete Eklendi", Toast.LENGTH_SHORT).show()
