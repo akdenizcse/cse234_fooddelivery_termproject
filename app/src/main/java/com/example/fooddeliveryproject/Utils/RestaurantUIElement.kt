@@ -59,7 +59,7 @@ fun CircularIndeterminateProgressBar(isDisplayed: Boolean) {
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
-                .background(Color.Black.copy(alpha = 0.5f))
+                .background(Color.Black.copy(alpha = 0.3f))
                 .pointerInput(Unit) {
                     detectTapGestures {
                     }

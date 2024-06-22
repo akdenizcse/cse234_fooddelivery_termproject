@@ -141,6 +141,8 @@ fun RestaurantAddProductPage(navHostController: NavHostController,viewModel: Res
             .fillMaxHeight()
             ) {
 
+
+
             Box {
                 Column(modifier = Modifier
                     .background(Color.White)
@@ -260,19 +262,6 @@ fun RestaurantAddProductPage(navHostController: NavHostController,viewModel: Res
                                 }
 
                             }
-//                            addProductToDatabase(viewModel.editedFood.value?.id,foodName,foodDescription,foodImageUrl,foodPrice,foodCategory,imageUri,viewModel, isEdit = isEdit) { isSuccess ->
-//                                if (isSuccess) {
-//                                    Log.d("hatamRestaurantAddProductPage", "Urun Eklendi")
-//                                    Toast.makeText(context, "Urun Eklendi", Toast.LENGTH_SHORT).show()
-//                                    navHostController.navigate(RestaurantScreen.RestaurantHomeScreen.name)
-//                                } else {
-//
-//                                    Log.d("hatamRestaurantAddProductPage", "dadUrun Eklenmedi")
-//                                    Toast.makeText(context, "Urun Eklenemedi", Toast.LENGTH_SHORT).show()
-//                                    isLoading.value=false
-//
-//                                }
-//                            }
                             isLoading.value=false
                         }
 
