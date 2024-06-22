@@ -44,6 +44,7 @@ import com.example.fooddeliveryproject.Models.Food
 import com.example.fooddeliveryproject.Models.OrderedFood
 import com.example.fooddeliveryproject.R
 import com.example.fooddeliveryproject.Utils.AppBar
+import com.example.fooddeliveryproject.Utils.downladImage
 import com.example.fooddeliveryproject.ViewModel.RestaurantViewModel
 
 @Preview
@@ -51,8 +52,10 @@ import com.example.fooddeliveryproject.ViewModel.RestaurantViewModel
 fun RestaurantOrderPage(navHostController: NavHostController,restaurantViewModel: RestaurantViewModel){
     restaurantViewModel.getRestaurantOrderList()
     val foodList by restaurantViewModel.restaurantOrderList.observeAsState()
-    val totalPrice =0
-        //TODO
+    var totalPrice by remember {
+        mutableStateOf(0)
+    }
+
     Scaffold(
         topBar = {
             AppBar(imageId = R.drawable.fork_and_spoon,"Orders")
@@ -64,30 +67,30 @@ fun RestaurantOrderPage(navHostController: NavHostController,restaurantViewModel
             .background(Color.White)
         ){
 
-//            val list= ArrayList<OrderedFood>()
-//            list.add(OrderedFood("1","Kebap","100 gr etli kebap","100",1000,"Et"))
-//            list.add(OrderedFood("2","100","100","100",1000,"100",2))
-//            list.add(OrderedFood("3","100","100","100",1000,"100"))
-//            list.add(OrderedFood("4","100","100","100",1000,"100"))
-//            list.add(OrderedFood("5","Kebap","100 gr etli kebap","100",1000,"Et",3))
-//            list.add(OrderedFood("6","100","100","100",1000,"100",2))
-//            list.add(OrderedFood("7","100","100","100",1000,"100"))
-//            val totalPrice = calculate(list)
+
             Box(modifier = Modifier.fillMaxHeight(.9f)){
 
-                 foodList?.let { it1 -> OrderFoodListDesig(list = it1) }
+                 foodList?.let { it1 ->
+                     OrderFoodListDesig(list = it1)
+                     totalPrice= calculate(it1)
+                 }
 
                 Box(
                     modifier = Modifier
 
                         .fillMaxWidth()
                         .background(Color.White)
-                        .padding(bottom = 10.dp).align(Alignment.BottomCenter)
+                        .padding(bottom = 10.dp)
+                        .align(Alignment.BottomCenter)
                         .border(.75.dp, Color.LightGray, RectangleShape),
 
                     ) {
-                    Text(text = "Toplam Gelir:", modifier = Modifier.align(Alignment.CenterStart).padding(start = 20.dp, bottom = 10.dp, top = 20.dp), fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                    Text(text = "${totalPrice} TL", modifier = Modifier.align(Alignment.CenterEnd).padding(end = 20.dp, bottom = 10.dp, top = 20.dp), fontSize = 18.sp, fontWeight = FontWeight.Bold, color = orange )
+                    Text(text = "Toplam Gelir:", modifier = Modifier
+                        .align(Alignment.CenterStart)
+                        .padding(start = 20.dp, bottom = 10.dp, top = 20.dp), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                    Text(text = "${totalPrice} TL", modifier = Modifier
+                        .align(Alignment.CenterEnd)
+                        .padding(end = 20.dp, bottom = 10.dp, top = 20.dp), fontSize = 18.sp, fontWeight = FontWeight.Bold, color = orange )
 
                 }
             }
@@ -103,12 +106,15 @@ fun RestaurantOrderPage(navHostController: NavHostController,restaurantViewModel
 }
 
 @Composable
-fun OrderFoodListDesig(list: ArrayList<OrderedFood>){
+fun OrderFoodListDesig(list: ArrayList<OrderedFood>  ) {
     var totalPrice=0
 
 
 
-    LazyColumn(Modifier.background(Color.White).fillMaxHeight(.9f)) {
+    LazyColumn(
+        Modifier
+            .background(Color.White)
+            .fillMaxHeight(.9f)) {
         items(list) { food ->
             val count=food.soldCount
             val price=food.price
@@ -143,7 +149,9 @@ fun OrderFoodListDesig(list: ArrayList<OrderedFood>){
                             verticalAlignment = Alignment.CenterVertically){
                             Text(text = "${food.soldCount} Adet", fontSize = 18.sp,fontWeight = FontWeight.Bold)
                             Box(
-                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp, end = 10.dp),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 10.dp, end = 10.dp),
                                 contentAlignment = Alignment.CenterEnd
                             ) {
 
@@ -160,11 +168,7 @@ fun OrderFoodListDesig(list: ArrayList<OrderedFood>){
                         shape = RoundedCornerShape(10.dp),
                         border = BorderStroke(width = 0.1.dp, color = Color.LightGray)
                     ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.fork_and_spoon),
-                            contentDescription = null
-
-                        )
+                       downladImage(imageUrl = food.imageUrl)
                     }
                 }
             }

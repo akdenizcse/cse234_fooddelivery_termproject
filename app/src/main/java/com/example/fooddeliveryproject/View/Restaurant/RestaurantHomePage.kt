@@ -66,17 +66,6 @@ fun RestaurantHomePage(navHostController: NavHostController= rememberNavControll
             restaurantViewModel.getRestaurantFoodList()
             val foodList by restaurantViewModel.restaurantFoodList.observeAsState()
             Log.d("hatam12", "sa" +foodList?.size.toString())
-            val list= ArrayList<Food>()
-            list.add(Food("1","Kebap","100 gr etli kebap","100",1000,"Et"))
-            list.add(Food("2","100","100","100",1000,"100"))
-            list.add(Food("3","100","100","100",1000,"100"))
-            list.add(Food("4","100","100","100",1000,"100"))
-            list.add(Food("5","100","100","100",1000,"100"))
-            list.add(Food("6","100","100","100",1000,"100"))
-            list.add(Food("7","100","100","100",1000,"100"))
-            list.add(Food("8","100","100","100",1000,"100"))
-            list.add(Food("9","100","100","100",1000,"100"))
-            list.add(Food("10","100","100","100",1000,"100"))
             if (foodList!=null){
                 Log.d("hatamHome","sa" +foodList?.size.toString())
                 RestaurantALlProducts(foodList!!,navHostController,restaurantViewModel)
@@ -125,8 +114,11 @@ fun RestaurantALlProducts(list: ArrayList<Food>,navHostController: NavHostContro
                                     onClick = {
                                         try {
                                             viewModel.editedFood.value = food
-                                            Log.d("hatamClick",RestaurantScreen.RestaurantAddProductScreen.name)
-                                            navController.navigate(RestaurantScreen.RestaurantAddProductScreen.name)
+                                            navHostController.currentBackStackEntry?.savedStateHandle?.set(
+                                                key = "editedFood",
+                                                value = food
+                                            )
+                                            navController.navigate(RestaurantScreen.RestaurantEditProductScreen.name)
                                             Log.e("hatam","tıklandı"+food.name)
                                         }catch (e:Exception){
                                             Log.e("hatamClick",e.toString())

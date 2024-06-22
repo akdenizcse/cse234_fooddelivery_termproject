@@ -15,6 +15,7 @@ import com.example.fooddeliveryproject.Models.Restaurant
 import com.example.fooddeliveryproject.Utils.uploadImage
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -26,7 +27,7 @@ class RestaurantViewModel ():ViewModel() {
     private val storage=FirebaseStorage.getInstance()
     private val storageReference=storage.reference
     val fauth=FirebaseAuth.getInstance()
-    private var uuid :String= fauth.currentUser?.uid ?: ""
+    var uuid :String= fauth.currentUser?.uid ?: ""
     val isLoading= mutableStateOf(false)
     val editedFood: MutableState<Food?> = mutableStateOf(null)
 
@@ -120,6 +121,9 @@ class RestaurantViewModel ():ViewModel() {
 
         }
     }
+    fun updateImage(imageUri: Uri){
+
+    }
 
     fun getRestaurantList(){
         viewModelScope.launch {
@@ -198,13 +202,41 @@ class RestaurantViewModel ():ViewModel() {
     }
     fun getRestaurantOrderList(){
         try {
-            db.collection("Restaurant").document(uuid).get().addOnSuccessListener {
-                _restaurantOrderList.value= it.toObject(Restaurant::class.java)?.soldFood
-            }.addOnFailureListener{
-                Log.e("hatamRVM", "Error fetching restaurant order list", it)
+            viewModelScope.launch {
+                db.collection("Restaurant").document(uuid).collection("Order")
+                    .get()
+                    .addOnSuccessListener { querySnapshot ->
+                        val orderList = ArrayList<OrderedFood>()
+                        for (document in querySnapshot) {
+                            val order = document.toObject<OrderedFood>()
+                            orderList.add(order)
+                        }
+                        _restaurantOrderList.value = orderList
+                    }
             }
         }catch (e:Exception){
 
+        }
+
+    }
+    fun uploadFoodImage(imageUri: Uri, folderName: String, calllback: (String) -> Unit) {
+        val imageNamePrefix = "image_${System.currentTimeMillis()}"
+        var uploadedCount = 0
+        val imageName = "$imageNamePrefix${uploadedCount++}"
+        val imageRef: StorageReference = storageReference.child("$folderName/$imageName")
+
+        if (imageUri != null) {
+            imageRef.putFile(imageUri)
+                .addOnSuccessListener { taskSnapshot ->
+                    taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener { uri->
+                        calllback(uri.toString())
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    calllback("error")
+                    Log.e("hatamVM", "error= "+exception.toString())
+                    exception.printStackTrace()
+                }
         }
     }
 

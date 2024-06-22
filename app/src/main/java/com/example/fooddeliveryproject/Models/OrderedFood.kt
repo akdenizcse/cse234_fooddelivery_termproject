@@ -11,5 +11,6 @@ data class OrderedFood(
     var soldCount:Int?=null,
     var orderedDate:String?=null,
     var isDelivered: Boolean=false,
-    var userId:String ? =null
+    var userId:String ? =null,
+    var restaurantId:String=""
 )

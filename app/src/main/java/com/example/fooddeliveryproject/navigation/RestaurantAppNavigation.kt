@@ -81,7 +81,7 @@ fun RestaurantAppNavigation( ) {
     ) { paddingValues ->
         NavHost(
             navController = navController,
-            startDestination = StoreScreen.HomeScreen.name,
+            startDestination = StoreScreen.LoginScreen.name,
             modifier = Modifier.padding(paddingValues)
         ) {
             composable(route = RestaurantScreen.RestaurantHomeScreen.name) {
@@ -97,8 +97,12 @@ fun RestaurantAppNavigation( ) {
                     restaurantViewModel=restaurantViewModel
                 )
             }
-            composable(route = RestaurantScreen.RestaurantEditProductScreen.name) {
-                RestaurantAddProductPage(navController, viewModel = restaurantViewModel)
+            composable(route = RestaurantScreen.RestaurantEditProductScreen.name ) {
+                val result = navController.previousBackStackEntry?.savedStateHandle?.get<Food>(key = "editedFood")
+                if(result!=null){
+                    RestaurantAddProductPage(navController, viewModel = restaurantViewModel, food = result,true)
+                }
+
             }
             composable(route = RestaurantScreen.RestaurantAddProductScreen.name) {
                 RestaurantAddProductPage(navController, viewModel = restaurantViewModel)
@@ -246,7 +250,8 @@ fun RestaurnatBottt(navController: NavHostController ,currentDestination:NavDest
         RestaurantScreen.RestaurantAddProductScreen.name,
         RestaurantScreen.RestaurantChangeRestaurantNameScreen.name,
         RestaurantScreen.RestaurantUpdatePasswordScreen.name,
-        RestaurantScreen.RestaurantLoginScreen.name
+        RestaurantScreen.RestaurantLoginScreen.name,
+        StoreScreen.LoginScreen.name
     )
     if (!listOfRestaurantFullScreen.contains(currentDestination?.route)) {
         NavigationBar {

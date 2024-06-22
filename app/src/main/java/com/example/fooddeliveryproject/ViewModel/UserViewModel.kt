@@ -139,6 +139,8 @@ class UserViewModel():ViewModel() {
         viewModelScope.launch {
             foodList.forEach {
                 db.collection("Users").document(uuid).collection("Order").add(it)
+                Log.d("hatamOrder","ds  "+it.toString())
+                db.collection("Restaurant").document(it.restaurantId).collection("Order").add(it)
             }
             removeCartList {
                 callBack(it)

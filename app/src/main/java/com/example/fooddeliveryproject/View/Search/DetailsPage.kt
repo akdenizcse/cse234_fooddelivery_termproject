@@ -200,7 +200,7 @@ fun Details(paddingValues: PaddingValues,food:Food,userVM:UserViewModel,navHostC
             Button(
                 onClick = {
                     val date= getCurrentFormattedDate()
-                          val orderFood= OrderedFood(food.id,food.name,food.description,food.imageUrl,food.price,food.category,count,date,false,FirebaseAuth.getInstance().uid)
+                          val orderFood= OrderedFood(food.id,food.name,food.description,food.imageUrl,food.price,food.category,count,date,false,FirebaseAuth.getInstance().uid,food.restaurantId)
                             userVM.addToCart(orderFood){
                                 if(it){
                                     Toast.makeText(context, "Sepete Eklendi", Toast.LENGTH_SHORT).show()

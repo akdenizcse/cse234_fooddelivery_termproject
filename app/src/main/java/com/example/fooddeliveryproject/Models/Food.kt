@@ -13,5 +13,6 @@ data class Food(
     var price: Int=0,
     var category:String="",
     var rating:Double=0.0,
-    var ratingCount:Int=0
+    var ratingCount:Int=0,
+    var restaurantId:String=""
 ):Parcelable

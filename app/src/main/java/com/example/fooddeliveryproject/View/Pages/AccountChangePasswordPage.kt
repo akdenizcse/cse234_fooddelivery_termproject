@@ -75,7 +75,8 @@ fun AccountChangePassword(navHostController: NavHostController,authViewModel:Aut
                                     painter = painterResource(id = R.drawable.arrow_left),
                                     contentDescription = "Back",
                                     tint = Color.Black,
-                                    modifier = Modifier.size(40.dp)
+                                    modifier = Modifier.size
+                                        (40.dp)
                                         //.padding(bottom = 5.dp)
                                 )
                             }

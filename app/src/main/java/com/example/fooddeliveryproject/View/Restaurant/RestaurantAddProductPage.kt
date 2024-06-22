@@ -1,5 +1,6 @@
 package com.example.fooddeliveryproject.View.Restaurant
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
@@ -61,12 +62,14 @@ import com.example.fooddeliveryproject.Models.Food
 import com.example.fooddeliveryproject.R
 import com.example.fooddeliveryproject.Utils.AppBar
 import com.example.fooddeliveryproject.Utils.CircularIndeterminateProgressBar
+import com.example.fooddeliveryproject.Utils.downladImage
 import com.example.fooddeliveryproject.ViewModel.RestaurantViewModel
 import com.example.fooddeliveryproject.navigation.RestaurantScreen
+import com.google.firebase.auth.FirebaseAuth
 
 @Preview
 @Composable
-fun RestaurantAddProductPage(navHostController: NavHostController,viewModel: RestaurantViewModel= viewModel()) {
+fun RestaurantAddProductPage(navHostController: NavHostController,viewModel: RestaurantViewModel= viewModel(),food:Food?=null,isEdit:Boolean=false ) {
     var imageUri by remember { mutableStateOf<Uri?>(null) }
     val context = LocalContext.current
     val bitmap = remember { mutableStateOf<Bitmap?>(null) }
@@ -87,11 +90,11 @@ fun RestaurantAddProductPage(navHostController: NavHostController,viewModel: Res
         mutableStateOf("")
     }
     if(viewModel.editedFood.value!=null){
-        foodName=viewModel.editedFood.value!!.name
-        foodDescription=viewModel.editedFood.value!!.description
-        foodImageUrl=viewModel.editedFood.value!!.imageUrl
-        foodPrice=viewModel.editedFood.value!!.price
-        foodCategory=viewModel.editedFood.value!!.category
+        foodName= food?.name.toString()
+        foodDescription=food?.description.toString()
+        foodImageUrl=food?.imageUrl.toString()
+        foodPrice= food?.price!!
+        foodCategory=food?.category.toString()
     }
 
 
@@ -146,16 +149,23 @@ fun RestaurantAddProductPage(navHostController: NavHostController,viewModel: Res
                     , horizontalAlignment = Alignment.CenterHorizontally) {
                     if(bitmap.value!=null) {
                         bitmap.value?.let { btm ->
-                            Image(
-                                bitmap = btm.asImageBitmap(),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .size(150.dp)
-                                    .clickable {
+                            Box {
+                                if (food?.imageUrl==imageUri.toString()){
+                                    downladImage(imageUrl = food?.imageUrl!!, size = 150, modifier = Modifier.clickable {
                                         launcher.launch("image/*")
-
-                                    }
-                            )
+                                    })
+                                }else{
+                                    Image(
+                                        bitmap = btm.asImageBitmap(),
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .size(150.dp)
+                                            .clickable {
+                                                launcher.launch("image/*")
+                                            }
+                                    )
+                                }
+                            }
                         }
                     }else{
                         Image(painter = painterResource(id = R.drawable.upload_image2), contentDescription ="Upload Image", alignment = Alignment.TopCenter , modifier = Modifier
@@ -181,11 +191,7 @@ fun RestaurantAddProductPage(navHostController: NavHostController,viewModel: Res
                     },)
 
                     Spacer(modifier = Modifier.padding(5.dp))
-                    try {
 
-                    }catch (e:Exception){
-
-                    }
                     OutlinedTextField(value =if (foodPrice == 0) "" else foodPrice.toString() ,
                         onValueChange ={
                             try {
@@ -216,19 +222,57 @@ fun RestaurantAddProductPage(navHostController: NavHostController,viewModel: Res
                             return@Button
                         }else{
                             isLoading.value=true
-                            addProductToDatabase(viewModel.editedFood.value?.id,foodName,foodDescription,foodImageUrl,foodPrice,foodCategory,imageUri,viewModel) { isSuccess ->
-                                if (isSuccess) {
-                                    Log.d("hatamRestaurantAddProductPage", "Urun Eklendi")
-                                    Toast.makeText(context, "Urun Eklendi", Toast.LENGTH_SHORT).show()
-                                    navHostController.navigate(RestaurantScreen.RestaurantHomeScreen.name)
-                                } else {
-
-                                    Log.d("hatamRestaurantAddProductPage", "dadUrun Eklenmedi")
-                                    Toast.makeText(context, "Urun Eklenemedi", Toast.LENGTH_SHORT).show()
-                                    isLoading.value=false
-
+                            if (isEdit && food!=null ) {
+                                food.name=foodName
+                                food.price=foodPrice
+                                food.description=foodDescription
+                                food.category=foodCategory
+                                if(imageUri.toString()!=food.imageUrl){
+                                    viewModel.uploadFoodImage(imageUri = imageUri!!, folderName = "food"){
+                                        if (it !="error"){
+                                            food.imageUrl = it
+                                            updateFood(food = food!!,viewModel, context = context) { isSuccess ->
+                                                if (isSuccess) {
+                                                    navHostController.navigate(RestaurantScreen.RestaurantHomeScreen.name)
+                                                } else {
+                                                    isLoading.value=false
+                                                }
+                                            }
+                                        }else{
+                                            Toast.makeText(context, "Resim Yuklenmedi", Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
+                                }else{
+                                    updateFood(food = food!!,viewModel, context = context) { isSuccess ->
+                                        if (isSuccess) {
+                                            navHostController.navigate(RestaurantScreen.RestaurantHomeScreen.name)
+                                        } else {
+                                            isLoading.value=false
+                                        }
+                                    }
                                 }
+
+                            }else{
+                                addProductToDatabase(Food(id = System.currentTimeMillis().toString(),name=foodName,description=foodDescription,price=foodPrice,category=foodCategory,imageUrl=foodImageUrl, restaurantId = FirebaseAuth.getInstance().uid.toString()),viewModel, imageUri = imageUri!!, context = context){
+                                    if (it){
+                                        navHostController.navigate(RestaurantScreen.RestaurantHomeScreen.name)
+                                    }
+                                }
+
                             }
+//                            addProductToDatabase(viewModel.editedFood.value?.id,foodName,foodDescription,foodImageUrl,foodPrice,foodCategory,imageUri,viewModel, isEdit = isEdit) { isSuccess ->
+//                                if (isSuccess) {
+//                                    Log.d("hatamRestaurantAddProductPage", "Urun Eklendi")
+//                                    Toast.makeText(context, "Urun Eklendi", Toast.LENGTH_SHORT).show()
+//                                    navHostController.navigate(RestaurantScreen.RestaurantHomeScreen.name)
+//                                } else {
+//
+//                                    Log.d("hatamRestaurantAddProductPage", "dadUrun Eklenmedi")
+//                                    Toast.makeText(context, "Urun Eklenemedi", Toast.LENGTH_SHORT).show()
+//                                    isLoading.value=false
+//
+//                                }
+//                            }
                             isLoading.value=false
                         }
 
@@ -243,19 +287,28 @@ fun RestaurantAddProductPage(navHostController: NavHostController,viewModel: Res
     }
 }
 
-private fun addProductToDatabase(id: String?,name: String, description: String, image: String, price: Int, category: String,imageUri: Uri?,viewModel: RestaurantViewModel,callback:(Boolean)->Unit) {
 
-    if (id != null) {
-        viewModel.updateFood(Food(id = id, name = name, description = description, price = price, category = category, imageUrl = image)){
-            callback(it)
+
+private fun updateFood(food: Food, viewModel: RestaurantViewModel, context: Context, callback: (Boolean) -> Unit){
+
+    viewModel.updateFood(food = food){
+        if (it){
+            Toast.makeText(context, "Urun Guncellendi", Toast.LENGTH_SHORT).show()
+        }else{
+            Toast.makeText(context, "Urun Guncellenemedi", Toast.LENGTH_SHORT).show()
         }
-    }
-    viewModel.addProduct(Food(id=System.currentTimeMillis().toString(),name=name,description=description,price=price,category=category,imageUrl=image),imageUri!!){
         callback(it)
     }
-
-
 }
-
+private fun addProductToDatabase(food: Food,viewModel: RestaurantViewModel,imageUri: Uri,context: Context,callback: (Boolean) -> Unit){
+    viewModel.addProduct(food = food, imageUri = imageUri){
+        if (it){
+            Toast.makeText(context, "Urun Eklendi", Toast.LENGTH_SHORT).show()
+        }else{
+            Toast.makeText(context, "Urun Eklenemedi", Toast.LENGTH_SHORT).show()
+        }
+        callback(it)
+    }
+}
 
 

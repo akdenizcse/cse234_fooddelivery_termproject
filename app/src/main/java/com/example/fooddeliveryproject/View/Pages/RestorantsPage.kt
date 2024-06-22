@@ -31,16 +31,6 @@ import com.example.fooddeliveryproject.navigation.StoreScreen
 
 @Composable
 fun RestaurantPage(navigate: NavHostController = rememberNavController(),restaurantVM:RestaurantViewModel= viewModel()) {
-//    val restaurants = listOf(
-//        Restaurant(R.drawable.dukkan1, "Çorbacı Şükrü", "Kültür, Antalya", 4.1, 500),
-//        Restaurant(R.drawable.dukkan6, "Hastayım Döner", "Konyaaltı, Antalya", 3.6, 400),
-//        Restaurant(R.drawable.dukkan12, "Burger King", "Güvenen, Kültür", 4.7, 150),
-//        Restaurant(R.drawable.dukkan11, "Makarna Yıldızı", "Çıralı, Antalya", 2.8, 200),
-//        Restaurant(R.drawable.dukkan13, "Gogalo Döner", "Kültür, Antalya", 4.1, 500),
-//        Restaurant(R.drawable.dukkan16, "Asker Abi'nin Yeri", "Konyaaltı, Antalya", 3.6, 400),
-//        Restaurant(R.drawable.dukkan18, "McDonalds", "Güvenen, Kültür", 4.7, 150),
-//        Restaurant(R.drawable.dukkan11, "Komagene", "Çıralı, Antalya", 2.8, 200)
-//    )
 
     restaurantVM.getRestaurantList()
     val restaurantList by restaurantVM._restaurantList.observeAsState()

@@ -46,7 +46,7 @@ fun uploadImage(imageUri: Uri, folderName: String,storageReference: StorageRefer
     }
 }
 @Composable
-fun downladImage(imageUrl:String,size:Int=150) {
+fun downladImage(imageUrl:String,size:Int=150,modifier: Modifier = Modifier) {
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
             .data(imageUrl)
@@ -55,7 +55,7 @@ fun downladImage(imageUrl:String,size:Int=150) {
         placeholder = painterResource(R.drawable.foodplaceholder),
         contentDescription = "",
         contentScale = ContentScale.Crop,
-        modifier = Modifier.size(size.dp)
+        modifier = modifier.size(size.dp)
     )
 }
 fun getCurrentFormattedDate(): String {
