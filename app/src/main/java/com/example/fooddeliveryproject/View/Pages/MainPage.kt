@@ -51,10 +51,8 @@ fun MainPage(navHostController: NavHostController=rememberNavController(),addres
             Header(navController = navHostController,addressPageViewModel.addressTitle,addressPageViewModel.addressDesc)
         }
     ) { innerPadding ->
-
         SearchBarView(navHostController)
 
-//        foodViewModel.getRestaurantFoodList()
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()

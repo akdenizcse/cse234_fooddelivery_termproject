@@ -36,19 +36,7 @@ fun CampaignPage(navHostController: NavHostController = rememberNavController())
             TopAppBar(
                 title = {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        IconButton(onClick = { navHostController.navigate(StoreScreen.HomeScreen.name) }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.arrow_left),
-                                contentDescription = "Back",
-                                tint = Color.White,
-                                modifier = Modifier
-                                    .size(24.dp)
-                                    .clickable {
-                                        navHostController.popBackStack()
-                                    }
 
-                            )
-                        }
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = "Kampanyalar",
@@ -62,26 +50,26 @@ fun CampaignPage(navHostController: NavHostController = rememberNavController())
             )
         }
     ) { paddingValues ->
-        CampaignList(paddingValues)
+        CampaignList(paddingValues,navHostController)
     }
 }
 
 @Composable
-fun CampaignList(paddingValues: PaddingValues) {
+fun CampaignList(paddingValues: PaddingValues,navHostController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        CampaignItem(R.drawable.card_1)
-        CampaignItem(R.drawable.card_3)
-        CampaignItem(R.drawable.card_4)
-        CampaignItem(R.drawable.card_2)
+        CampaignItem(R.drawable.card_1,navHostController,"algida")
+        CampaignItem(R.drawable.card_3,navHostController,"pizza")
+        CampaignItem(R.drawable.card_4,navHostController,"pizza")
+        CampaignItem(R.drawable.card_2,navHostController,"burger")
     }
 }
 
 @Composable
-fun CampaignItem(imageRes: Int) {
+fun CampaignItem(imageRes: Int,navHostController: NavHostController,campaignTitle:String) {
         Column(
             modifier = Modifier
                 .background(Color.White)
@@ -93,7 +81,10 @@ fun CampaignItem(imageRes: Int) {
                 modifier = Modifier
                     .clip(RoundedCornerShape(16.dp))
                     .fillMaxWidth()
-                    .height(200.dp)
+                    .height(200.dp).clickable {
+                        navHostController.navigate(StoreScreen.SearchResultScreen.name + "/${campaignTitle}")
+
+                    }
             )
         }
     }
