@@ -98,7 +98,7 @@ fun AccountOptionItem(iconResId: Int, text: String,navigate: NavHostController )
                 if(text=="Geçmiş Siparişlerim"){
                     navigate.navigate(StoreScreen.OrderStatusScreen.name)
                 }else{
-
+                    navigate.navigate(StoreScreen.ChangePassword.name)
                 }
             })
             .padding(vertical = 16.dp, horizontal = 24.dp),

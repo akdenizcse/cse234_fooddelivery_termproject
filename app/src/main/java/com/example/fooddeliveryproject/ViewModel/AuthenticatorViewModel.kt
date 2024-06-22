@@ -149,7 +149,7 @@ class AuthenticatorViewModel:ViewModel() {
                             user.updatePassword(newPassword)
                                 .addOnCompleteListener { updateTask ->
                                     if (updateTask.isSuccessful) {
-                                        onResult("Şifre değiştirildi.")
+                                        onResult("Şifre değiştirildi")
                                     } else {
                                         onResult("Şifre değiştirilemedi: ${updateTask.exception?.message}")
                                     }

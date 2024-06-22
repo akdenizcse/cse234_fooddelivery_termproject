@@ -215,7 +215,9 @@ fun changePassword(paddingValues: PaddingValues,navHostController: NavHostContro
                     if (newPassAgain==newPass){
                             authViewModel.updatePassword(currentPassword = currentPass,newPass){
                                 Toast.makeText(context,it,Toast.LENGTH_SHORT).show()
-                                navHostController.popBackStack()
+                                if(it=="Şifre değiştirildi"){
+                                    navHostController.popBackStack()
+                                }
                             }
                     }else{
                         Toast.makeText(context,"Yeni sifreler uyusmuyor",Toast.LENGTH_SHORT).show()
