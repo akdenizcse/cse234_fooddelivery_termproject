@@ -1,15 +1,23 @@
 package com.example.fooddeliveryproject.navigation
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -22,6 +30,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.fooddeliveryproject.Models.Food
+import com.example.fooddeliveryproject.R
 import com.example.fooddeliveryproject.View.AuthPages.LoginPage
 import com.example.fooddeliveryproject.View.AuthPages.RestaurantLoginPage
 import com.example.fooddeliveryproject.View.AuthPages.RestaurantSignUpPage
@@ -218,7 +227,16 @@ fun StoreBot(navController: NavHostController ,currentDestination:NavDestination
         StoreScreen.ProfileScreen.name
     )
     if (listOfStoreFullScreen.contains(currentDestination?.route)) {
-        NavigationBar {
+        NavigationBar(
+            containerColor = colorResource(id = R.color.white),
+            modifier = Modifier
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(Color(0xFF3D8BFF), Color(0xFF7BAAFF))
+                    )
+                )
+        )
+        {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentDestination = navBackStackEntry?.destination
             listOfStoreNavItem.forEach { navItem ->
@@ -238,8 +256,17 @@ fun StoreBot(navController: NavHostController ,currentDestination:NavDestination
                     },
                     label = {
                         Text(text = navItem.label)
-                    })
+                    },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = colorResource(id = R.color.orange),
+                        unselectedIconColor = Color.Gray,
+                        selectedTextColor = colorResource(id = R.color.orange),
+                        unselectedTextColor = Color.Gray
+                    )
 
+
+
+                )
             }
         }
     }
@@ -254,7 +281,16 @@ fun RestaurnatBottt(navController: NavHostController ,currentDestination:NavDest
         StoreScreen.LoginScreen.name
     )
     if (!listOfRestaurantFullScreen.contains(currentDestination?.route)) {
-        NavigationBar {
+        NavigationBar(
+            containerColor = colorResource(id = R.color.white),
+            modifier = Modifier
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(Color(0xFF3D8BFF), Color(0xFF7BAAFF))
+                    )
+                )
+        )
+        {
             listOfRestaurantNavItem.forEach { navItem ->
                 NavigationBarItem(
                     selected = currentDestination?.hierarchy?.any { it.route == navItem.route } == true,
@@ -272,7 +308,13 @@ fun RestaurnatBottt(navController: NavHostController ,currentDestination:NavDest
                     },
                     label = {
                         Text(text = navItem.label)
-                    }
+                    },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = colorResource(id = R.color.orange),
+                        unselectedIconColor = Color.Gray,
+                        selectedTextColor = colorResource(id = R.color.orange),
+                        unselectedTextColor = Color.Gray
+                    )
                 )
             }
         }

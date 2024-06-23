@@ -196,7 +196,7 @@ fun Details(paddingValues: PaddingValues,food:Food,userVM:UserViewModel,navHostC
 
             }
 
-            Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(60.dp))
             Button(
                 onClick = {
                     val date= getCurrentFormattedDate()
@@ -204,7 +204,7 @@ fun Details(paddingValues: PaddingValues,food:Food,userVM:UserViewModel,navHostC
                             userVM.addToCart(orderFood){
                                 if(it){
                                     Toast.makeText(context, "Sepete Eklendi", Toast.LENGTH_SHORT).show()
-                                    navHostController.navigate(StoreScreen.HomeScreen.name)
+                                    navHostController.navigate(StoreScreen.CartScreen.name)
                                 }
                             }
                 },

@@ -245,7 +245,7 @@ fun ExistCartView(
                             color = colorResource(id = R.color.silikMetin)
                         )
 
-                        Spacer(modifier = Modifier.width(105.dp))
+                        Spacer(modifier = Modifier.width(95.dp))
                         Text(
                             text = "Fiyat",
                             modifier = Modifier.padding(20.dp),
@@ -256,7 +256,7 @@ fun ExistCartView(
                             color = colorResource(id = R.color.silikMetin)
                         )
 
-                        Spacer(modifier = Modifier.width(5.dp))
+                        Spacer(modifier = Modifier.width(17.dp))
                         Text(
                             text = "Adet",
                             modifier = Modifier.padding(16.dp),
@@ -333,7 +333,7 @@ fun ExistCartView(
                                                     }
                                                 }
                                                 Spacer(modifier = Modifier.width(15.dp))
-                                                Text(text = "${food.price} TL")
+                                                Text(text = "${(food.price)*(food.soldCount!!)} TL")
                                                 if (food.soldCount != null) {
                                                     QuantityComponentCartPage(food.soldCount!!) { isIncrease ->
                                                         if (isIncrease) {

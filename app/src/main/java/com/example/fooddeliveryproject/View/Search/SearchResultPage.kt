@@ -128,7 +128,8 @@ fun FoodListPage(modifier: Modifier = Modifier, navHostController: NavHostContro
         androidx.compose.material3.SearchBar(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.White),
+                .background(Color.White)
+                .padding(bottom = 7.dp),
             query = searchText ,
             onQueryChange = {
                             searchText = it
