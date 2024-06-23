@@ -239,5 +239,4 @@ class RestaurantViewModel ():ViewModel() {
                 }
         }
     }
-
 }

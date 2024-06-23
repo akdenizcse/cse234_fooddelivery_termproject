@@ -83,8 +83,8 @@ fun RestaurantAddProductPage(navHostController: NavHostController,viewModel: Res
     var foodImageUrl by remember {
         mutableStateOf("")
     }
-    var foodPrice:Int by remember {
-        mutableStateOf(0)
+    var foodPrice:Double by remember {
+        mutableStateOf(0.0)
     }
     var foodCategory by remember {
         mutableStateOf("")
@@ -194,10 +194,10 @@ fun RestaurantAddProductPage(navHostController: NavHostController,viewModel: Res
 
                     Spacer(modifier = Modifier.padding(5.dp))
 
-                    OutlinedTextField(value =if (foodPrice == 0) "" else foodPrice.toString() ,
+                    OutlinedTextField(value =if (foodPrice == 0.0) "" else foodPrice.toString() ,
                         onValueChange ={
                             try {
-                                foodPrice=it.trim().toInt()
+                                foodPrice=it.trim().toDouble()
                             }catch (e:Exception){
 
                             }
@@ -219,7 +219,7 @@ fun RestaurantAddProductPage(navHostController: NavHostController,viewModel: Res
 
                     Spacer(modifier = Modifier.padding(15.dp))
                     Button(onClick = {
-                        if (foodName == "" || foodDescription == "" || foodPrice == 0 || foodCategory == "" || imageUri == null) {
+                        if (foodName == "" || foodDescription == "" || foodPrice == 0.0 || foodCategory == "" || imageUri == null) {
                             Toast.makeText(context, "Lutfen tum bilgileri giriniz", Toast.LENGTH_SHORT).show()
                             return@Button
                         }else{

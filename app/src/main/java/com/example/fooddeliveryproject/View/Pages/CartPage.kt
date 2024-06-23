@@ -113,8 +113,8 @@ fun CartPage(
 
 }
 
-fun calculateTotalPrice(cartList: List<OrderedFood>): Int {
-    var totalPrice = 0
+fun calculateTotalPrice(cartList: List<OrderedFood>): Double {
+    var totalPrice :Double= 0.0
     for (food in cartList) {
         if (food.soldCount != null) {
             totalPrice += food.price * food.soldCount!!
@@ -163,7 +163,7 @@ fun CartPageView(paddingValues: PaddingValues) {
 @Composable
 fun ExistCartView(
     paddingValues: PaddingValues,
-    totalPrice: Int,
+    totalPrice: Double,
     userViewModel: UserViewModel,
     navHostController: NavHostController
 ) {

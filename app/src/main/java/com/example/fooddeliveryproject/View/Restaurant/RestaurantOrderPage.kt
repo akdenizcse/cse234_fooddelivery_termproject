@@ -53,7 +53,7 @@ fun RestaurantOrderPage(navHostController: NavHostController,restaurantViewModel
     restaurantViewModel.getRestaurantOrderList()
     val foodList by restaurantViewModel.restaurantOrderList.observeAsState()
     var totalPrice by remember {
-        mutableStateOf(0)
+        mutableStateOf(0.0)
     }
 
     Scaffold(
@@ -107,7 +107,7 @@ fun RestaurantOrderPage(navHostController: NavHostController,restaurantViewModel
 
 @Composable
 fun OrderFoodListDesig(list: ArrayList<OrderedFood>  ) {
-    var totalPrice=0
+    var totalPrice:Double=0.0
 
 
 
@@ -118,9 +118,9 @@ fun OrderFoodListDesig(list: ArrayList<OrderedFood>  ) {
         items(list) { food ->
             val count=food.soldCount
             val price=food.price
-            var total = 0
+            var total:Double = 0.0
             if (count != null) {
-                total =count*price
+                total = count * price
                 totalPrice+=total
             }
             Card(
@@ -178,8 +178,8 @@ fun OrderFoodListDesig(list: ArrayList<OrderedFood>  ) {
 
 }
 
-fun calculate(list:ArrayList<OrderedFood>):Int{
-    var total=0
+fun calculate(list:ArrayList<OrderedFood>):Double{
+    var total:Double=0.0
     for (food in list){
         if (food.soldCount!=null)
          total += (food.price* food.soldCount!!)

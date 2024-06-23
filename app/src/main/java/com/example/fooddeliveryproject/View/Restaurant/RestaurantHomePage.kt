@@ -59,6 +59,7 @@ import kotlinx.coroutines.delay
 @Preview
 fun RestaurantHomePage(navHostController: NavHostController= rememberNavController(),restaurantViewModel: RestaurantViewModel) {
 
+
     Scaffold(
         topBar = {
             AppBar(imageId = R.drawable.fork_and_spoon,"Food Delivery")
