@@ -71,21 +71,9 @@ fun RestaurantHomePage(navHostController: NavHostController= rememberNavControll
             .background(Color.White), ) {
             restaurantViewModel.getRestaurantFoodList()
             val foodList by restaurantViewModel.restaurantFoodList.observeAsState()
-            val isLoading = remember { mutableStateOf(false) }
 
-
-            isLoading.value=true
-
-            CircularIndeterminateProgressBar(isLoading.value)
             if (foodList!=null){
-                isLoading.value=false
                 RestaurantALlProducts(foodList!!,navHostController,restaurantViewModel)
-            }else{
-                LaunchedEffect(key1 = Unit) {
-                    delay(1000)
-                    isLoading.value=false
-                }
-
             }
         }
 
