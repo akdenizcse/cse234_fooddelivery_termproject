@@ -36,13 +36,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.fooddeliveryproject.R
 import com.example.fooddeliveryproject.ViewModel.AuthenticatorViewModel
+import com.example.fooddeliveryproject.ViewModel.RestaurantViewModel
 import com.example.fooddeliveryproject.navigation.StoreScreen
 
 @Preview(showBackground = true)
 @Composable
 fun LoginPage(
     navHostController: NavHostController = rememberNavController(),
-    authVm: AuthenticatorViewModel
+    authVm: AuthenticatorViewModel,
 ) {
     Surface(
         color = Color.White,

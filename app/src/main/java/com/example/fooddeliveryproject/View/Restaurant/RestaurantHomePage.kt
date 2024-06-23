@@ -59,6 +59,7 @@ import kotlinx.coroutines.delay
 @Preview
 fun RestaurantHomePage(navHostController: NavHostController= rememberNavController(),restaurantViewModel: RestaurantViewModel) {
 
+
     Scaffold(
         topBar = {
             AppBar(imageId = R.drawable.fork_and_spoon,"Food Delivery")
@@ -70,21 +71,9 @@ fun RestaurantHomePage(navHostController: NavHostController= rememberNavControll
             .background(Color.White), ) {
             restaurantViewModel.getRestaurantFoodList()
             val foodList by restaurantViewModel.restaurantFoodList.observeAsState()
-            val isLoading = remember { mutableStateOf(false) }
 
-
-            isLoading.value=true
-
-            CircularIndeterminateProgressBar(isLoading.value)
             if (foodList!=null){
-                isLoading.value=false
                 RestaurantALlProducts(foodList!!,navHostController,restaurantViewModel)
-            }else{
-                LaunchedEffect(key1 = Unit) {
-                    delay(1000)
-                    isLoading.value=false
-                }
-
             }
         }
 

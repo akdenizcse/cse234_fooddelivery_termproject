@@ -68,7 +68,7 @@ fun RestaurantAppNavigation( ) {
     val currentDestination = navBackStackEntry?.destination
     val addressVM:AddressPageViewModel= viewModel()
     val userVM:UserViewModel= viewModel()
-    val authenticatorViewModel: AuthenticatorViewModel = viewModel()
+    var authenticatorViewModel: AuthenticatorViewModel = viewModel()
     val restaurantViewModel: RestaurantViewModel= viewModel()
     val foodViewModel:FoodViewModel= viewModel()
 
@@ -123,6 +123,7 @@ fun RestaurantAppNavigation( ) {
                 RestaurantChangeRestaurantNamePage(navController)
             }
             composable(route = RestaurantScreen.RestaurantLoginScreen.name) {
+                authenticatorViewModel = viewModel()
                 LoginPage(authVm = authenticatorViewModel, navHostController = navController)
             }
 
@@ -164,7 +165,6 @@ fun RestaurantAppNavigation( ) {
                 AddressPage(navController,addressVM)
             }
             composable(route=StoreScreen.OrderStatusScreen.name){
-//                OrderStatusPage()
                 OrderHistoryPage(navHostController = navController,  userViewModel = userVM)
             }
             composable(route=StoreScreen.OrderConfirmScreen.name){
