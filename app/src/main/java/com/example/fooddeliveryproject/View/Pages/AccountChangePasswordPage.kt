@@ -30,6 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -156,9 +157,9 @@ fun changePassword(paddingValues: PaddingValues,navHostController: NavHostContro
     val currentPasswordFocusRequester = remember { FocusRequester() }
     val newPasswordFocusRequester = remember { FocusRequester() }
     val newPasswordAgainFocusRequester = remember { FocusRequester() }
-    val currentPass by remember { mutableStateOf("")}
-    val newPass by remember { mutableStateOf("")}
-    val newPassAgain by remember { mutableStateOf("")}
+    var currentPass by remember { mutableStateOf("")}
+    var newPass by remember { mutableStateOf("")}
+    var newPassAgain by remember { mutableStateOf("")}
 
 
     Surface(
@@ -187,7 +188,7 @@ fun changePassword(paddingValues: PaddingValues,navHostController: NavHostContro
                               newPasswordFocusRequester.requestFocus()
                 },
                 callback = {
-
+                    currentPass=it
                 }
             )
             Spacer(modifier = Modifier.height(7.dp))
@@ -198,7 +199,9 @@ fun changePassword(paddingValues: PaddingValues,navHostController: NavHostContro
                 onImeAction = {
                     newPasswordAgainFocusRequester.requestFocus()
                 },
-                callback = {}
+                callback = {
+                    newPass=it
+                }
             )
             Spacer(modifier = Modifier.height(7.dp))
             ChangePasswordTextField(
@@ -207,21 +210,28 @@ fun changePassword(paddingValues: PaddingValues,navHostController: NavHostContro
                 focusRequester = newPasswordAgainFocusRequester,
                 onImeAction = {
                 },
-                callback = {}
+                callback = {
+                    newPassAgain=it
+                }
             )
 
             Spacer(modifier = Modifier.height(25.dp))
             Button(
                 onClick = {
-                    if (newPassAgain==newPass){
+                    if(currentPass!=newPass){
+                        if (newPassAgain==newPass){
                             authViewModel.updatePassword(currentPassword = currentPass,newPass){
                                 Toast.makeText(context,it,Toast.LENGTH_SHORT).show()
                                 if(it=="Şifre değiştirildi"){
                                     navHostController.popBackStack()
                                 }
                             }
-                    }else{
-                        Toast.makeText(context,"Yeni sifreler uyusmuyor",Toast.LENGTH_SHORT).show()
+                        }else{
+                            Toast.makeText(context,"Yeni sifreler uyuşmuyor.",Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    else{
+                        Toast.makeText(context,"Yeni şifreniz, mevcut şifrenizle aynı olamaz.",Toast.LENGTH_SHORT).show()
                     }
 
 
