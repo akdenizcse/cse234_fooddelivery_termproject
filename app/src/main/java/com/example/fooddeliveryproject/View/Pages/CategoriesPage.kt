@@ -2,6 +2,7 @@ package com.example.fooddeliveryproject.View.Pages
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.lazy.LazyColumn
@@ -72,7 +73,7 @@ fun CategoriesPage(navHostController: NavHostController = rememberNavController(
                 verticalArrangement = Arrangement.spacedBy(1.dp)
             ) {
                 items(categories) { category ->
-                    CategoryItem(category)
+                    CategoryItem(navHostController, category)
                 }
             }
         }
@@ -80,12 +81,15 @@ fun CategoriesPage(navHostController: NavHostController = rememberNavController(
 }
 
 @Composable
-fun CategoryItem(category: Category) {
+fun CategoryItem(navHostController: NavHostController, category: Category) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
-        shape = RoundedCornerShape(8.dp),
+            .padding(8.dp)
+            .clickable {
+                navHostController.navigate(StoreScreen.SearchResultScreen.name + "/${category.name}")
+            }
+        ,shape = RoundedCornerShape(8.dp),
         elevation = 16.dp
     ) {
         Row(
