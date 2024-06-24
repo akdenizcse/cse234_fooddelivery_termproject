@@ -185,7 +185,7 @@ fun RestaurantSignUpPage(navHostController: NavHostController,authVM:Authenticat
                     contentAlignment = Alignment.Center
                 ){
 
-                    Text(text = "Kadol",
+                    Text(text = "Kaydol",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold)
 

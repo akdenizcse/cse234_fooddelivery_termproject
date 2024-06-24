@@ -67,7 +67,7 @@ fun SignUpPage(navHostController: NavHostController,viewModel: AuthenticatorView
         Column(modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally) {
 
-            Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(45.dp))
             Surface(
                 modifier = Modifier
                     .size(100.dp)

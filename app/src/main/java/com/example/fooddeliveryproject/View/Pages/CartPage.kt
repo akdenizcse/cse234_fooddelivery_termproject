@@ -176,6 +176,7 @@ fun ExistCartView(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
             Column {
+                Spacer(modifier = Modifier.height(1.dp))
                 Text(
                     text = "Toplam Tutar: $totalPrice  TL",
                     modifier = Modifier
