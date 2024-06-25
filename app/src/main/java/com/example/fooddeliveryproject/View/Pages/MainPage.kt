@@ -23,6 +23,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -46,9 +47,15 @@ import com.example.fooddeliveryproject.navigation.StoreScreen
 
 @Composable
 fun MainPage(navHostController: NavHostController=rememberNavController(),addressPageViewModel: AddressPageViewModel= viewModel(),foodViewModel: FoodViewModel= viewModel(),restaurantViewModel: RestaurantViewModel= viewModel()) {
+
+    addressPageViewModel.getAddress()
+    val address by addressPageViewModel.address.observeAsState()
+    Log.d("hatmaAdd","bos "+address.toString())
     Scaffold(
         topBar = {
-            Header(navController = navHostController,addressPageViewModel.addressTitle,addressPageViewModel.addressDesc)
+            Header(navController = navHostController,
+                if (address!=null && address!!.address!="") address!!.name else "Adres",
+                if (address!=null && address!!.address!="") "${address!!.address} / ${address!!.district}" else "Adres Seçin")
         }
     ) { innerPadding ->
         SearchBarView(navHostController)

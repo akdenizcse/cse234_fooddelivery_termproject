@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.fooddeliveryproject.Models.Address
 import com.example.fooddeliveryproject.R
 import com.example.fooddeliveryproject.Models.District
 import com.example.fooddeliveryproject.Models.Province
@@ -41,9 +42,7 @@ fun AddressPage(
                                 painter = painterResource(id = R.drawable.arrow_left),
                                 contentDescription = "Back",
                                 tint = Color.Black,
-                                modifier = Modifier.size(48.dp).clickable {
-                                    navigate.popBackStack()
-                                }
+                                modifier = Modifier.size(48.dp)
                             )
                         }
                         Spacer(modifier = Modifier.width(8.dp))
@@ -66,12 +65,12 @@ fun AddressPage(
             )
         }
     ) {
-        AddressForm(it, addressVM = addressVM,navigate = navigate)
+        AddressForm(it, addressVM = addressVM, navigate = navigate)
     }
 }
 
 @Composable
-fun AddressForm(paddingValues: PaddingValues, addressVM: AddressPageViewModel,navigate: NavHostController) {
+fun AddressForm(paddingValues: PaddingValues, addressVM: AddressPageViewModel, navigate: NavHostController) {
     var addressName by remember { mutableStateOf(TextFieldValue("")) }
     var address by remember { mutableStateOf(TextFieldValue("")) }
     var city by remember { mutableStateOf<Province?>(null) }
@@ -99,13 +98,12 @@ fun AddressForm(paddingValues: PaddingValues, addressVM: AddressPageViewModel,na
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text(text = "İL")
             Spacer(modifier = Modifier.size(8.dp))
-            if (provinceList != null) {
-                DropdownMenuCity(provinceList?.data) { selectedProvince ->
+            provinceList?.data?.let {
+                DropdownMenuCity(it) { selectedProvince ->
                     city = selectedProvince
                     district = ""
-                    districtList?.clear()
-                    districtList=selectedProvince.districts
-                    Log.d("hatam2", "AddressForm: $districtList $city")
+                    districtList = selectedProvince.districts
+                    Log.d("AddressForm", "Selected Province: $selectedProvince, Districts: $districtList")
                 }
             }
         }
@@ -118,12 +116,7 @@ fun AddressForm(paddingValues: PaddingValues, addressVM: AddressPageViewModel,na
             DropdownMenuDistrict(districtList) {
                 district = it
             }
-            Log.d("hatam", "AddressForm: $districtList")
-//            if (districtList != null && districtList.isNotEmpty()) {
-//
-//            } else {
-//                Text(text = "İlçeler Bulunamadı")
-//            }
+            Log.d("AddressForm", "Selected District: $district")
         }
 
         Spacer(modifier = Modifier.size(8.dp))
@@ -138,8 +131,7 @@ fun AddressForm(paddingValues: PaddingValues, addressVM: AddressPageViewModel,na
 
         Button(
             onClick = {
-                addressVM.addressTitle = addressName.text
-                addressVM.addressDesc = (city?.name ?: "") +" / " + district
+                addressVM.setAddress(Address(addressName.text, city?.name ?: "", district))
                 navigate.popBackStack()
             },
             colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFF8742A)),
@@ -153,7 +145,7 @@ fun AddressForm(paddingValues: PaddingValues, addressVM: AddressPageViewModel,na
 }
 
 @Composable
-fun DropdownMenuCity(provinceList: List<Province>?, callback: (Province) -> Unit) {
+fun DropdownMenuCity(provinceList: List<Province>, callback: (Province) -> Unit) {
     var expanded by remember { mutableStateOf(false) }
     var selectedIndex by remember { mutableStateOf(0) }
 
@@ -164,15 +156,13 @@ fun DropdownMenuCity(provinceList: List<Province>?, callback: (Province) -> Unit
                 contentDescription = "Aç/Kapat",
                 modifier = Modifier.size(24.dp)
             )
-            if (provinceList != null && provinceList.isNotEmpty()) {
-                Text(text = provinceList[selectedIndex].name)
-            }
+            Text(text = provinceList[selectedIndex].name)
         }
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            provinceList?.forEachIndexed { index, province ->
+            provinceList.forEachIndexed { index, province ->
                 DropdownMenuItem(
                     onClick = {
                         selectedIndex = index

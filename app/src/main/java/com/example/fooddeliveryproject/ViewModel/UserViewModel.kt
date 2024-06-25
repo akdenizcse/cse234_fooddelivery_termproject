@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.fooddeliveryproject.Models.Address
 import com.example.fooddeliveryproject.Models.Food
 import com.example.fooddeliveryproject.Models.OrderedFood
 import com.example.fooddeliveryproject.Models.User
@@ -32,15 +33,10 @@ class UserViewModel():ViewModel() {
     val isRestaurantUser: LiveData<Boolean> get() = _isRestaurantUser
 
 
-
     fun setUserType(isRestaurant: Boolean) {
         _isRestaurantUser.value = isRestaurant
     }
-//    init {
-//        if (FirebaseAuth.getInstance().currentUser != null) {
-//            uuid = FirebaseAuth.getInstance().currentUser!!.uid
-//        }
-//    }
+
 //    fun getUserInfo(callBack:(Boolean)->Unit){
 //        viewModelScope.launch {
 //            try {
@@ -64,7 +60,7 @@ class UserViewModel():ViewModel() {
 //        }
 //    }
 
-//    fun addFavoriteFood(food: Food,callBack:(Boolean)->Unit){
+    //    fun addFavoriteFood(food: Food,callBack:(Boolean)->Unit){
 //        viewModelScope.launch {
 //            db.collection("Users").document(uuid).collection("FavoriteFood")
 //                .document(food.id).set(food)
@@ -87,8 +83,9 @@ class UserViewModel():ViewModel() {
 //    }
     fun addToCart(food: OrderedFood,callBack:(Boolean)->Unit){
 
-     var auth=FirebaseAuth.getInstance()
-     var uuid :String?=auth.uid
+        var auth=FirebaseAuth.getInstance()
+        var uuid :String?=auth.uid
+
         viewModelScope.launch {
             try{
                 if(uuid!=null){
