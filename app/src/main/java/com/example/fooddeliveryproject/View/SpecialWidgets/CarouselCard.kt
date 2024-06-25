@@ -77,7 +77,7 @@ fun CarouselCardOrigin (navHostController: NavHostController){
                 val items = remember {
                     listOf(
                         CarouselItem(R.drawable.card_1, "Hamburger"),
-                        CarouselItem(R.drawable.card_2, "Hamburge"),
+                        CarouselItem(R.drawable.card_2, "Hamburger"),
                         CarouselItem(R.drawable.card_3, "Pizza"),
                         CarouselItem(R.drawable.card_4, "Pizza"),
                     )
