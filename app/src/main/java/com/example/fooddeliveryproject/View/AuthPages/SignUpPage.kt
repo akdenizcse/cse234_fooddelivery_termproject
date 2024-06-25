@@ -118,12 +118,15 @@ fun SignUpPage(navHostController: NavHostController,viewModel: AuthenticatorView
             Spacer(modifier = Modifier.height(20.dp))
             Button(
                 onClick = {
-                          if(name.value.isNotEmpty()&&surname.value.isNotEmpty()&&email.value.isNotEmpty()&&password.value.isNotEmpty()){
-                              viewModel.createUser(email.value,password.value){
-                                  Toast.makeText(navHostController.context,"Hesap oluşturuldu",Toast.LENGTH_SHORT).show()
-                                  navHostController.navigate(StoreScreen.HomeScreen.name)
-                              }
-                          }
+                    if(name.value.isNotEmpty()&&surname.value.isNotEmpty()&&email.value.isNotEmpty()&&password.value.isNotEmpty()){
+                        viewModel.createUser(email.value,password.value){
+                            if (it){
+                                Toast.makeText(navHostController.context,"Hesap oluşturuldu",Toast.LENGTH_SHORT).show()
+                                navHostController.navigate(StoreScreen.HomeScreen.name)
+                            }
+
+                        }
+                    }
 
                 },
                 modifier = Modifier
@@ -156,9 +159,7 @@ fun SignUpPage(navHostController: NavHostController,viewModel: AuthenticatorView
 
         }
 
-        
+
     }
 
 }
-
-
