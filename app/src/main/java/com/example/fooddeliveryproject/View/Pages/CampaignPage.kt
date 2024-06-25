@@ -61,10 +61,10 @@ fun CampaignList(paddingValues: PaddingValues,navHostController: NavHostControll
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        CampaignItem(R.drawable.card_1,navHostController,"algida")
+        CampaignItem(R.drawable.card_1,navHostController,"Hamburger")
         CampaignItem(R.drawable.card_3,navHostController,"pizza")
         CampaignItem(R.drawable.card_4,navHostController,"pizza")
-        CampaignItem(R.drawable.card_2,navHostController,"burger")
+        CampaignItem(R.drawable.card_2,navHostController,"Hamburger")
     }
 }
 

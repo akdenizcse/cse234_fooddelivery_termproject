@@ -130,7 +130,7 @@ fun RestaurantALlProducts(list: ArrayList<Food>,navController: NavHostController
                                         },
                                         modifier = Modifier
                                             .width(100.dp)
-                                            .height(30.dp), colors = ButtonDefaults.buttonColors(orange)
+                                            .height(40.dp), colors = ButtonDefaults.buttonColors(orange)
                                     ) {
                                         Text(text = "Düzenle", fontSize = 10.sp, textAlign = TextAlign.Center)
                                     }
