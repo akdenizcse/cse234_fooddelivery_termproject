@@ -32,6 +32,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -202,18 +203,20 @@ fun FoodListPage(modifier: Modifier = Modifier, navHostController: NavHostContro
                                 Row(
                                     horizontalArrangement = Arrangement.Start,
                                     verticalAlignment = Alignment.CenterVertically,
-                                    modifier = Modifier.fillMaxWidth().clickable {
-                                        try {
-                                            navHostController.currentBackStackEntry?.savedStateHandle?.set(
-                                                key = "food",
-                                                value = food
-                                            )
-                                            navHostController.navigate(StoreScreen.DetailsScreen.name)
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clickable {
+                                            try {
+                                                navHostController.currentBackStackEntry?.savedStateHandle?.set(
+                                                    key = "food",
+                                                    value = food
+                                                )
+                                                navHostController.navigate(StoreScreen.DetailsScreen.name)
 
-                                        }catch (e:Exception){
-                                            Log.d("hatamFavsItem",e.toString())
+                                            } catch (e: Exception) {
+                                                Log.d("hatamFavsItem", e.toString())
+                                            }
                                         }
-                                    }
                                 ) {
                                     Spacer(modifier = Modifier.width(5.dp))
 
@@ -330,7 +333,10 @@ fun FoodListPage(modifier: Modifier = Modifier, navHostController: NavHostContro
                     }
                 }
             }else{
-                Toast.makeText(context,"Ürün bulunamadı",Toast.LENGTH_SHORT).show()
+                LaunchedEffect(key1 = Unit) {
+                    Toast.makeText(context,"Ürün bulunamadı",Toast.LENGTH_SHORT).show()
+                }
+                searchNotFound()
             }
         }
 
@@ -339,7 +345,7 @@ fun FoodListPage(modifier: Modifier = Modifier, navHostController: NavHostContro
 
 
 @Composable
-fun eray(paddingValues: PaddingValues){
+fun searchNotFound(){
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -371,72 +377,4 @@ fun eray(paddingValues: PaddingValues){
 }
 
 
-/*
-@Composable
-@Preview
-fun NotFound(){
 
-    var searchText by remember { mutableStateOf(TextFieldValue("Çiğköfte")) }
-
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(
-                                color = colorResource(id = R.color.purple_200),
-                                //shape = MaterialTheme.shapes.medium,
-                                shape = RoundedCornerShape(40.dp)
-                            )
-                            .padding(top = 12.dp, bottom = 12.dp),
-                    ) {
-                        if (searchText.text.isEmpty()) {
-
-
-                            Text(
-                                modifier = Modifier.padding(start = 20.dp),
-                                text = "Search...",
-                                color = Color.Gray,
-                                fontSize = 16.sp
-                            )
-                        }
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-
-                            Spacer(modifier = Modifier.width(15.dp))
-                            androidx.compose.material3.Icon(
-                                Icons.Outlined.Search,
-                                contentDescription = "Artır",
-                                tint = colorResource(id = R.color.orange)
-                            )
-                            Spacer(modifier = Modifier.width(4.dp))
-                            BasicTextField(
-                                value = searchText,
-                                onValueChange = { searchText = it },
-                                modifier = Modifier
-                                    .fillMaxWidth(),
-                                textStyle = TextStyle(
-                                    fontSize = 16.sp,
-                                    fontWeight = FontWeight.Normal
-                                )
-                            )
-                        }
-                    }
-                },
-                modifier = Modifier
-                    .height(60.dp)
-                    .fillMaxWidth(),
-                backgroundColor = colorResource(id = R.color.black),
-                contentColor = contentColorFor(backgroundColor = MaterialTheme.colors.primary)
-            )
-        }
-    ) {
-
-        eray(it)
-
-    }
-
-}
-
- */

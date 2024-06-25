@@ -30,7 +30,7 @@ import com.example.fooddeliveryproject.R
 import com.example.fooddeliveryproject.navigation.StoreScreen
 
 @Composable
-fun CampaignPage(navHostController: NavHostController = rememberNavController()) {
+fun CampaignPage(navHostController: NavHostController) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -81,7 +81,8 @@ fun CampaignItem(imageRes: Int,navHostController: NavHostController,campaignTitl
                 modifier = Modifier
                     .clip(RoundedCornerShape(16.dp))
                     .fillMaxWidth()
-                    .height(200.dp).clickable {
+                    .height(200.dp)
+                    .clickable {
                         navHostController.navigate(StoreScreen.SearchResultScreen.name + "/${campaignTitle}")
 
                     }
@@ -89,8 +90,8 @@ fun CampaignItem(imageRes: Int,navHostController: NavHostController,campaignTitl
         }
     }
 
-@Preview(showBackground = true)
-@Composable
-fun CampaignPagePreview() {
-    CampaignPage()
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun CampaignPagePreview() {
+//    CampaignPage(navHostController = rememberNavController())
+//}

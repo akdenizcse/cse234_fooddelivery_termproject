@@ -81,8 +81,7 @@ fun RestaurantHomePage(navHostController: NavHostController= rememberNavControll
 }
 
 @Composable
-fun RestaurantALlProducts(list: ArrayList<Food>,navHostController: NavHostController,viewModel:RestaurantViewModel) {
-    val navController= navHostController
+fun RestaurantALlProducts(list: ArrayList<Food>,navController: NavHostController,viewModel:RestaurantViewModel) {
 
         LazyColumn(Modifier.background(Color.White)) {
             items(list) { food ->
@@ -119,7 +118,7 @@ fun RestaurantALlProducts(list: ArrayList<Food>,navHostController: NavHostContro
                                         onClick = {
                                             try {
                                                 viewModel.editedFood.value = food
-                                                navHostController.currentBackStackEntry?.savedStateHandle?.set(
+                                                navController.currentBackStackEntry?.savedStateHandle?.set(
                                                     key = "editedFood",
                                                     value = food
                                                 )
@@ -133,7 +132,7 @@ fun RestaurantALlProducts(list: ArrayList<Food>,navHostController: NavHostContro
                                             .width(100.dp)
                                             .height(30.dp), colors = ButtonDefaults.buttonColors(orange)
                                     ) {
-                                        Text(text = "Düzenle", fontSize = 12.sp, textAlign = TextAlign.Center)
+                                        Text(text = "Düzenle", fontSize = 10.sp, textAlign = TextAlign.Center)
                                     }
                                 }
                             }

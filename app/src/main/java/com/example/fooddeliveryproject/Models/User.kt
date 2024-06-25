@@ -6,5 +6,6 @@ data class User(
     var surname:String="",
     var favoriteList: ArrayList<Food> = ArrayList(),
     var cartList: ArrayList<Food> = ArrayList(),
-    var orderList:ArrayList<Food> = ArrayList()
+    var orderList:ArrayList<Food> = ArrayList(),
+    var userAddress:Address = Address(),
 )

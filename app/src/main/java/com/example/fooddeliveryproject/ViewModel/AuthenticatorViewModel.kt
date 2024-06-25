@@ -23,12 +23,7 @@ class AuthenticatorViewModel:ViewModel() {
     private val db=Firebase.firestore
     private val storage= FirebaseStorage.getInstance()
     private val storageReference=storage.reference
-    private val _isRestaurantUser = MutableLiveData<Boolean>(false)
-    val isRestaurantUser: LiveData<Boolean> get() = _isRestaurantUser
 
-    fun setUserType(isRestaurant: Boolean) {
-        _isRestaurantUser.value = isRestaurant
-    }
     fun signInWithEmail(email: String, password: String, onResult: (Boolean) -> Unit) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
@@ -119,10 +114,12 @@ class AuthenticatorViewModel:ViewModel() {
     }
 
     fun restaurantSignIn(email: String, password: String, onResult: (Boolean) -> Unit) {
+        val authh=FirebaseAuth.getInstance()
         db.collection("RestaurantList").document(email).get().addOnCompleteListener(){
             if(it.result!=null && it.result.exists()){
-                auth.signInWithEmailAndPassword(email, password)
+                authh.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener { task ->
+                        Log.d("hatamLoginVM",email+" "+password)
                         if (task.isSuccessful) {
                             onResult(true)
                         } else {

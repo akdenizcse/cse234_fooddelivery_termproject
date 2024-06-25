@@ -32,18 +32,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.fooddeliveryproject.R
 import com.example.fooddeliveryproject.ViewModel.AuthenticatorViewModel
 import com.example.fooddeliveryproject.ViewModel.RestaurantViewModel
+import com.example.fooddeliveryproject.ViewModel.UserViewModel
 import com.example.fooddeliveryproject.navigation.StoreScreen
 
 @Preview(showBackground = true)
 @Composable
 fun LoginPage(
     navHostController: NavHostController = rememberNavController(),
-    authVm: AuthenticatorViewModel,
+    authVm: AuthenticatorViewModel= viewModel(),
+    userVM:UserViewModel
 ) {
     Surface(
         color = Color.White,
@@ -113,7 +116,7 @@ fun LoginPage(
                                 "it.toString()" + email.value + password.value
                             )
                             if (it) {
-                                authVm.setUserType(false)
+                                userVM.setUserType(false)
                                 navHostController.navigate(StoreScreen.HomeScreen.name) {
                                     popUpTo(StoreScreen.LoginScreen.name) {
                                         inclusive = true

@@ -75,7 +75,7 @@ fun RestaurantAppNavigation( ) {
 
     Scaffold(
         bottomBar = {
-            authenticatorViewModel.isRestaurantUser.value?.let {
+            userVM.isRestaurantUser.value?.let {
                 if (it) {
                     if (currentDestination != null) {
                         RestaurnatBottt(navController = navController, currentDestination = currentDestination)
@@ -123,12 +123,11 @@ fun RestaurantAppNavigation( ) {
                 RestaurantChangeRestaurantNamePage(navController)
             }
             composable(route = RestaurantScreen.RestaurantLoginScreen.name) {
-                authenticatorViewModel = viewModel()
-                LoginPage(authVm = authenticatorViewModel, navHostController = navController)
+                LoginPage( navHostController = navController, authVm = authenticatorViewModel, userVM = userVM)
             }
 
             composable(route = StoreScreen.LoginScreen.name) {
-                LoginPage(navController,authenticatorViewModel)
+                LoginPage(navController, userVM = userVM, authVm = authenticatorViewModel)
             }
             composable(route = StoreScreen.HomeScreen.name) {
                 MainPage(navController,addressVM, foodViewModel = foodViewModel,restaurantViewModel=restaurantViewModel)
@@ -140,7 +139,7 @@ fun RestaurantAppNavigation( ) {
                 CartPage(navController,userVM)
             }
             composable(route = StoreScreen.CampaignScreen.name) {
-                CampaignPage()
+                CampaignPage(navHostController = navController)
             }
             composable(route = StoreScreen.ProfileScreen.name) {
                 AccountPage(navController,authenticatorViewModel)
@@ -153,7 +152,7 @@ fun RestaurantAppNavigation( ) {
                 RestaurantSignUpPage(navController,authenticatorViewModel)
             }
             composable(route=StoreScreen.RestaurantLoginScreen.name){
-                RestaurantLoginPage(navController,authenticatorViewModel)
+                RestaurantLoginPage(navHostController =  navController, userVM = userVM, authVm = authenticatorViewModel)
             }
             composable(route=StoreScreen.CategoryScreen.name){
                 CategoriesPage(navController)
