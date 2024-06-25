@@ -89,7 +89,7 @@ class FoodViewModel():ViewModel() {
         }
     }
 
-    fun getRestaurantFood(uuid:String="EaGAzHb4mucww7t5WtwLaLRMSRX2") {
+    fun getRestaurantFood(uuid:String) {
         viewModelScope.launch {
             try {
                 db.collection("Restaurant").document(uuid).get().addOnSuccessListener { rest ->

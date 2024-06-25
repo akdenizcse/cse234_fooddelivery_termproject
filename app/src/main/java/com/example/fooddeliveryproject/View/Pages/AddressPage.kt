@@ -131,8 +131,11 @@ fun AddressForm(paddingValues: PaddingValues, addressVM: AddressPageViewModel, n
 
         Button(
             onClick = {
-                addressVM.setAddress(Address(addressName.text, city?.name ?: "", district))
-                navigate.popBackStack()
+                addressVM.setAddress(Address(addressName.text, city?.name ?: "", district)){
+                    if (it){
+                        navigate.popBackStack()
+                    }
+                }
             },
             colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFF8742A)),
             modifier = Modifier

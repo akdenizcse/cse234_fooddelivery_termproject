@@ -65,13 +65,19 @@ class AddressPageViewModel(): ViewModel() {
         }
     }
 
-    fun setAddress(address: Address){
+    fun setAddress(address: Address,callback:(Boolean)->Unit){
         viewModelScope.launch {
             try {
                 var auth= FirebaseAuth.getInstance()
                 var uuid :String?=auth.uid
                 if (uuid!=null){
-                    db.collection("Users").document(uuid!!).update("userAddress",address)
+                    db.collection("Users").document(uuid!!).update("userAddress",address).addOnSuccessListener {
+                        callback(true)
+                    }.addOnFailureListener{
+                        callback(false)
+                    }
+                }else{
+                    callback(false)
                 }
             }catch (e:Exception){
                 Log.d("hatamUVM",e.toString())

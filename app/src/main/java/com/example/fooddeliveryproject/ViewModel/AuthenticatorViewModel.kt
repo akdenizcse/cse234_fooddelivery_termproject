@@ -19,23 +19,28 @@ import kotlinx.coroutines.launch
 
 
 class AuthenticatorViewModel:ViewModel() {
-    private val auth = FirebaseAuth.getInstance()
     private val db=Firebase.firestore
     private val storage= FirebaseStorage.getInstance()
     private val storageReference=storage.reference
 
     fun signInWithEmail(email: String, password: String, onResult: (Boolean) -> Unit) {
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    onResult(true)
-                } else {
-                    onResult(false)
+        try {
+            val auth=FirebaseAuth.getInstance()
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        onResult(true)
+                    } else {
+                        onResult(false)
+                    }
                 }
-            }
+        }catch (e:Exception){
+            Log.e("hatamAuth",e.toString())
+        }
     }
 
     fun isLogin(callBack: (Boolean) -> Unit){
+        val auth=FirebaseAuth.getInstance()
         db.collection("RestaurantList").document(auth.currentUser?.email.toString())
             .get().addOnCompleteListener() {
             if (it.result?.exists() == true) {
@@ -51,26 +56,30 @@ class AuthenticatorViewModel:ViewModel() {
     }
 
     fun createUser(email:String, password:String, onResult: (Boolean) -> Unit){
-        auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener {
-            if(it.isSuccessful){
-                db.collection("Users").document(it.result?.user?.uid.toString()).set(User(id = auth.uid.toString()))
-                    .addOnSuccessListener {
-                    onResult(true)
-                }.addOnFailureListener {
+        try {
+            val auth=FirebaseAuth.getInstance()
+            auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener {
+                if(it.isSuccessful){
+                    db.collection("Users").document(it.result?.user?.uid.toString()).set(User(id = auth.uid.toString()))
+                        .addOnSuccessListener {
+                            onResult(true)
+                        }.addOnFailureListener {
+                            onResult(false)
+                        }
+                }else{
                     onResult(false)
-                    }
-            }else{
-                onResult(false)
-            }
+                }
 
+            }
+        }catch (e:Exception){
+            Log.e("hatamAuth",e.toString())
         }
+
     }
 
     fun createRestaurant(email:String, password:String,name:String ,imageUri: Uri, onResult: (Boolean) -> Unit){
-        //Restoran için restoran fotoğrafı eklenecek
-        Log.d("hatamAuthR","work User")
-
         try {
+            val auth=FirebaseAuth.getInstance()
             auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener {
                 Log.d("hatamAuthR","create User")
                 if (it.isSuccessful) {
@@ -109,55 +118,72 @@ class AuthenticatorViewModel:ViewModel() {
 
     fun signOut(){
         viewModelScope.launch {
-            auth.signOut()
+            try {
+                FirebaseAuth.getInstance().signOut()
+
+            }catch (e:Exception){
+                Log.e("hatamSignOut",e.toString())
+            }
         }
     }
 
     fun restaurantSignIn(email: String, password: String, onResult: (Boolean) -> Unit) {
-        val authh=FirebaseAuth.getInstance()
-        db.collection("RestaurantList").document(email).get().addOnCompleteListener(){
-            if(it.result!=null && it.result.exists()){
-                authh.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener { task ->
-                        Log.d("hatamLoginVM",email+" "+password)
-                        if (task.isSuccessful) {
-                            onResult(true)
-                        } else {
-                            onResult(false)
-                        }
-                    }
+       try {
+           val authh=FirebaseAuth.getInstance()
+           db.collection("RestaurantList").document(email).get().addOnCompleteListener(){
+               if(it.result!=null && it.result.exists()){
+                   authh.signInWithEmailAndPassword(email, password)
+                       .addOnCompleteListener { task ->
+                           Log.d("hatamLoginVM",email+" "+password)
+                           if (task.isSuccessful) {
+                               onResult(true)
+                           } else {
+                               onResult(false)
+                           }
+                       }
 
-                }else{
-                    onResult(false)
-                }
-        }
+               }else{
+                   onResult(false)
+               }
+           }
+       }catch (e:Exception){
+           Log.e("hatamLoginVM",e.toString())
+       }
+
 
     }
     fun updatePassword(currentPassword: String, newPassword: String, onResult: (String) -> Unit) {
-        val user = auth.currentUser
+     viewModelScope.launch {
+         try {
+             val auth=FirebaseAuth.getInstance()
+             val user = auth.currentUser
+             if (user != null && currentPassword.isNotEmpty() && newPassword.isNotEmpty()) {
+                 val credential = EmailAuthProvider.getCredential(user.email!!, currentPassword)
 
-        if (user != null && currentPassword.isNotEmpty() && newPassword.isNotEmpty()) {
-            val credential = EmailAuthProvider.getCredential(user.email!!, currentPassword)
+                 viewModelScope.launch {
+                     user.reauthenticate(credential)
+                         .addOnCompleteListener { task ->
+                             if (task.isSuccessful) {
+                                 user.updatePassword(newPassword)
+                                     .addOnCompleteListener { updateTask ->
+                                         if (updateTask.isSuccessful) {
+                                             onResult("Şifre değiştirildi")
+                                         } else {
+                                             onResult("Şifre değiştirilemedi: ${updateTask.exception?.message}")
+                                         }
+                                     }
+                             } else {
+                                 onResult("Mevcut şifre hatalı: ${task.exception?.message}")
+                             }
+                         }
+                 }
+             } else {
+                 onResult("Lütfen tüm alanları doldurunuz.")
+             }
+         }catch (e:Exception){
+             Log.e("hatamLoginVM",e.toString())
+         }
+     }
 
-            viewModelScope.launch {
-                user.reauthenticate(credential)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            user.updatePassword(newPassword)
-                                .addOnCompleteListener { updateTask ->
-                                    if (updateTask.isSuccessful) {
-                                        onResult("Şifre değiştirildi")
-                                    } else {
-                                        onResult("Şifre değiştirilemedi: ${updateTask.exception?.message}")
-                                    }
-                                }
-                        } else {
-                            onResult("Mevcut şifre hatalı: ${task.exception?.message}")
-                        }
-                    }
-            }
-        } else {
-            onResult("Lütfen tüm alanları doldurunuz.")
-        }
     }
 }

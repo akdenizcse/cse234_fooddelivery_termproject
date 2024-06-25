@@ -26,8 +26,6 @@ class RestaurantViewModel ():ViewModel() {
     private val db=Firebase.firestore
     private val storage=FirebaseStorage.getInstance()
     private val storageReference=storage.reference
-    val fauth=FirebaseAuth.getInstance()
-    var uuid :String= fauth.currentUser?.uid ?: ""
     val isLoading= mutableStateOf(false)
     val editedFood: MutableState<Food?> = mutableStateOf(null)
 
@@ -44,9 +42,15 @@ class RestaurantViewModel ():ViewModel() {
 
     fun getRestaurantInfo(){
         viewModelScope.launch {
-            db.collection("Restaurant").document(uuid).get().addOnSuccessListener {
-                _restaurant.value=it.toObject(Restaurant::class.java)
+            try {
+                val uuid=FirebaseAuth.getInstance().uid.toString()
+                db.collection("Restaurant").document(uuid).get().addOnSuccessListener {
+                    _restaurant.value=it.toObject(Restaurant::class.java)
+                }
+            }catch (e:Exception){
+                Log.e("hatamRVM",e.toString())
             }
+
         }
     }
 
@@ -87,27 +91,29 @@ class RestaurantViewModel ():ViewModel() {
     }
 
     private fun addFoodToRestaurant(foodId: String, callback: (Boolean) -> Unit) {
-        try {
-            db.collection("Restaurant").document(uuid).get().addOnSuccessListener {
-                val foodList = it.toObject(Restaurant::class.java)?.foodList ?: mutableListOf<String>()
-                if (!foodList.contains(foodId)) {
-                    foodList.add(foodId)
-                    db.collection("Restaurant").document(uuid).update("foodList", foodList)
-                    callback(true)
-                } else {
-                    callback(false)
+        viewModelScope.launch {
+            try {
+                val uuid=FirebaseAuth.getInstance().uid.toString()
+                db.collection("Restaurant").document(uuid).get().addOnSuccessListener {
+                    val foodList = it.toObject(Restaurant::class.java)?.foodList ?: mutableListOf<String>()
+                    if (!foodList.contains(foodId)) {
+                        foodList.add(foodId)
+                        db.collection("Restaurant").document(uuid).update("foodList", foodList)
+                        callback(true)
+                    } else {
+                        callback(false)
+                    }
                 }
+            } catch (e: Exception) {
+                Log.e("hatamAddProduct", "Error adding food to restaurant: ${e.message}")
+                callback(false)
             }
-        } catch (e: Exception) {
-            Log.e("hatamAddProduct", "Error adding food to restaurant: ${e.message}")
-            callback(false)
         }
     }
 
         fun updateFood(food: Food,calllback: (Boolean) -> Unit) {
         try {
             viewModelScope.launch {
-                ///TODO LOOK AT
                 db.collection("Food").document(food.id).set(food).addOnSuccessListener {
                     Log.e("hatamAddProduct", "success Add poroduct")
                     calllback(true)
@@ -172,6 +178,7 @@ class RestaurantViewModel ():ViewModel() {
     fun getRestaurantFoodList() {
         viewModelScope.launch {
             try {
+                val uuid=FirebaseAuth.getInstance().uid.toString()
                 db.collection("Restaurant").document(uuid).get().addOnSuccessListener { rest ->
                     val foodIDList = rest?.get("foodList") as? List<String?>
                     if (!foodIDList.isNullOrEmpty()) {
@@ -203,6 +210,7 @@ class RestaurantViewModel ():ViewModel() {
     fun getRestaurantOrderList(){
         try {
             viewModelScope.launch {
+                val uuid=FirebaseAuth.getInstance().uid.toString()
                 db.collection("Restaurant").document(uuid).collection("Order")
                     .get()
                     .addOnSuccessListener { querySnapshot ->
