@@ -202,7 +202,7 @@ fun RestaurantSignUpPage(navHostController: NavHostController,authVM:Authenticat
             Spacer(modifier = Modifier.height(10.dp))
             FadedTextComponent(param = "Kaydol’a tıklayarak CSEFOOD Hizmet Şartlarımızı ve Gizlilik Politikamızı kabul etmiş olursunuz.")
             Spacer(modifier = Modifier.height(30.dp))
-            ClickableTextComponent(param1 = "Hesabın var mı? ", param2 = "Giriş Yap",StoreScreen.LoginScreen.name,navHostController)
+            ClickableTextComponent(param1 = "Hesabın var mı? ", param2 = "Giriş Yap",StoreScreen.RestaurantLoginScreen.name,navHostController)
 
             
             
