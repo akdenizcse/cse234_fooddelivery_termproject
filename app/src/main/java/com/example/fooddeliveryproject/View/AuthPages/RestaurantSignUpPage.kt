@@ -45,10 +45,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.fooddeliveryproject.R
 import com.example.fooddeliveryproject.ViewModel.AuthenticatorViewModel
+import com.example.fooddeliveryproject.ViewModel.UserViewModel
+import com.example.fooddeliveryproject.navigation.RestaurantScreen
 import com.example.fooddeliveryproject.navigation.StoreScreen
 @Preview
 @Composable
-fun RestaurantSignUpPage(navHostController: NavHostController,authVM:AuthenticatorViewModel){
+fun RestaurantSignUpPage(navHostController: NavHostController,authVM:AuthenticatorViewModel,userVM:UserViewModel){
     Surface(
         color = Color.White,
         modifier = Modifier
@@ -159,11 +161,12 @@ fun RestaurantSignUpPage(navHostController: NavHostController,authVM:Authenticat
             Button(
                 onClick = {
                     Toast.makeText(context, "Hesap oluşturuluyor", Toast.LENGTH_SHORT).show()
-                         if (email.value.isNotEmpty() && password.value.isNotEmpty() && name.value.isNotEmpty() && surname.value.isNotEmpty() && restaurantName.value.isNotEmpty() && imageUri != null) {
+                         if (email.value.isNotEmpty() && password.value.isNotEmpty() && restaurantName.value.isNotEmpty() && surname.value.isNotEmpty() && restaurantName.value.isNotEmpty() && imageUri != null) {
                                 authVM.createRestaurant(email.value, password.value,name.value, imageUri = imageUri!!){
                                     if (it){
+                                        userVM.setUserType(isRestaurant = true)
                                         Toast.makeText(context, "Hesap oluşturuldu", Toast.LENGTH_SHORT).show()
-                                        navHostController.navigate(StoreScreen.RestaurantLoginScreen.name)
+                                        navHostController.navigate(RestaurantScreen.RestaurantHomeScreen.name)
                                     }else{
                                         Toast.makeText(context, "Hesap oluşturulamadı", Toast.LENGTH_SHORT).show()
                                     }

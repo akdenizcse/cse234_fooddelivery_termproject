@@ -149,7 +149,7 @@ fun RestaurantAppNavigation( ) {
                 SignUpPage(navController,authenticatorViewModel)
             }
             composable(route=StoreScreen.RestaurantSignUpPage.name){
-                RestaurantSignUpPage(navController,authenticatorViewModel)
+                RestaurantSignUpPage(navController,authenticatorViewModel,userVM=userVM)
             }
             composable(route=StoreScreen.RestaurantLoginScreen.name){
                 RestaurantLoginPage(navHostController =  navController, userVM = userVM, authVm = authenticatorViewModel)
