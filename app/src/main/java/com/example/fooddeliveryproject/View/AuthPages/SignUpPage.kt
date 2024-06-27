@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -38,7 +39,7 @@ import com.example.fooddeliveryproject.navigation.StoreScreen
 @Preview
 @Composable
 fun SignUpPage(navHostController: NavHostController,viewModel: AuthenticatorViewModel){
-
+    val context= LocalContext.current
     Surface(
         color = Color.White,
         modifier = Modifier
@@ -118,15 +119,23 @@ fun SignUpPage(navHostController: NavHostController,viewModel: AuthenticatorView
             Spacer(modifier = Modifier.height(20.dp))
             Button(
                 onClick = {
-                    if(name.value.isNotEmpty()&&surname.value.isNotEmpty()&&email.value.isNotEmpty()&&password.value.isNotEmpty()){
-                        viewModel.createUser(email.value,password.value){
-                            if (it){
-                                Toast.makeText(navHostController.context,"Hesap oluşturuldu",Toast.LENGTH_SHORT).show()
-                                navHostController.navigate(StoreScreen.HomeScreen.name)
-                            }
+                    if(password.value.length<6){
+                        Toast.makeText(context,"Sifre en az 6 karakter olmalıdır",Toast.LENGTH_LONG).show()
+                    }else{
+                        Toast.makeText(context,"Hesap oluşturuluyor. Lütfen Bekleyiniz...",Toast.LENGTH_LONG).show()
+                        if(name.value.isNotEmpty()&&surname.value.isNotEmpty()&&email.value.isNotEmpty()&&password.value.isNotEmpty()){
+                            viewModel.createUser(email.value,password.value){
+                                if (it){
+                                    Toast.makeText(context,"Hesap oluşturuldu",Toast.LENGTH_SHORT).show()
+                                    navHostController.navigate(StoreScreen.HomeScreen.name)
+                                }else{
+                                    Toast.makeText(context,"Hesap oluşturulamadı",Toast.LENGTH_SHORT).show()
+                                }
 
+                            }
                         }
                     }
+
 
                 },
                 modifier = Modifier
