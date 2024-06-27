@@ -59,28 +59,21 @@ fun RestaurantOrderPage(navHostController: NavHostController,restaurantViewModel
     Scaffold(
         topBar = {
             AppBar(imageId = R.drawable.fork_and_spoon,"Orders")
-        }
-
-    ) {
-        Surface(modifier = Modifier
-            .padding(it)
-            .background(Color.White)
-        ){
-
-
+        },
+        bottomBar = {
             Box(modifier = Modifier.fillMaxHeight(.9f)){
 
-                 foodList?.let { it1 ->
-                     OrderFoodListDesig(list = it1)
-                     totalPrice= calculate(it1)
-                 }
+                foodList?.let { it1 ->
+                    OrderFoodListDesig(list = it1)
+                    totalPrice= calculate(it1)
+                }
 
                 Box(
                     modifier = Modifier
 
                         .fillMaxWidth()
                         .background(Color.White)
-                        .padding(bottom = 10.dp)
+
                         .align(Alignment.BottomCenter)
                         .border(.75.dp, Color.LightGray, RectangleShape),
 
@@ -94,13 +87,15 @@ fun RestaurantOrderPage(navHostController: NavHostController,restaurantViewModel
 
                 }
             }
-
-
-
-
         }
 
+    ) {
+        Surface(modifier = Modifier
+            .padding(it)
+            .background(Color.White)
+        ){
 
+        }
     }
 
 }
@@ -114,7 +109,7 @@ fun OrderFoodListDesig(list: ArrayList<OrderedFood>  ) {
     LazyColumn(
         Modifier
             .background(Color.White)
-            .fillMaxHeight(.9f)) {
+            .fillMaxHeight(0.9f)) {
         items(list) { food ->
             val count=food.soldCount
             val price=food.price
@@ -154,7 +149,6 @@ fun OrderFoodListDesig(list: ArrayList<OrderedFood>  ) {
                                     .padding(start = 10.dp, end = 10.dp),
                                 contentAlignment = Alignment.CenterEnd
                             ) {
-
                                 Text(text = "${count} x ${price} = ${total} TL",fontSize = 15.sp, color = orange )
                             }
                         }
